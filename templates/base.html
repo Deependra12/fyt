@@ -2,81 +2,93 @@
 <html>
   <head>
     {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>{% block title %}{% endblock %} </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <title>
+            {% block title %}
+            {% endblock %}
+        </title>
     {% endblock %}
+
+    <!--Links-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!--Scripts-->
     <script src="https://kit.fontawesome.com/e327786071.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-    
-  
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <style>
-      .navbar{
-      padding-bottom:0.9%;
-      padding-top: 0.9%;
-      background-color: rgb(95, 88, 95);
-      }
-      .navbar-brand{
-        font-size: 26px;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-      .two{
-        width:3.5%;
-        border-radius: 50%;
-        color:tomato;
-        height:3.5%;
-        margin-top: 0.2%;
-        margin-right: 20px;
-      }
-      .collapse{
-        margin-left: 62%;
-      }
-      .nav-link{
-        font-size: 18px;
-      }
-      .one{
-        background-image: url('/static/image/back.jpg');
-        background-repeat: no-repeat;
-        width:3000px;
-        height:400px;
-        margin-top: 5%;
-      }
-      .sosial-links a{
-        display: block;
-        float: left;
-        width: 30px;
-        height: 30px;
-        border: 1px solid #909090;
-        border-radius: 50%;
-        margin-right: 19px;
-    
-    } 
-    .sosial-links a i{
-        margin-left: 6px;
-        font-size: 15px;
-        color: white;
-        
-    }
-    .footer{
-      background-color: rgb(95, 88, 95);
-    color:white;
-    }
-    .contact{
-      border-top: 1px solid white;
-      margin-top: 10px;
-    }
-    .four{
-      margin-top: 15px;
 
-    }
-    
-    .three{
-      
-      font-size: large;
-      line-height: normal;
-    }
+    <style>
+          .navbar{
+              padding-bottom:0.9%;
+              padding-top: 0.9%;
+              background-color: rgb(95, 88, 95);
+          }
+
+          .navbar-brand{
+              font-size: 26px;
+              font-family: Arial, Helvetica, sans-serif;
+          }
+
+          .two{
+              width:3.5%;
+              border-radius: 50%;
+              color:tomato;
+              height:3.5%;
+              margin-top: 0.2%;
+              margin-right: 20px;
+          }
+
+          .collapse{
+              margin-left: 62%;
+          }
+
+          .nav-link{
+              font-size: 18px;
+          }
+
+          .one{
+            background-image: url('/static/image/back.jpg');
+            background-repeat: no-repeat;
+            width:3000px;
+            height:400px;
+            margin-top: 5%;
+          }
+
+        .sosial-links a{
+            display: block;
+            float: left;
+            width: 30px;
+            height: 30px;
+            border: 1px solid #909090;
+            border-radius: 50%;
+            margin-right: 19px;
+        }
+
+        .sosial-links a i{
+            margin-left: 6px;
+            font-size: 15px;
+            color: white;
+        }
+
+        .footer{
+            background-color: rgb(95, 88, 95);
+            color:white;
+        }
+
+        .contact{
+            border-top: 1px solid white;
+            margin-top: 10px;
+        }
+
+        .four{
+            margin-top: 15px;
+        }
+
+        .three{
+            font-size: large;
+            line-height: normal;
+        }
     </style>
   </head>
 
@@ -84,14 +96,14 @@
     <nav class="navbar navbar-expand-sm  navbar-dark fixed-top">
         <!-- Brand -->
         <img  class="two" src="{{url_for('static', filename='image/logo.png')}}" />
- 
-        <a class="navbar-brand" href="#">Find Your Tutor</a>
-      
+
+        <a class="navbar-brand" href="/">Find Your Tutor</a>
+
         <!-- Toggler/collapsibe Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
-      
+
         <!-- Navbar links -->
         <div class="collapse navbar-collapse " id="collapsibleNavbar">
           <ul class="navbar-nav">
@@ -102,52 +114,77 @@
               <a class="nav-link" href="#"><i class="fa fa-user-plus" ></i>
                 Register</a>
             </li>
-            
           </ul>
         </div>
       </nav>
-      
-      
+
+
     {% block content %}{% endblock %}
 
     <!--footer -->
     <section class="footer" id="#Footer">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-sm-3">
-                      <p class="three"><strong>Find Your Tutor </strong> help the student <br>
-              to save quality time expense<br>
-              energy,and cost involved in <br>
-              travelling.It also help part-timers<br>
-              to support their income.
-            </p>
 
-          </div>
           <div class="col-sm-3">
-            <h1>hello</h1>
+            <p class="three">
+                <strong>Find Your Tutor</strong>
+                helps the student <br>
+                save quality time,<br>
+                energy,and cost involved in <br>
+                finding tutors.It also help part-timers<br>
+                to support their income.
+            </p>
           </div>
+
           <div class="col-sm-3">
-            <h1>hello</h1>
+            <h1>Lorem 1</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                 nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                 nulla pariatur.Excepteur sint occaecat cupidatat non proident,
+                 sunt in culpa qui officia deserunt mollit anim id est laborum.
+             </p>
           </div>
+
+          <div class="col-sm-3">
+            <h1>Lorem 2</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                 nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
+                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                 nulla pariatur.Excepteur sint occaecat cupidatat non proident,
+                 sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+          </div>
+
           <div class="col-sm-3">
             <h2>Contact Us</h2>
             <div class="contact">
-            <p class="four">28 Kilo,Banepal,Nepal</p>
-            <p>Email:tutorspace@98gmail.com</p>
-            <p>Phone No:9863471945</p>
-            <div class="sosial-links">
-              <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
-              <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
-              <a href="#"><i class="fa fa-instagram" ></i></a>
-
-              </div>
-          </div>
+                <p class="four">
+                    28 Kilo,Banepal,Nepal
+                </p>
+                <p>
+                    Email:tutorspace@98gmail.com
+                </p>
+                <p>
+                    Phone No:9863471945
+                </p>
+                <div class="sosial-links">
+                  <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+                  <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+                  <a href="#"><i class="fa fa-instagram" ></i></a>
+                </div>
+            </div>
           </div>
 
         </div>
       </div>
     </section>
-    
+
 
   </body>
 </html>
