@@ -1,0 +1,23 @@
+{% block title %}
+    Find Your Tutor<br>
+    Register For This Site
+{% endblock %}
+
+{% block content %}
+    <div class="one" >
+        <form action="{{url_for('user_register')}}" method="POST">
+            <label for="user-id">Username</label><br>
+            <input type="text" name="user-id" /><br>
+            <label for="user-email">Email</label><br>
+            <input type="text" name="user-email" /><br>
+            <label for="user-name">Name</label><br>
+            <input type="text" name="user-name" /><br>
+            <label for="user-id">Phone Number</label><br>
+            <input type="number" name="user-phone_number" /><br>
+            <label for="login-password">Password</label><br>
+            <input type="password" name="login-password" id="login-password" /><br><br>
+            <button type="submit">Dropdown</button><br><br>
+            <button type="submit">Log in</button>
+        </form>
+    </div>
+{% endblock %}

@@ -31,6 +31,10 @@ def tutor_home():
 def students_home():
     return "Students login"
 
+@app.route('/user/register')
+def user_register():
+    return render_template('register.html')
+
 @app.errorhandler(404)
 def error_handler(e):
     ''' For Handling 404 error '''
