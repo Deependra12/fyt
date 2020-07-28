@@ -19,6 +19,10 @@ def admin_login():
         return redirect(url_for('admin_login'))
     return render_template('admin-login.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
 @app.route('/tutors/login')
 def tutor_home():
     return "Tutors login"
