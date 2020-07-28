@@ -1,6 +1,20 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request 
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField, SelectField
+from wtforms.validators import DataRequired, Email, EqualTo
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'Guptaji the great'
+
+class RegistrationForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    role = SelectField('Role', choices=['Teacher','Student'] )
+    submit = SubmitField('Sign Up')
+
+
 
 @app.route('/')
 @app.route('/home')
@@ -35,7 +49,8 @@ def login():
 
 @app.route('/user/register')
 def user_register():
-    return render_template('register.html')
+    form = RegistrationForm() 
+    return render_template('register.html',form=form)
 
 @app.errorhandler(404)
 def error_handler(e):

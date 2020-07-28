@@ -1,7 +1,9 @@
+{% extends 'base.html'%}
+
 {% block title %}
-    Find Your Tutor<br>
-    Register For This Site
+  Sign Up
 {% endblock %}
+<!--
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
     .dropbtn {
@@ -44,7 +46,7 @@
     .show {display: block;}
     </style>
 
-{% block content %}
+yabata block content
     <div class="one" >
         <form action="{{url_for('user_register')}}" method="POST">
             <label for="user-id">Username</label><br>
@@ -90,4 +92,51 @@
         }
         </script>
         
-{% endblock %}
+ya sakkinee
+
+-->
+{% block content %}
+<div class="container mt-5 pt-4">
+  <form action="" class="form my-2" method="POST">
+    <legend class="border-bottom mb-4">Join Us</legend>
+    {{form.hidden_tag()}}
+  
+    {{form.username.label(class='form-control-label')}}
+    {{form.username(class='form-control')}}
+  
+    {{form.email.label(class='form-control-label')}}
+    {{form.email(class='form-control')}}
+  
+    {{form.password.label(class='form-control-label')}}
+    {{form.password(class='form-control')}}
+  
+    {{form.confirm_password.label(class='form-control-label')}}
+    {{form.confirm_password(class='form-control')}}
+  
+    <div class="dropdown mt-2">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{form.role.label}}
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        {% for choice in form.role.choices %}
+          <div class="dropdown-item">
+            {{choice}}
+
+          </div>
+        {% endfor %}
+      </div>
+      <br>
+      <hr>
+    <input class="btn btn-success" type="submit" value="Sign Up">
+  
+    </div>
+  </form>
+</div>
+
+
+
+
+
+
+
+{%endblock%}
