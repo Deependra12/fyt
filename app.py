@@ -46,7 +46,7 @@ def login():
             flash('Login successful','success')
             return redirect(url_for('home'))
         else:
-            flash('Please check your email or password','danger')        
+            flash('Please check your email or password','danger')                
     return render_template('login.html', form=form)
 
 
@@ -55,7 +55,7 @@ def user_register():
     ''' Route for user registration '''
     form = RegistrationForm() 
     if form.validate_on_submit():
-        flash('Your account was created!', 'success')
+        flash('Your account was created, You can now Login !', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
         
