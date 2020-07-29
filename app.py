@@ -43,11 +43,14 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     form = RegistrationForm() 
-    if form.validate_on_submit():
-        flash('Your account was created', 'success')
-        return redirect(url_for('login'))
-    else:
-        return render_template('register.html',form=form)
+    if request.method == "POST":
+        if form.validate_on_submit():
+            flash('Your account was created!', 'success')
+            return redirect(url_for('login'))
+        else:
+            #flash('There was some error in registering the account!', 'error')
+            return redirect(url_for('user_register'))
+    return render_template('register.html',form=form)
         
 @app.errorhandler(404)
 def error_handler(e):
