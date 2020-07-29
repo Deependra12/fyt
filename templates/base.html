@@ -3,12 +3,14 @@
 
 <head>
   {% block head %}
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <title>
-    {% block title %}
-    {% endblock %}
-  </title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
   {% endblock %}
+
+  <link rel="icon" href="{{ url_for('static', filename='image/logo.png') }}">
 
   <!--Links-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -21,10 +23,8 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
   <style>
-    <style>.navbar {
-
+    .navbar {
       background-color: white;
-
     }
 
     .navbar-brand {
@@ -90,12 +90,12 @@
       background-color: rgb(95, 88, 95);
       color: white;
       width: 100%;
-
+      padding-top: 15px;
     }
 
     .contact {
       border-top: 1px solid white;
-      margin-top: 10px;
+      padding: 15px 0;
     }
 
 
@@ -106,6 +106,7 @@
       margin-left: 2%;
       margin-right: 2%;
       text-align: justify;
+      word-wrap: normal;
     }
 
     .fa {
@@ -164,43 +165,33 @@
         <div class="col-sm-3">
           <h1>Find Your Tutor</h1>
           <p class="three">
-            helps the student <br>
-            save quality time,<br>
-            energy,and cost involved in <br>
-            finding tutors.It also help part-timers<br>
-            tutors to support their income.
+            <b> Find your tutor </b> helps the students save quality time,
+            energy, and cost involved in finding tutors. It also help 
+            part-time tutors in supporting their income .
           </p>
         </div>
 
         <div class="col-sm-3">
           <h2>Quick Link</h2>
-          <p>About Us <br>
-            Contact Us <br>
-            Privacy Policy<br>
-            Terms of Service
-          </p>
+          <p>About Us </p>
+          <p>Contact Us </p>
+          <p>Privacy Policy </p>
+          <p>Terms of Service </p>
         </div>
 
         <div class="col-sm-3">
           <h2>Connect with us now </h2>
-          <p>Connect with us on Facebook <br>
-            Connect with us on Instagram <br>
-            Connect with us on Twitter <br>
-          </p>
+          <p>Connect with us on Facebook </p>
+          <p>Connect with us on Instagram </p>
+          <p>Connect with us on Twitter </p>
         </div>
 
         <div class="col-sm-3">
           <h2>Contact Us</h2>
           <div class="contact">
-            <p class="four">
-              28 Kilo,Banepal,Nepal
-            </p>
-            <p>
-              Email:findtutorspace@98gmail.com
-            </p>
-            <p>
-              Phone No:9863471945,9861164418,9844444444,9811111111
-            </p>
+            <p class="four">28 Kilo,Banepal,Nepal </p>
+            <p>Email: fyt@gmail.com </p>
+            <p>Phone No.: 9863xxxxxx </p>
             <div class="sosial-links">
               <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
               <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
