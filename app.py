@@ -43,15 +43,12 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     form = RegistrationForm() 
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            flash('Your account was created', 'success')
-            return redirect(url_for('login'))
-        else:
-            return render_template('register.html',form=form)
+    if form.validate_on_submit():
+        flash('Your account was created', 'success')
+        return redirect(url_for('login'))
     else:
         return render_template('register.html',form=form)
-
+        
 @app.errorhandler(404)
 def error_handler(e):
     ''' For Handling 404 error '''
