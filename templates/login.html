@@ -5,13 +5,65 @@ Login - Find Your Tutor
 {% endblock %}
 
 {% block content %}
-    <div class="one" >
-        <!-- <form action="{{url_for('login')}}" method="POST">
+
+<!-- <form action="{{url_for('login')}}" method="POST">
             <label for="login-id">Login Id</label><br>
             <input type="text" name="login-id" /><br>
             <label for="login-password">Password</label><br>
             <input type="password" name="login-password" id="login-password" /><br><br>
             <button type="submit">Log in</button>
         </form> -->
+
+
+<div class="container mt-5">
+
+    <form action="{{url_for('login')}}" class="form my-2" method="POST">
+        <legend class="border-bottom mb-4">Login</legend>
+        {{form.hidden_tag()}}
+        <div class="form-group">
+            {{form.email.label(class='form-control-label')}}
+            {% if form.email.errors %}
+                {{form.email(class="form-control is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {%else%}
+                {{form.email(class="form-control")}}
+            {% endif %}
+        </div>
+        
+
+        <div class="form-group">
+            {{form.password.label(class='form-control-label')}}
+            {% if form.password.errors %}
+                {{form.password(class="form-control is-invalid")}}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                </div>
+            {%else%}
+                {{form.password(class="form-control")}}
+            {% endif %}
+        </div>
+        
+
+        <input class="btn btn-success" type="submit" value="Login">
+    </form>
+    <div class="border-top pt-3">
+        <small class='text-muted ml-3'>
+            Do not have an account? <a class="ml-1" href="{{url_for('user_register')}}">Sign In</a>
+        </small>
     </div>
+</div>
+
+
+
+
 {% endblock %}

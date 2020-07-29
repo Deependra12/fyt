@@ -1,12 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request, flash
-from forms import RegistrationForm
-
+from forms import RegistrationForm, LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Guptaji the great'
-
-
-
 
 
 @app.route('/')
@@ -28,29 +24,31 @@ def admin_login():
     return render_template('admin-login.html')
 
 
-@app.route('/login')
+@app.route('/login',methods=['GET', 'POST'] )
 def login():
     ''' Route for tutor/student login '''
-    if request.method == "POST":
+    form = LoginForm()
+    if form.validate_on_submit:
         # replace with WTF forms later on
-        login_id = request.form.get('login-id', '')
-        login_password = request.form.get('login-password', '')
-        print(login_id, login_password)
-        return redirect(url_for('login'))
-    return render_template('login.html')
+        # login_id = request.form.get('login-id', '')
+        # login_password = request.form.get('login-password', '')
+        # print(login_id, login_password)
+        # return redirect(url_for('login'))
+        if form.email.data =='check@gmail.com' and form.password.data == 'guptaji':
+            flash('Login successful','success')
+            return redirect(url_for('home'))
+        else:
+            flash('Please check your email or password','danger')        
+    return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     form = RegistrationForm() 
-    if request.method == "POST":
-        if form.validate_on_submit():
-            flash('Your account was created!', 'success')
-            return redirect(url_for('login'))
-        else:
-            #flash('There was some error in registering the account!', 'error')
-            return redirect(url_for('user_register'))
-    return render_template('register.html',form=form)
+    if form.validate_on_submit():
+        flash('Your account was created!', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html', form=form)
         
 @app.errorhandler(404)
 def error_handler(e):
