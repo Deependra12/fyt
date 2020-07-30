@@ -1,5 +1,4 @@
 from flask import (
-    Flask,
     render_template, 
     redirect, 
     url_for, 
@@ -8,15 +7,8 @@ from flask import (
     flash,
     session
 )
-from flask_sqlalchemy import SQLAlchemy
-from forms import RegistrationForm, LoginForm
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///fyt.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'Guptaji the great'
-
-db = SQLAlchemy(app)
+from . import app, db
+from .forms import RegistrationForm, LoginForm
 
 
 @app.route('/')
@@ -71,7 +63,3 @@ def user_register():
 def error_handler(e):
     ''' For Handling 404 error '''
     return render_template('404.html')
-
-
-if __name__=='__main__':
-    app.run(debug=True)
