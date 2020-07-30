@@ -66,6 +66,10 @@ def user_register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
+@app.route('/about-us')
+def about():
+    return render_template('about.html')
+
 
 @app.errorhandler(404)
 def error_handler(e):
