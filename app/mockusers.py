@@ -1,6 +1,17 @@
 #This module is temporary until creted database
 
-mockuser=[{'email':'tutor@gmail.com', 'password':'tutor','role':'teacher','phone':9876543210} , {'email':'student@gmail.com', 'password':'student','role':'student','phone':'9876543211'}]
+mockuser=[{'username':'mockTutor',
+            'email':'tutor@gmail.com',
+            'role':'teacher',
+           'phone':9876543210,
+           'salt':'kB45AIaawDtNZihQCAt2HipUuV0DA6zi',
+           'password':'3af6cdca0d433d7aa1189b71bca6059a15f810d9de04c50d1f798cb049deba49'} ,
+          {'username':'mockStudent',
+           'email':'student@gmail.com',
+           'role':'student',
+           'phone':'9876543211',
+            'salt':'pzIpQLePSW7R7pjnc92t50hA93Xakp2S',
+            'password': 'afc74ab1772ddb5b5830400cb7ca89ae49d4ac4d21a5356025ce7c89a74df412'}]
 
 def get_user(email):
     user=[]
@@ -12,5 +23,5 @@ def get_user(email):
     else:
         return
 
-def add_user(email,password,role,phone):
-    mockuser.append({'email':email,'password':password,'role':role,'phone':phone})
+def add_user(username,email,role,phone,salt,password):
+    mockuser.append({'username':username,'email':email,'role':role,'phone':phone,'salt':salt,'password':password})

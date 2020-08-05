@@ -18,12 +18,14 @@ from .forms import RegistrationForm, LoginForm
 from . import  login_manager
 from .user import User
 from .mockusers import (get_user, add_user)
+from .passwordhash import PasswordHasher
+
+PH=PasswordHasher()
 
 @app.route('/')
 @app.route('/index')
 def index():
     return redirect(url_for('home'))
-
 
 @app.route('/home')
 def home():
@@ -54,7 +56,7 @@ def login():
         stored_user=get_user(email)
         #Checking if given email is in stored user or not
         #Also checking if password is correct or not
-        if stored_user and stored_user['password']==password:
+        if stored_user and PH.validate_password(password,stored_user['salt'],stored_user['password']):
             #Flashing message to announce successful login
             flash('Login successful','success')
             #making object of User class from user.py
@@ -75,11 +77,11 @@ def login():
 def user_register():
     #getting data from form.py
     form = RegistrationForm()
+    username=form.username.data
     email=form.email.data
-    password=form.password.data
     role=form.role.data
-    print(role)
     phone=form.phone.data
+    unhashed_password = form.password.data
     #validating the filled up information
     if form.validate_on_submit():
         #checking if same email is already registered
@@ -88,7 +90,10 @@ def user_register():
         #Announcing succssful registration
         flash('Your account was created, You can now Login !', 'success')
         #Add new user to mockuser in mockuser.py
-        add_user(email,password,role,phone)
+        # Salting and hashing provided password
+        salt = PH.salting()
+        hashed_password = PH.hash(salt + unhashed_password)
+        add_user(username,email,role,phone,salt,hashed_password)
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
