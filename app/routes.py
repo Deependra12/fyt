@@ -62,7 +62,7 @@ def login():
             #adding user to login_user method of flask_login module
             login_user(user,remember=True)
             #checking role of logging user
-            if stored_user['role']=='Student':
+            if stored_user['role']=='student':
                 return redirect(url_for('student'))
             else:
                 return redirect(url_for('tutor'))
@@ -78,6 +78,7 @@ def user_register():
     email=form.email.data
     password=form.password.data
     role=form.role.data
+    print(role)
     phone=form.phone.data
     #validating the filled up information
     if form.validate_on_submit():

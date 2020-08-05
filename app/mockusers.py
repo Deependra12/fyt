@@ -1,6 +1,6 @@
 #This module is temporary until creted database
 
-mockuser=[{'email':'tutor@gmail.com', 'password':'tutor','role':'Teacher','phone':9876543210} , {'email':'student@gmail.com', 'password':'student','role':'Student','phone':'9876543211'}]
+mockuser=[{'email':'tutor@gmail.com', 'password':'tutor','role':'teacher','phone':9876543210} , {'email':'student@gmail.com', 'password':'student','role':'student','phone':'9876543211'}]
 
 def get_user(email):
     user=[]
