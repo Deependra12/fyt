@@ -5,8 +5,17 @@
 {% endblock %}
 
 {% block content %}
+<!-- background-image: linear-gradient(rgba(0, 0, 256, 0.24), rgba(119, 84, 106, 0.24)), url('/static/image/404.png'); -->
+    <style>
+    .one {
+        
+        background-image: url('/static/image/404.png');
+        background-size:100% 100%;
+        background-position: center;
+    }
+    </style>
     <div class="one">
-        <h1>Sorry, the page you've requested is not found!</h1>
-        <img src="{{url_for('static', filename='image/404.png')}}" alt="404.jpeg" />
+        <!-- <h1>Sorry, the page you've requested is not found!</h1>
+        <img src="{{url_for('static', filename='image/404.png')}}" alt="404.jpeg" /> -->
     </div>
 {% endblock %}

@@ -17,7 +17,7 @@ from . import app, db
 from .forms import RegistrationForm, LoginForm
 from . import  login_manager
 from .user import User
-from .mockusers import (get_admin,get_user, add_user)
+from .mockusers import get_admin, get_user, add_user
 from .passwordhash import PasswordHasher
 
 PH=PasswordHasher()
@@ -36,7 +36,6 @@ def home():
 def admin_login():
     ''' Route for admin login '''
     if request.method == "POST":
-        # replace with WTF forms later on
         username = request.form.get('username')
         password = request.form.get('password')
         stored_admin=get_admin(username)
