@@ -17,7 +17,7 @@ from . import app, db
 from .forms import RegistrationForm, LoginForm
 from . import  login_manager
 from .user import User
-from .mockusers import (get_user, add_user)
+from .mockusers import (get_admin,get_user, add_user)
 from .passwordhash import PasswordHasher
 
 PH=PasswordHasher()
@@ -32,15 +32,18 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/a/login', methods=['GET', 'POST'])
+@app.route('/a', methods=['GET', 'POST'])
 def admin_login():
     ''' Route for admin login '''
     if request.method == "POST":
         # replace with WTF forms later on
-        login_id = request.form.get('login-id', '')
-        login_password = request.form.get('login-password', '')
-        print(login_id, login_password)
-        return redirect(url_for('admin_login'))
+        username = request.form.get('username')
+        password = request.form.get('password')
+        stored_admin=get_admin(username)
+        if stored_admin and PH.validate_password(password,stored_admin['salt'],stored_admin['password']):
+            user = User(username)
+            login_user(user, remember=True)
+            return redirect(url_for("admin"))
     return render_template('admin-login.html')
 
 
@@ -111,6 +114,11 @@ def error_handler(e):
     ''' For Handling 404 error '''
     return render_template('404.html')
 
+@app.route('/admin')
+def admin():
+    return render_template("admin.html")
+
+
 @app.route('/student')
 @login_required
 def student():
@@ -122,7 +130,11 @@ def tutor():
     return render_template("tutor.html")
 
 @login_manager.user_loader
-def load_user(email):
-    user_password=get_user(email)
+def load_user(login_id):
+    user_password=get_user(login_id)
     if user_password:
-        return User(email)
+        return User(login_id)
+    else:
+        user_password=get_admin(login_id)
+        if user_password:
+            return User(login_id)

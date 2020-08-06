@@ -1,9 +1,9 @@
 class User:
-    def __init__(self,email):
-        self.email=email
+    def __init__(self,login_id):
+        self.login_id=login_id
 
     def get_id(self):
-        return  self.email
+        return  self.login_id
 
     def is_active(self):
         return True

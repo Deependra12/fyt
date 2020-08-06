@@ -1,5 +1,18 @@
 #This module is temporary until creted database
 
+mockadmin=[{'username':'admin','salt':'UGg3TRzW+tNc5eVFHOwuthtEFWEINocR','password':'7030f34ee6c1f2d85e2db54df5a70d31152b890fc3215ea1587a2516d0b09d10'}]
+
+def get_admin(username):
+    admin=[]
+    for x in mockadmin:
+        if x.get('username')==username:
+            admin.append(x)
+    if admin:
+        return admin[0]
+    else:
+        return
+
+
 mockuser=[{'username':'mockTutor',
             'email':'tutor@gmail.com',
             'role':'teacher',
