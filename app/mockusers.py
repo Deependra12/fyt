@@ -22,7 +22,7 @@ mockuser=[{'username':'mockTutor',
           {'username':'mockStudent',
            'email':'student@gmail.com',
            'role':'student',
-           'phone':'9876543211',
+           'phone':9876543211,
             'salt':'pzIpQLePSW7R7pjnc92t50hA93Xakp2S',
             'password': 'afc74ab1772ddb5b5830400cb7ca89ae49d4ac4d21a5356025ce7c89a74df412'}]
 

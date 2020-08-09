@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
     <h1>Student Page</h1>
     <form action="/logout" >
         <input type="submit" value="Logout">
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

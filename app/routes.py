@@ -10,7 +10,8 @@ from flask import (
 from flask_login import (
     login_required,
     login_user,
-    logout_user
+    logout_user,
+    current_user
 )
 
 from . import app, db
@@ -25,6 +26,9 @@ PH=PasswordHasher()
 @app.route('/')
 @app.route('/index')
 def index():
+    if(current_user.is_authenticated):
+        print("ram")
+        return redirect(url_for('login'))
     return redirect(url_for('home'))
 
 @app.route('/home')
@@ -40,7 +44,7 @@ def admin_login():
         password = request.form.get('password')
         stored_admin=get_admin(username)
         if stored_admin and PH.validate_password(password,stored_admin['salt'],stored_admin['password']):
-            user = User(username)
+            user = User(username,role='a')
             login_user(user, remember=True)
             return redirect(url_for("admin"))
     return render_template('admin-login.html')
@@ -49,30 +53,40 @@ def admin_login():
 @app.route('/login',methods=['GET', 'POST'] )
 def login():
     ''' Route for tutor/student login '''
-    form = LoginForm()
-    if form.validate_on_submit():
-        #getting email and password from forms.py
-        email=form.email.data
-        password=form.password.data
-        #getting stored user from mockuser.py
-        stored_user=get_user(email)
-        #Checking if given email is in stored user or not
-        #Also checking if password is correct or not
-        if stored_user and PH.validate_password(password,stored_user['salt'],stored_user['password']):
-            #Flashing message to announce successful login
-            flash('Login successful','success')
-            #making object of User class from user.py
-            user=User(email)
-            #adding user to login_user method of flask_login module
-            login_user(user,remember=True)
-            #checking role of logging user
-            if stored_user['role']=='student':
-                return redirect(url_for('student'))
+    if not current_user.is_authenticated:
+        form = LoginForm()
+        if form.validate_on_submit():
+            #getting email and password from forms.py
+            email=form.email.data
+            password=form.password.data
+            #getting stored user from mockuser.py
+            stored_user=get_user(email)
+            #Checking if given email is in stored user or not
+            #Also checking if password is correct or not
+            if stored_user and PH.validate_password(password,stored_user['salt'],stored_user['password']):
+                #Flashing message to announce successful login
+                flash('Login successful','success')
+                #making object of User class from user.py
+                role=stored_user['role']
+                print("The role is: "+role)
+                user=User(email,role)
+                #adding user to login_user method of flask_login module
+                login_user(user,remember=True)
+                #checking role of logging user
+                if stored_user['role']=='student':
+                    return redirect(url_for('student'))
+                else:
+                    return redirect(url_for('tutor'))
             else:
-                return redirect(url_for('tutor'))
+                flash('Please check your email or password','danger')
+        return render_template('login.html', form=form)
+    else:
+        role=current_user.get_role()
+        print(role)
+        if role=='student':
+            return redirect(url_for('student'))
         else:
-            flash('Please check your email or password','danger')
-    return render_template('login.html', form=form)
+            return redirect(url_for('tutor'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -130,10 +144,10 @@ def tutor():
 
 @login_manager.user_loader
 def load_user(login_id):
-    user_password=get_user(login_id)
-    if user_password:
-        return User(login_id)
+    user_=get_user(login_id)
+    if user_:
+        return User(login_id,user_['role'])
     else:
-        user_password=get_admin(login_id)
-        if user_password:
-            return User(login_id)
+        user_=get_admin(login_id)
+        if user_:
+            return User(login_id,'a')
