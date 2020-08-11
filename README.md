@@ -10,4 +10,4 @@ For getting started, run the following through terminal:
 flask run
 ```
 
-And run ```localhost:5000``` on the address bar of your web browser.
+And run `localhost:5000` on the address bar of your web browser.
