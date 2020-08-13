@@ -1,18 +1,20 @@
 {% extends 'base.html'%}
 
 {% block title %}
-    Find Your Tutor
+    404 - Find Your Tutor
 {% endblock %}
 
 {% block content %}
-<!-- background-image: linear-gradient(rgba(0, 0, 256, 0.24), rgba(119, 84, 106, 0.24)), url('/static/image/404.png'); -->
+
     <style>
-    .sorry{ 
-     align-content: center;
+    .sorry{
+        text-align: center;
     }
     </style>
+
     <div class="sorry">
-        <h1>Sorry, the page you've requested is not found!</h1>
-        <img src="{{url_for('static', filename='image/404.png')}}" alt="404.jpeg" />
+        <img src="{{url_for('static', filename='images/404.png')}}" alt="404.jpeg" />
+        <h1>Sorry, Page Not Found!</h1>
     </div>
+
 {% endblock %}
