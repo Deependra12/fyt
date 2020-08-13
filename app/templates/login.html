@@ -10,18 +10,51 @@
 <style>
     .container{
         max-width:400px;
+        background-color:#3cae63;
+
+        
     }
+    .title{
+        text-align: center;
+        color:white
+    }
+    .label{
+        color:white
+    }
+
+    .ic i{
+        
+        
+        margin-left:12px;
+        margin-top: 15px;
+        
+    }
+    .ic{
+        height:44px;
+        width:44px;
+        border: 1px solid lightgrey;
+    }
+
 </style>
 
 <div class="container">
 
     <form action="{{url_for('login')}}" class="form my-2" method="POST">
-        <legend class="border-bottom mb-4">Login</legend>
+        
+        <legend class="border-bottom  title mb-4">Login</legend>
+        
         {{form.hidden_tag()}}
+    
+
         <div class="form-group">
+            <div class="label">
             {{form.email.label(class='form-control-label')}}
+            </div>
+            
             {% if form.email.errors %}
+            
                 {{form.email(class="form-control is-invalid")}}
+            
                 <div class="invalid-feedback">
                     {% for error in form.email.errors %}
                         <span>
@@ -30,13 +63,22 @@
                     {% endfor %}
                 </div>
             {%else%}
+            <div class="input-group bg-light">
+                <div class="input-group-addon ic">
+                    <i class="fa fa-envelope  icn" ></i>
+                </div>
                 {{form.email(class="form-control")}}
+               </div>
+           
+        
             {% endif %}
         </div>
         
 
         <div class="form-group">
+            <div class="label">
             {{form.password.label(class='form-control-label')}}
+            </div>
             {% if form.password.errors %}
                 {{form.password(class="form-control is-invalid")}}
                 <div class="invalid-feedback">
@@ -47,7 +89,13 @@
                     {% endfor %}
                 </div>
             {%else%}
+            <div class="input-group bg-light">
+                <div class="input-group-addon ic">
+                    <i class="fa fa-lock" ></i>
+                </div>
                 {{form.password(class="form-control")}}
+               </div>
+               
             {% endif %}
         </div>
         
@@ -55,10 +103,14 @@
         <input class="btn btn-success" type="submit" value="Login">
     </form>
     <div class="border-top pt-3">
-        <small class='text-muted ml-3'>
+        <small class =" label ml-3">
+            Forgot <a href="#">Password?</a>
+        </small>
+        <small class=' label ml-3'>
             Do not have an account? <a class="ml-1" href="{{url_for('user_register')}}">Sign Up</a>
         </small>
     </div>
 </div>
+
 
 {% endblock %}
