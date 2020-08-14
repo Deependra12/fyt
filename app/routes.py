@@ -121,7 +121,7 @@ def user_register():
         hashed_password = PH.hash(salt + unhashed_password)
         add_user(username, email, role, phone, salt, hashed_password)
         message="Welcome to Find Your Tutor"
-        em.send_mail(message,email)
+        em.send_mail(username,role,message,email)
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
