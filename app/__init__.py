@@ -15,6 +15,7 @@ app.config['MAIL_PORT'] = os.environ.get('MAIL_PORT')
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME'])
 
 
 db = SQLAlchemy(app)
