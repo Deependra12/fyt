@@ -131,7 +131,7 @@ def passwordresetlink():
     email = form.email.data
     if form.validate_on_submit():
         em.send_reset_mail(email)
-        return redirect(url_for('passwordreset'))
+        return redirect(url_for('login'))
     return render_template('resetlink.html', form=form)
 
 
