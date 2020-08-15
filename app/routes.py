@@ -5,22 +5,23 @@ from flask import (
     jsonify, 
     request, 
     flash,
-    session
+    session,
 )
 from flask_login import (
     login_required,
     login_user,
     logout_user,
-    current_user
+    current_user,
 )
 
 from . import app, db
-from .forms import RegistrationForm, LoginForm,Resetform,Resetlinkform
-from . import  login_manager
+from . import login_manager
+from . import email as em
+from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm
 from .user import User
 from .mockusers import get_admin, get_user, add_user
 from .passwordhash import PasswordHasher
-from . import email as em
+
 
 PH = PasswordHasher()
 
@@ -28,8 +29,7 @@ PH = PasswordHasher()
 @app.route('/')
 @app.route('/index')
 def index():
-    if(current_user.is_authenticated):
-        print("ram")
+    if current_user.is_authenticated:
         return redirect(url_for('login'))
     return redirect(url_for('home'))
 
@@ -48,7 +48,7 @@ def admin_login():
         stored_admin = get_admin(username)
         if stored_admin and PH.validate_password(password,stored_admin['salt'],
                 stored_admin['password']):
-            user = User(username,role='a')
+            user = User(username, role='a')
             login_user(user, remember=True)
             return redirect(url_for("admin"))
     return render_template('admin/admin-login.html')
@@ -125,29 +125,32 @@ def user_register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-@app.route('/password-reset',methods=['GET', 'POST'])
+
+@app.route('/password-reset', methods=['GET', 'POST'])
 def passwordresetlink():
-    form =Resetlinkform()
+    form = ResetLinkForm()
     email = form.email.data
     if form.validate_on_submit():
+        print(email)
         em.send_reset_mail(email)
         return redirect(url_for('passwordreset'))
-    return render_template('resetlink.html',form=form)
+    return render_template('resetlink.html', form=form)
 
-@app.route('/reset',methods=['GET', 'POST'])
+
+@app.route('/reset', methods=['GET', 'POST'])
 def passwordreset():
-    form =Resetform()
+    form = ResetForm()
     unhashed_password = form.password.data
-    return render_template('reset.html',form=form)
+    return render_template('reset.html', form=form)
+
 
 @app.route('/hello/<token>')
 def hello(token):
     try:
-        email=ser.loads(token,salt='email-confirm',max_age=36)
+        email = ser.loads(token, salt='email-confirm', max_age=36)
     except :
         return '<h1>the token is expired<h1>'
     return '<h1>the token works <h1>'
-
 
 
 @app.route("/logout")

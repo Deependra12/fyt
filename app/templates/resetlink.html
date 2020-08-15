@@ -10,16 +10,24 @@ Sign Up - Find Your Tutor
   .container{
     max-width: 400px;
   }
+
   h3{
     text-align:center;
     margin-top:10px;
     font-size: 20px;
   }
+
   .resetlink{
+    position: relative;
     background-color:whitesmoke;
+    padding: 2%;
+    border-radius: 5%;
   }
+
   .btn{
-    margin-left: 70px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
 </style>
@@ -30,9 +38,9 @@ Sign Up - Find Your Tutor
   </div>
 
   <h3>Reset your password</h3>
-  <form action="{{url_for('passwordresetlink')}}" class="form my-2 resetlink" method="POST">
-    <p>Enter your user account's verified email address and we will 
-      send you a password reset link</p>
+  <form action="{{ url_for('passwordresetlink') }}" class="form my-2 resetlink" method="POST">
+    <p>Enter your user account's verified email address
+      and we will send you a password reset link</p>
     <div class="form-row">
     <div class="form-group col">
         {{form.email.label(class='form-control-label')}}
@@ -50,7 +58,7 @@ Sign Up - Find Your Tutor
         {% endif %}
       </div>
     </div>
-    <input class="btn btn-success" type="submit" value="send password reset email">
+    <input class="btn btn-success" type="submit" value="Send Reset Link">
 </form>
 <a href="/reset">reset</a>
 </div>

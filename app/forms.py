@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-import phonenumbers
-from wtforms import StringField, PasswordField,IntegerField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo
+import phonenumbers
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -18,10 +19,13 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-class Resetform(FlaskForm):
+
+class ResetForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('continue')
-class Resetlinkform(FlaskForm):
+
+
+class ResetLinkForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send password reset email')
