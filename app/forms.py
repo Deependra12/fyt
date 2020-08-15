@@ -28,4 +28,4 @@ class ResetForm(FlaskForm):
 
 class ResetLinkForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
-    submit = SubmitField('Send password reset email')
+    submit = SubmitField('Send Reset Email')

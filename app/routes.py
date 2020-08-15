@@ -113,8 +113,6 @@ def user_register():
         #checking if same email is already registered
         if get_user(email):
             return render_template('register.html', form=form)
-        #Announcing succssful registration
-        flash('Your account was created, You can now Login !', 'success')
         #Add new user to mockuser in mockuser.py
         # Salting and hashing provided password
         salt = PH.salting()
@@ -122,6 +120,7 @@ def user_register():
         add_user(username, email, role, phone, salt, hashed_password)
         message = "Welcome to Find Your Tutor"
         em.send_mail(username, role, message, email)
+        flash('Your account was created.\nYou can now Login!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
@@ -131,7 +130,6 @@ def passwordresetlink():
     form = ResetLinkForm()
     email = form.email.data
     if form.validate_on_submit():
-        print(email)
         em.send_reset_mail(email)
         return redirect(url_for('passwordreset'))
     return render_template('resetlink.html', form=form)
@@ -149,8 +147,8 @@ def hello(token):
     try:
         email = ser.loads(token, salt='email-confirm', max_age=36)
     except :
-        return '<h1>the token is expired<h1>'
-    return '<h1>the token works <h1>'
+        return '<h1>The token has expired!<h1>'
+    return '<h1>The token is valid!<h1>'
 
 
 @app.route("/logout")

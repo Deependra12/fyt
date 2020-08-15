@@ -7,41 +7,57 @@ Sign Up - Find Your Tutor
 
 {% block content %}
 <style>
-  .container{
+  .container {
     max-width: 400px;
   }
 
-  h3{
+  h3 {
     text-align:center;
     margin-top:10px;
     font-size: 20px;
   }
 
-  .resetlink{
+  .resetlink {
     position: relative;
     background-color:whitesmoke;
     padding: 2%;
     border-radius: 5%;
   }
 
-  .btn{
+  .btn {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
   }
 
+  .info {
+    margin-bottom: 10px;
+  }
+
+  .info p {
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+  }
 </style>
 <div class="container">
-  <div style="text-align: center;">
-  <img class="image-responsive"  style="width:120.5px;height:62px;" 
-  src="{{url_for('static', filename='images/logo.png')}}" />
+  <div style="text-align:center;">
+    <img class="image-responsive"  style="width:120.5px;height:62px;" 
+    src="{{url_for('static', filename='images/logo.png')}}" />
   </div>
 
   <h3>Reset your password</h3>
+
   <form action="{{ url_for('passwordresetlink') }}" class="form my-2 resetlink" method="POST">
-    <p>Enter your user account's verified email address
-      and we will send you a password reset link</p>
+    <div class="info">
+      <p>Enter the email address associated with your account.</p>
+      <p>A recovery link will be sent to your email.</p>
+    </div>
+
+    {{form.hidden_tag()}}
+
     <div class="form-row">
+
     <div class="form-group col">
         {{form.email.label(class='form-control-label')}}
         {% if form.email.errors %}
@@ -60,7 +76,6 @@ Sign Up - Find Your Tutor
     </div>
     <input class="btn btn-success" type="submit" value="Send Reset Link">
 </form>
-<a href="/reset">reset</a>
 </div>
 
 {%endblock%}
