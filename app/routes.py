@@ -15,7 +15,7 @@ from flask_login import (
 )
 
 from . import app, db
-from .forms import RegistrationForm, LoginForm
+from .forms import RegistrationForm, LoginForm,Resetform,Resetlinkform
 from . import  login_manager
 from .user import User
 from .mockusers import get_admin, get_user, add_user
@@ -124,6 +124,30 @@ def user_register():
         em.send_mail(username, role, message, email)
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
+
+@app.route('/password-reset',methods=['GET', 'POST'])
+def passwordresetlink():
+    form =Resetlinkform()
+    email = form.email.data
+    if form.validate_on_submit():
+        em.send_reset_mail(email)
+        return redirect(url_for('passwordreset'))
+    return render_template('resetlink.html',form=form)
+
+@app.route('/reset',methods=['GET', 'POST'])
+def passwordreset():
+    form =Resetform()
+    unhashed_password = form.password.data
+    return render_template('reset.html',form=form)
+
+@app.route('/hello/<token>')
+def hello(token):
+    try:
+        email=ser.loads(token,salt='email-confirm',max_age=36)
+    except :
+        return '<h1>the token is expired<h1>'
+    return '<h1>the token works <h1>'
+
 
 
 @app.route("/logout")

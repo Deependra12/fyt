@@ -1,0 +1,69 @@
+{% extends "extends/base.html" %}
+
+{% block title %}
+Sign Up - Find Your Tutor
+{% endblock %}
+
+
+{% block content %}
+<style>
+    .container{
+        max-width: 400px;
+    }
+    .btn{
+        margin-left: 70px;
+    }
+</style>
+<div class="container">
+    <div style="text-align: center;">
+    <img class="image-responsive"  style="width:120.5px;height:62px;" 
+    src="{{url_for('static', filename='images/logo.png')}}" />
+    </div>
+  
+  
+  
+  <form action="{{url_for('passwordreset')}}" class="form my-2" method="POST">
+    <div class="form-row">
+
+        <div class="form-group col">
+          {{form.password.label(class='form-control-label')}}
+          {% if form.password.errors %}
+            {{form.password(class="form-control is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    <span>
+                        {{ error }}
+                    </span>
+                {% endfor %}
+            </div>
+          {%else%}
+            {{form.password(class="form-control")}}
+          {% endif %}
+        </div>
+    </div>
+  <div class="form-row">
+        <div class="form-group col">
+          {{form.confirm_password.label(class='form-control-label')}}
+          {% if form.confirm_password.errors %}
+            {{form.confirm_password(class="form-control is-invalid")}}
+            <div class="invalid-feedback">
+                {% for error in form.confirm_password.errors %}
+                    <span>
+                        {{ error }}
+                    </span>
+                {% endfor %}
+            </div>
+          {%else%}
+            {{form.confirm_password(class="form-control")}}
+          {% endif %}
+        </div>
+  
+      </div>
+    
+  
+    
+    <input class="btn btn-success" type="submit" value="Change Password">
+</form>
+</div>
+
+{%endblock%}

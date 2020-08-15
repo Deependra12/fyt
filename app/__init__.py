@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_mail import Mail
+from itsdangerous import URLSafeTimedSerializer
 import os
 
 app = Flask(__name__)
@@ -22,6 +23,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 migrate = Migrate(app,db)
 mail = Mail(app)
+ser=URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
+
 
 
 from . import routes
