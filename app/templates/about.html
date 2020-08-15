@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block about %}
-    <div class="container-fluid about-us" >
-        <h2 class="about-us-title">About Us</h2>
+    <div class="container-fluid about-us"  >
+        <h2 class="about-us-title" >About Us</h2>
         <div class="about-us-dscp">
             <p>
                 <strong>FIND YOUR TUTOR</strong> is a non profit website, which provides a best platform for students and tutors in order to improve the teaching-learning process in this digital era. It gives them the flexibility to decide their preferred days and time for getting tuition.Students can save their valuable time, energy and cost involved in travelling.
@@ -21,3 +21,77 @@
         </p>
     </div>
 {% endblock %}
+{% block teammember%}
+<section class="teammember" id="team">
+    <h1 style="text-align: center; margin-bottom:30px;">Our Team</h1>
+    <div class="row">
+      <div class="col-md-2"></div>
+        <div class="col-md-3">
+          <div class="content-center">
+            
+          <img src="{{url_for('static', filename='images/shrawak.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
+            
+                <h4 style="margin-top:20px;">Shrawak Bhattrai</h4>
+                <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
+          
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+          <div class="content-center">
+            <img src="{{url_for('static', filename='images/ramraj.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
+            
+
+          
+            <h4 style="margin-top:20px;">Ramraj Chimouriya</h4>
+            <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
+          
+          </div>
+        </div>
+       <div class="col-md-2"></div>
+            </div>
+
+
+            <div class="row" style="margin-top:15px;">
+                
+              
+                <div class="col-md-3">
+                  <div class="content-center">
+                    <img src="{{url_for('static', filename='images/dipendra.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
+            
+
+                  
+                        <h4 style="margin-top:20px;">Deependra Kumar Gupta</h4>
+                        <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
+                    
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                  <div class="content-center">
+                    <img src="{{url_for('static', filename='images/bishal.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
+            
+
+                  
+                    <h4 style="margin-top:20px;">Bishal Joshi</h4>
+                    <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
+                    
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-3">
+                  <div class="content-center">
+                    <img src="{{url_for('static', filename='images/shreyam.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
+            
+
+                  <h4 style="margin-top:20px;">Shreyam Pokharel</h4>
+                  <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
+                  
+                </div>
+              </div>
+              <div class="col-md-1"></div>
+                
+                    </div>
+       
+</section>
+{% endblock%}
