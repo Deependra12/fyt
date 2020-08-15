@@ -158,7 +158,7 @@ def logout():
 
 
 @app.route('/about-us')
-def about():
+def about_us():
     return render_template('about.html')
 
 

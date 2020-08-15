@@ -1,4 +1,4 @@
-{% extends "extends/register_base.html" %}
+{% extends "extends/base-no-footer.html" %}
 
 {% block title %}
 Sign Up - Find Your Tutor
@@ -17,21 +17,14 @@ Sign Up - Find Your Tutor
     font-size: 20px;
   }
 
-  .resetlink {
+  .form {
     position: relative;
-    background-color:whitesmoke;
-    padding: 2%;
-    border-radius: 5%;
-  }
-
-  .btn {
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
+    padding: 5% 0;
+    border-top: 1px solid #ccc;
   }
 
   .info {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
   }
 
   .info p {
@@ -48,9 +41,8 @@ Sign Up - Find Your Tutor
 
   <h3>Reset your password</h3>
 
-  <form action="{{ url_for('passwordresetlink') }}" class="form my-2 resetlink" method="POST">
+  <form action="{{ url_for('passwordresetlink') }}" class="form my-2" method="POST">
     <div class="info">
-      <p>Enter the email address associated with your account.</p>
       <p>A recovery link will be sent to your email.</p>
     </div>
 

@@ -1,4 +1,4 @@
-{% extends "extends/login_base.html" %}
+{% extends "extends/base-no-footer.html" %}
 
 {% block title %}
 Sign Up - Find Your Tutor
@@ -8,10 +8,20 @@ Sign Up - Find Your Tutor
 {% block content %}
 <style>
     .container{
+        position: relative;
         max-width: 400px;
     }
-    .btn{
-        margin-left: 70px;
+
+    h3 {
+      text-align:center;
+      margin-top:10px;
+      font-size: 20px;
+    }
+    
+    .form {
+      position: relative;
+      padding: 5% 0; 
+      border-top: 1px solid #ccc;
     }
 </style>
 <div class="container">
@@ -20,7 +30,7 @@ Sign Up - Find Your Tutor
     src="{{url_for('static', filename='images/logo.png')}}" />
     </div>
   
-  
+    <h3>Reset your password</h3>
   
   <form action="{{url_for('passwordreset')}}" class="form my-2" method="POST">
     <div class="form-row">
