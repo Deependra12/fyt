@@ -142,7 +142,17 @@
 <body>
   <!--Nav Bar-->
   
-  {% block nav %} {% endblock %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <a class="navbar-brand" href="{{url_for('home')}}">
+      <img class="image-responsive" style="width:120.5px;height:62px;"
+        src="{{url_for('static', filename='images/logo.png')}}" />
+    </a>
+  
+    <!--Navbar links-->
+    {% block nav_links %} {% endblock %}
+  
+  </nav>
 
   <!--container-->
   <div class="container-fluid">
