@@ -4,13 +4,6 @@
     box-sizing: border-box;
   }
 
-  .one {
-    background-image: linear-gradient(rgba(0, 0, 256, 0.24),
-     rgba(119, 84, 106, 0.24)), url('/static/images/back1.jpg');
-    background-size:100% 100%;
-    background-position: center;
-    overflow: hidden;
-  }
 
   .center {
     margin: 300px auto auto auto;
