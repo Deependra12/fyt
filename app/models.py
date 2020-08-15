@@ -7,7 +7,7 @@ class User(UserMixin,db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(64), index=True, unique=True)
     hash_password = db.Column(db.String(120))
-    role = db.Column(db.String(7), index=True, unique=True)
+    role = db.Column(db.String(7), index=True)
     phone = db.Column(db.Integer, index=True, unique=True)
 
     def __repr__(self):
