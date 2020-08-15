@@ -18,12 +18,10 @@ from . import app, db
 from . import login_manager
 from . import email as em
 from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm
-from .user import User
-from .mockusers import get_admin, get_user, add_user
-from .passwordhash import PasswordHasher
-
-
-PH = PasswordHasher()
+#from .user import User
+#from .mockusers import get_admin, get_user, add_user
+#from .passwordhash import PasswordHasher
+from .models import User
 
 
 @app.route('/')
@@ -61,65 +59,40 @@ def admin():
 
 @app.route('/login', methods=['GET', 'POST'] )
 def login():
-    ''' Route for tutor/student login '''
-    if not current_user.is_authenticated:
-        form = LoginForm()
-        if form.validate_on_submit():
-            #getting email and password from forms.py
-            email  = form.email.data
-            password = form.password.data
-            #getting stored user from mockuser.py
-            stored_user = get_user(email)
-            #Checking if given email is in stored user or not
-            #Also checking if password is correct or not
-            if stored_user and PH.validate_password(password, stored_user['salt'], 
-                    stored_user['password']):
-                #Flashing message to announce successful login
-                flash('Login successful', 'success')
-                #making object of User class from user.py
-                role = stored_user['role']
-                print(f"The role is: {role}")
-                user = User(email, role)
-                #adding user to login_user method of flask_login module
-                login_user(user, remember=True)
-                #checking role of logging user
-                if stored_user['role'] == 'student':
-                    return redirect(url_for('student'))
-                else:
-                    return redirect(url_for('tutor'))
-            else:
-                flash('Please check your email or password','danger')
-        return render_template('login.html', form=form)
-    else:
-        role = current_user.get_role()
-        print(role)
-        if role == 'student':
-            return redirect(url_for('student'))
+    if current_user.is_authenticated:
+        if current_user.role == "student":
+            return redirect(url_for('student', username=current_user.username))
         else:
-            return redirect(url_for('tutor'))
+            return redirect(url_for('tutor', username=current_user.username))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid email or password', 'danger')
+            return redirect (url_for('login'))
+        login_user(user)
+        if current_user.role == "student":
+            return redirect(url_for('student', username=current_user.username))
+        else:
+            return redirect(url_for('tutor', username=current_user.username))
+    return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
-    #getting data from form.py
+    if current_user.is_authenticated:
+        if current_user.role == "student":
+            return redirect(url_for('student', username=current_user.username))
+        else:
+            return redirect(url_for('tutor', username=current_user.username))
     form = RegistrationForm()
-    username = form.username.data
-    email = form.email.data
-    role = form.role.data
-    phone = form.phone.data
-    unhashed_password = form.password.data
-    #validating the filled up information
     if form.validate_on_submit():
-        #checking if same email is already registered
-        if get_user(email):
-            return render_template('register.html', form=form)
-        #Add new user to mockuser in mockuser.py
-        # Salting and hashing provided password
-        salt = PH.salting()
-        hashed_password = PH.hash(salt + unhashed_password)
-        add_user(username, email, role, phone, salt, hashed_password)
-        message = "Welcome to Find Your Tutor"
-        em.send_mail(username, role, message, email)
+        user = User(username=form.username.data, email=form.email.data, role=form.role.data, phone=form.phone.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        #message = "Welcome to Find Your Tutor"
+        #em.send_mail(username, role, message, email)
         flash('Your account was created.\nYou can now Login!', 'success')
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
@@ -162,27 +135,35 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/student')
+@app.route('/student/<username>')
 @login_required
-def student():
-    return render_template("student.html")
-
-
-@app.route('/tutor')
-@login_required
-def tutor():
-    return render_template("tutor.html")
-
-
-@login_manager.user_loader
-def load_user(login_id):
-    user_ = get_user(login_id)
-    if user_:
-        return User(login_id, user_['role'])
+def student(username):
+    if username == current_user.username:
+        user = User.query.filter_by(username=username).first()
+        return render_template("student.html")
     else:
-        user_ = get_admin(login_id)
-        if user_:
-            return User(login_id, 'a')
+        return render_template("404.html")
+
+
+@app.route('/tutor/<username>')
+@login_required
+def tutor(username):
+    if username == current_user.username:
+        user = User.query.filter_by(username=username).first()
+        return render_template("tutor.html")
+    else:
+        return render_template("404.html")
+
+
+#@login_manager.user_loader
+#def load_user(login_id):
+#    user_ = get_user(login_id)
+#    if user_:
+#        return User(login_id, user_['role'])
+#    else:
+#       user_ = get_admin(login_id)
+#       if user_:
+#            return User(login_id, 'a')
 
 
 @app.errorhandler(404)

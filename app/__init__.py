@@ -21,7 +21,7 @@ app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME']
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-migrate = Migrate(app,db)
+migrate = Migrate(app,db,render_as_batch= True)
 mail = Mail(app)
 ser=URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
 
