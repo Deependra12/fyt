@@ -71,6 +71,7 @@ def login():
             flash('Invalid email or password', 'danger')
             return redirect (url_for('login'))
         login_user(user)
+        flash('Successfully logged in.','success')
         if current_user.role == "student":
             return redirect(url_for('student', username=current_user.username))
         else:
@@ -138,9 +139,9 @@ def about_us():
 @app.route('/student/<username>')
 @login_required
 def student(username):
-    if username == current_user.username:
-        user = User.query.filter_by(username=username).first()
-        return render_template("student.html")
+    user = User.query.filter_by(username=username).first()
+    if user.role == 'student':
+        return render_template("student.html", user=user)
     else:
         return render_template("404.html")
 
@@ -148,9 +149,9 @@ def student(username):
 @app.route('/tutor/<username>')
 @login_required
 def tutor(username):
-    if username == current_user.username:
-        user = User.query.filter_by(username=username).first()
-        return render_template("tutor.html")
+    user = User.query.filter_by(username=username).first()
+    if user.role == 'teacher':
+        return render_template("tutor.html", user=user)
     else:
         return render_template("404.html")
 

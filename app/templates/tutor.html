@@ -1,10 +1,9 @@
 {% extends "extends/base-no-footer.html" %}
 
+
+
 {% block content %}
 <div class="container">
-    <h1>Tutor Page</h1>
-    <form action="/logout" >
-        <input type="submit" value="Logout">
-    </form>
+    <h1>Tutor {{user.username}}</h1>
 </div>
 {% endblock %}
