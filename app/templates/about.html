@@ -1,97 +1,97 @@
 {% extends "extends/base.html" %}
 
 {% block title %}
-    About - Find Your Tutor
+About - Find Your Tutor
 {% endblock %}
 
 {% block about %}
-    <div class="container-fluid about-us"  >
-        <h2 class="about-us-title" >About Us</h2>
-        <div class="about-us-dscp">
-            <p>
-                <strong>FIND YOUR TUTOR</strong> is a non profit website, which provides a best platform for students and tutors in order to improve the teaching-learning process in this digital era. It gives them the flexibility to decide their preferred days and time for getting tuition.Students can save their valuable time, energy and cost involved in travelling.
-            </p>
-            <p>
-            It help in choosing tutors for students with the preferred timings, location, and fee for 
-            tuition. It provide the students with a platform to choose the best tutor according to the 
-            courses. It allow part-timers to try their hand in teaching to support their income. It 
-            allow tutors to create a strong profile for themselves so that they would stand unique in 
-            the market.
-            </p>
-        </p>
-    </div>
+<div class="about-us">
+  <h2 class="about-us-title">About Us</h2>
+  <div class="about-us-dscp">
+    <p>
+      <strong>FIND YOUR TUTOR</strong> is a non profit website, which provides a best platform for students and tutors
+      in order to improve the teaching-learning process in this digital era. It gives them the flexibility to decide
+      their preferred days and time for getting tuition.Students can save their valuable time, energy and cost involved
+      in travelling.
+    </p>
+    <p>
+      It help in choosing tutors for students with the preferred timings, location, and fee for
+      tuition. It provide the students with a platform to choose the best tutor according to the
+      courses. It allow part-timers to try their hand in teaching to support their income. It
+      allow tutors to create a strong profile for themselves so that they would stand unique in
+      the market.
+    </p>
+    </p>
+  </div>
+</div>
 {% endblock %}
-{% block teammember%}
-<section class="teammember" id="team">
-    <h1 style="text-align: center; margin-bottom:30px;">Our Team</h1>
+
+
+  {% block teammember %}
+  <section class="team-member" id="team">
+    <h2 class="team-member-title" style="text-align: center; margin-bottom:30px;">Our Team</h2>
     <div class="row">
       <div class="col-md-2"></div>
-        <div class="col-md-3">
-          <div class="content-center">
-            
-          <img src="{{url_for('static', filename='images/shrawak.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
-            
-                <h4 style="margin-top:20px;">Shrawak Bhattrai</h4>
-                <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
-          
-            </div>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-3">
-          <div class="content-center">
-            <img src="{{url_for('static', filename='images/ramraj.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
-            
 
-          
-            <h4 style="margin-top:20px;">Ramraj Chimouriya</h4>
-            <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
-          
+      <div class="col-md-4">
+        <div class="content-center">
+
+          <img src="{{url_for('static', filename='images/shrawak.jpg')}}" class="rounded-circle img-size"
+            alt="Shrawak">
+          <h4 style="margin-top:20px;">Shrawak Bhattarai</h4>
+          <p class="text-muted">Address: Suryabinayak, Bhaktapur</p>
+
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="content-center">
+
+          <img src="{{url_for('static', filename='images/ramraj.jpg')}}" class="rounded-circle img-size" alt="Ramraj">
+          <h4 style="margin-top:20px;">Ramraj Chimouriya</h4>
+          <p class="text-muted">Address: Bhakundebesi, Kavrepalanchowk</p>
+
+        </div>
+      </div>
+
+      <div class="col-md-2"></div>
+
+    </div>
+
+    <div class="row" style="margin-top:15px;">
+
+        <div class="col-md-4">
+          <div class="content-center">
+            <img src="{{url_for('static', filename='images/dipendra.jpg')}}" class="rounded-circle img-size" alt="Deependra Kumar Gupta">
+
+            <h4 style="margin-top:20px;">Deependra Kumar Gupta</h4>
+            <p class="text-muted"> Address: Garuda Municipality, Rautahat</p>
+
           </div>
         </div>
-       <div class="col-md-2"></div>
-            </div>
+        
+        <div class="col-md-4">
+          <div class="content-center">
+            <img src="{{url_for('static', filename='images/bishal.jpg')}}" class="rounded-circle img-size"
+              alt="Bishal Joshi">
 
+            <h4 style="margin-top:20px;">Bishal Joshi</h4>
+            <p class="text-muted">Address: Kathmandu</p>
 
-            <div class="row" style="margin-top:15px;">
-                
-              
-                <div class="col-md-3">
-                  <div class="content-center">
-                    <img src="{{url_for('static', filename='images/dipendra.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
-            
-
-                  
-                        <h4 style="margin-top:20px;">Deependra Kumar Gupta</h4>
-                        <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
-                    
-                    </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-3">
-                  <div class="content-center">
-                    <img src="{{url_for('static', filename='images/bishal.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
-            
-
-                  
-                    <h4 style="margin-top:20px;">Bishal Joshi</h4>
-                    <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
-                    
-                  </div>
-                </div>
-                <div class="col-md-1"></div>
-                <div class="col-md-3">
-                  <div class="content-center">
-                    <img src="{{url_for('static', filename='images/shreyam.jpg')}}" class="rounded-circle img-size"  alt="New York"  >
-            
-
-                  <h4 style="margin-top:20px;">Shreyam Pokharel</h4>
-                  <p class="text-muted"> Adress:Bhaktapur,kathmadu</p>
-                  
-                </div>
-              </div>
-              <div class="col-md-1"></div>
-                
-                    </div>
+          </div>
+        </div>
        
-</section>
-{% endblock%}
+        <div class="col-md-4">
+          <div class="content-center">
+            <img src="{{url_for('static', filename='images/shreyam.jpg')}}" class="rounded-circle img-size" alt="Shreyam Pokharel">
+
+            <h4 style="margin-top:20px;">Shreyam Pokharel</h4>
+            <p class="text-muted"> Address: Kaushaltar, Bhaktapur</p>
+
+          </div>
+        </div>
+
+      </div>
+
+  </section>
+  {% endblock%}

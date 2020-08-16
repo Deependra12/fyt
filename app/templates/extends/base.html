@@ -140,31 +140,32 @@
       bottom:0;
     }
     
-.content-center
-{
+  .content-center
+  {
     text-align: center;
-    margin-top: 20px;
-    
-}
-.img-size{
-    width:300px;
-    height: 300px;
-    
-    
-}
-.teammember
-{
-    background-color: rgb(96, 92, 97);
-    padding-bottom: 2%;
-    
+    margin-top: 20px;   
 }
 
+  .img-size{
+    width: 230px;
+    height: 230px;
+  }
+
+  .team-member
+  {
+    background-color: white;
+    padding-bottom: 2%;
+}
+
+  /* Only for snippet */
+  .double-nav .breadcrumb-dn {
+    color: #fff;
+  }
   </style>
 </head>
 
 <body>
   <!--Nav Bar-->
-  
   <nav class="navbar navbar-expand-lg navbar-light  bg-light">
 
     <a class="navbar-brand" href="{{url_for('home')}}">
@@ -176,6 +177,7 @@
     {% block nav_links %} {% endblock %}
   
   </nav>
+  
 
   <!--container-->
   <div class="container-fluid" >
@@ -193,6 +195,14 @@
 
     <!--footer -->
     {% include "includes/footer.html" %}
+    <script>
+      $(document).ready(function() {
+    
+        // SideNav Initializationa
+        $(".button-collapse").sideNav();
+      });
+     </script>
+    
 
 </body>
 
