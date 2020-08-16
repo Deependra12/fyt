@@ -1,5 +1,19 @@
-{% extends "extends/base-no-footer.html" %}
+{% extends "extends/base-user.html" %}
 
+{% block title %} 
+    {{ user.username }}
+{% endblock %}
+
+{% block profilepic %} 
+<h3> <img class="image-responsive" style="width:136px;height:164.6px;"
+    src='{{ profilepic }}'/>
+{% endblock %}
+
+{% block sidebar_menu %}
+    <li>
+        <a href="#">My Tutors</a>
+    </li>
+{% endblock %}
 
 {% block content %}
 <div class="container">

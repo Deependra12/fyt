@@ -141,7 +141,7 @@ def about_us():
 def student(username):
     user = User.query.filter_by(username=username).first()
     if user.role == 'student':
-        return render_template("student.html", user=user)
+        return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
     else:
         return render_template("404.html")
 
@@ -151,7 +151,7 @@ def student(username):
 def tutor(username):
     user = User.query.filter_by(username=username).first()
     if user.role == 'teacher':
-        return render_template("tutor.html", user=user)
+        return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
     else:
         return render_template("404.html")
 
