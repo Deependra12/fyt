@@ -83,44 +83,64 @@
 {% block features %}
 <section class="features" id="feature">
     <div class="row">
-      <div class="col-md-4 col-sm-12 col-12">
+
+      <div class="col-lg-4">
+
         <div class="row feature-dscp">
+          <div class=col-lg-12>
           <h2>Qualified Tutors</h2>
           <p>
               We provide professional, experienced and reliable tutors for all major subjects. 
-          </p>
+          </p>.
+        </div>
         </div>
 
         <div class="row feature-dscp">
+          <div class="col-lg-12">
           <h2>Qualified Tutors</h2>
-          <p>
+          <p >
               We provide professional, experienced and reliable tutors for all major subjects. 
           </p>
+          </div>
         </div>
-      </div>
+        </div>
+      
 
-      <div class="col-md-4 col-sm-12 col-12">
+      <div class="col-lg-4">
+        <div class="row">
+          <div class="col-lg-12">
         <img class="feature-img rounded-circle" 
         src="{{url_for('static', filename='images/back1.jpg')}}" />
+          </div>
+          </div>
+          </div>
+
+          <div class="col-lg-4">
+
+            <div class="row feature-dscp">
+              <div class=col-lg-12>
+              <h2>Qualified Tutors</h2>
+              <p>
+                  We provide professional, experienced and reliable tutors for all major subjects. 
+              </p>.
+            </div>
+            </div>
+    
+            <div class="row feature-dscp">
+              <div class="col-lg-12">
+              <h2>Qualified Tutors</h2>
+              <p>
+                  We provide professional, experienced and reliable tutors for all major subjects. 
+              </p>
+              </div>
+            </div>
+            </div>
+      
+      
       </div>
 
-      <div class="col-md-4 col-sm-12 col-12">
-        <div class="row feature-dscp">
-          <h2>Qualified Tutors</h2>
-          <p>
-              We provide professional, experienced and reliable tutors for all major subjects. 
-          </p>
-        </div>
 
-        <div class="row feature-dscp">
-          <h2>Qualified Tutors</h2>
-          <p>
-              We provide professional, experienced and reliable tutors for all major subjects. 
-          </p>
-        </div>
-      </div>
 
-  </div>
   </section>
 {% endblock %}
 
@@ -142,8 +162,9 @@
 {% block info %}
   <section class="info bg-light" id="aboutus">
     <h2>Be Responsible For Your Own Learning</h2>
+    <p>
    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae eos quas quasi tempore tenetur aliquid error inventore, libero rem alias unde cupiditate debitis nisi quisquam neque et facilis nulla sed.
-
+</p>
    <div class="link"> 
      <h4>For more information,</h4>
     <a href="{{url_for('about_us')}}" class="btn btn-outline-primary">Read More</a>
