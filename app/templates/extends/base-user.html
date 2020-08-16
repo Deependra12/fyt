@@ -78,6 +78,7 @@
             display: flex;
             width: 100%;
             align-items: stretch;
+            perspective: 1500px;
         }
 
         #sidebar {
@@ -154,11 +155,6 @@
             margin-bottom: 5px;
         }
 
-        a.download {
-            background: #fff;
-            color: #7386D5;
-        }
-
         a.article,
         a.article:hover {
             background: #6d7fcc !important;
@@ -173,19 +169,71 @@
             min-height: 100vh;
             transition: all 0.3s;
         }
+        #sidebarCollapse {
+    width: 40px;
+    height: 40px;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+        #sidebarCollapse span {
+            width: 80%;
+            height: 2px;
+            margin: 0 auto;
+            display: block;
+            background: #555;
+            transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+            transition-delay: 0.1s;
+        }
+
+        #sidebarCollapse span:first-of-type {
+            transform: rotate(45deg) translate(2px, 2px);
+        }
+        #sidebarCollapse span:nth-of-type(2) {
+            opacity: 0;
+        }
+        #sidebarCollapse span:last-of-type {
+            transform: rotate(-45deg) translate(1px, -1px);
+        }
+
+
+        #sidebarCollapse.active span {
+            transform: none;
+            opacity: 1;
+            margin: 5px auto;
+        }
 
         /*MEDIAQUERIES*/
 
         @media (max-width: 768px) {
             #sidebar {
                 margin-left: -250px;
+                transform: none;
             }
             #sidebar.active {
                 margin-left: 0;
+                transform: none;
             }
-            #sidebarCollapse span {
-                display: none;
+            #sidebarCollapse span:first-of-type,
+            #sidebarCollapse span:nth-of-type(2),
+            #sidebarCollapse span:last-of-type {
+                transform: none;
+                opacity: 1;
+                margin: 5px auto;
             }
+            #sidebarCollapse.active span {
+                margin: 0 auto;
+            }
+            #sidebarCollapse.active span:first-of-type {
+                transform: rotate(45deg) translate(2px, 2px);
+            }
+            #sidebarCollapse.active span:nth-of-type(2) {
+                opacity: 0;
+            }
+            #sidebarCollapse.active span:last-of-type {
+                transform: rotate(-45deg) translate(1px, -1px);
+            }
+
         }
     </style>
 </head>
@@ -196,11 +244,13 @@
 
         <!-- Sidebar -->
         <nav id='sidebar'>
-
+            <!-- Sidebar Header -->
             <div class='sidebar-header'>
                 {% block profilepic %} {% endblock %}    
             </h3>
             </div>
+
+            <!-- Sidebar Menu -->
 
             <ul class='list-unstyled components'>
                 <p>Howdy, {{ user.username }}</p>
@@ -235,7 +285,8 @@
                 <div class="container-fluid">
         
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
-                        <i class="fas fa-align-left"></i>
+                        <span></span>
+                        <span></span>
                         <span></span>
                     </button>
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -268,6 +319,7 @@
 
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
+                $(this).toggleClass('active');                
             });
 
         });
