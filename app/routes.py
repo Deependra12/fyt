@@ -36,9 +36,9 @@ def index():
 def home():
     if current_user.is_authenticated:
         if current_user.role == "student":
-            return redirect(url_for('student', username=current_user.username))
+            return redirect(url_for('student'))
         else:
-            return redirect(url_for('tutor', username=current_user.username))
+            return redirect(url_for('tutor'))
     return render_template('index.html')
 
 
@@ -66,9 +66,9 @@ def admin():
 def login():
     if current_user.is_authenticated:
         if current_user.role == "student":
-            return redirect(url_for('student', username=current_user.username))
+            return redirect(url_for('student'))
         else:
-            return redirect(url_for('tutor', username=current_user.username))
+            return redirect(url_for('tutor'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -78,9 +78,9 @@ def login():
         login_user(user)
         flash('Successfully logged in.','success')
         if current_user.role == "student":
-            return redirect(url_for('student', username=current_user.username))
+            return redirect(url_for('student'))
         else:
-            return redirect(url_for('tutor', username=current_user.username))
+            return redirect(url_for('tutor'))
     return render_template('login.html', form=form)
 
 
@@ -88,9 +88,9 @@ def login():
 def user_register():
     if current_user.is_authenticated:
         if current_user.role == "student":
-            return redirect(url_for('student', username=current_user.username))
+            return redirect(url_for('student'))
         else:
-            return redirect(url_for('tutor', username=current_user.username))
+            return redirect(url_for('tutor'))
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, role=form.role.data, phone=form.phone.data)
@@ -141,20 +141,38 @@ def about_us():
     return render_template('about.html')
 
 
-@app.route('/student/<username>')
+#@app.route('/student/<username>')
+#@login_required
+#def student(username):
+#    user = User.query.filter_by(username=username).first()
+#    if user.username == current_user.username and user.role == 'student':
+#        return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
+#    else:
+#        return render_template("404.html")
+
+@app.route('/student/home')
 @login_required
-def student(username):
-    user = User.query.filter_by(username=username).first()
+def student():
+    user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
     else:
         return render_template("404.html")
 
 
-@app.route('/tutor/<username>')
+#@app.route('/tutor/<username>')
+#@login_required
+#def tutor(username):
+#    user = User.query.filter_by(username=username).first()
+#    if user.username == current_user.username and user.role == 'teacher':
+#        return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
+#    else:
+#        return render_template("404.html")
+
+@app.route('/tutor/home')
 @login_required
-def tutor(username):
-    user = User.query.filter_by(username=username).first()
+def tutor():
+    user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'teacher':
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
     else:
