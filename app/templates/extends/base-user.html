@@ -300,7 +300,7 @@
         <div id='content'>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-        
+
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <span></span>
                         <span></span>
@@ -315,8 +315,21 @@
                     </a>
                 </div>
             </nav> 
-            {% block content %}
-            {% endblock %}
+
+            <!--ERROR DIV-->
+            {% with messages = get_flashed_messages(with_categories=true)%}
+            {% if messages%}
+            {%for category, message in messages%}
+            <div class='alert alert-{{ category }}'>
+                {{message}}
+            </div>
+            {%endfor%}
+            {% endif %}
+            {% endwith %}
+            <!---->
+
+
+            {% block content %}{% endblock %}
 
         </div>
 

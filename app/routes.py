@@ -155,9 +155,8 @@ def about_us():
 def student():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
-        return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
-    else:
-        return render_template("404.html")
+        return render_template("student.html", user=user, profilepic=url_for('static', 
+        filename='images/student.jpeg'))
 
 
 #@app.route('/tutor/<username>')
@@ -175,9 +174,6 @@ def tutor():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'teacher':
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
-    else:
-        return render_template("404.html")
-
 
 #@login_manager.user_loader
 #def load_user(login_id):
@@ -194,3 +190,9 @@ def tutor():
 def error_handler(e):
     ''' For Handling 404 error '''
     return render_template('404.html')
+
+@app.errorhandler(401)
+def error_handler(e):
+    ''' For Handling 401 error '''
+    flash('You must be logged in to access this page!', 'danger')
+    return redirect(url_for('login'))
