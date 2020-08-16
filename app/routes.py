@@ -34,6 +34,11 @@ def index():
 
 @app.route('/home')
 def home():
+    if current_user.is_authenticated:
+        if current_user.role == "student":
+            return redirect(url_for('student', username=current_user.username))
+        else:
+            return redirect(url_for('tutor', username=current_user.username))
     return render_template('index.html')
 
 
@@ -140,7 +145,7 @@ def about_us():
 @login_required
 def student(username):
     user = User.query.filter_by(username=username).first()
-    if user.role == 'student':
+    if user.username == current_user.username and user.role == 'student':
         return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
     else:
         return render_template("404.html")
@@ -150,7 +155,7 @@ def student(username):
 @login_required
 def tutor(username):
     user = User.query.filter_by(username=username).first()
-    if user.role == 'teacher':
+    if user.username == current_user.username and user.role == 'teacher':
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
     else:
         return render_template("404.html")

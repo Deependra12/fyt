@@ -61,17 +61,6 @@
       <img class="image-responsive" style="width:120.5px;height:62px;"
         src="{{url_for('static', filename='images/logo.png')}}" />
     </a>
-    {% if current_user.is_active and user==current_user %}
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
-      <ul class="navbar-nav ">
-        <li class="nav-item">
-          <a class="nav-link" style="color:black" href="{{ url_for('logout')}}">
-            Logout
-          </a>
-        </li>
-      </ul>
-    </div>
-    {% endif %}
   </nav>
 
   <!--container-->
