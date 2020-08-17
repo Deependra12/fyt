@@ -18,6 +18,9 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME'])
 
+app.config["RECAPTCHA_PUBLIC_KEY"] = "6Le-EsAZAAAAAAQ24AEYft1b3RQ9BruHwJ9nfE7m "
+app.config["RECAPTCHA_PRIVATE_KEY"] = "6Le-EsAZAAAAALcaQUSPzGJs-BxURauFIfai__lo"
+
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)

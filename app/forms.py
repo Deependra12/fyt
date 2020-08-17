@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
@@ -29,6 +29,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That phone is taken. Please choose a new phone.')
 
 class LoginForm(FlaskForm):
+    recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
