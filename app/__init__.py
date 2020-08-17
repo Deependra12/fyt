@@ -23,6 +23,8 @@ app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME']
 # set optional bootswatch theme
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
+#captcha
+
 app.config["RECAPTCHA_PUBLIC_KEY"] = "6Le-EsAZAAAAAAQ24AEYft1b3RQ9BruHwJ9nfE7m "
 app.config["RECAPTCHA_PRIVATE_KEY"] = "6Le-EsAZAAAAALcaQUSPzGJs-BxURauFIfai__lo"
 

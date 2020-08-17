@@ -1,0 +1,176 @@
+{% extends "extends/base.html" %}
+
+{% block title %}
+ Find Your Tutor
+{% endblock %}
+
+
+{% block nav_links %}
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav ">
+        <li class="nav-item">
+          <a class="nav-link" style="color:black;" href="#getstarted">
+            Get Started
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color:black" href="#feature">
+          Features
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style="color:black" href="/about-us">
+          About Us
+          </a>
+        </li>
+      </ul>
+    </div>
+{%endblock %}
+
+
+{% block carousel %}
+<section>
+    <div id="carousel" class="carousel slide carousel-fade" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carousel" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel" data-slide-to="1"></li>
+        <li data-target="#carousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="{{url_for('static', filename='images/1.jpeg')}}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Find Your Tutor</h3>
+            <p>One small step for student,
+              one giant leap for knowledge...</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{url_for('static', filename='images/2.jpeg')}}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Find Your Tutor</h3>
+            <p>One small step for student,
+              one giant leap for knowledge...</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="{{url_for('static', filename='images/3.jpeg')}}" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h3>Find Your Tutor</h3>
+            <p>One small step for student,
+              one giant leap for knowledge...</p>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block features %}
+<section class="features" id="feature">
+    <div class="row">
+
+      <div class="col-lg-4">
+
+        <div class="row feature-dscp">
+          <div class=col-lg-12>
+          <h2>Qualified Tutors</h2>
+          <p>
+              We provide professional, experienced and reliable tutors for all major subjects. 
+          </p>.
+        </div>
+        </div>
+
+        <div class="row feature-dscp">
+          <div class="col-lg-12">
+          <h2>Qualified Tutors</h2>
+          <p >
+              We provide professional, experienced and reliable tutors for all major subjects. 
+          </p>
+          </div>
+        </div>
+
+      </div>
+      
+
+      <div class="col-lg-4">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <img class="feature-img rounded-circle shadow" 
+            src="{{url_for('static', filename='images/back1.jpg')}}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+
+        <div class="row feature-dscp">
+          <div class=col-lg-12>
+          <h2>Qualified Tutors</h2>
+          <p>
+              We provide professional, experienced and reliable tutors for all major subjects. 
+          </p>.
+        </div>
+        </div>
+
+        <div class="row feature-dscp">
+          <div class="col-lg-12">
+          <h2>Qualified Tutors</h2>
+          <p>
+              We provide professional, experienced and reliable tutors for all major subjects. 
+          </p>
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+
+</section>
+{% endblock %}
+
+{% block get_started %}
+  <section class="get-started bg-light" id="getstarted">
+    <h2>Get Started</h2>
+    To enjoy our services,
+    <span class="row links">
+      <div class="col-md-3"> </div>
+      <div class="col-md-6"> 
+        <a href="{{url_for('user_register')}}" class="btn btn-outline-primary">Register</a>
+        <a href="{{url_for('login')}}" class="btn btn-outline-primary">Login</a>
+      </div>
+      <div class="col-md-3"> </div>
+    </span>
+  </section>
+{% endblock %}
+
+{% block info %}
+  <section class="info bg-light" id="aboutus">
+    <h2>Be Responsible For Your Own Learning</h2>
+    <p>
+   Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae eos quas quasi tempore tenetur aliquid error inventore, libero rem alias unde cupiditate debitis nisi quisquam neque et facilis nulla sed.
+</p>
+   <div class="link"> 
+     <h4>For more information,</h4>
+    <a href="{{url_for('about_us')}}" class="btn btn-outline-primary">Read More</a>
+   </div>
+  </section>
+{% endblock %}
+
+
+

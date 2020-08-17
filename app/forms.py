@@ -5,6 +5,7 @@ from .models import User
 
 
 class RegistrationForm(FlaskForm):
+    recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
