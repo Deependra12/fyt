@@ -4,7 +4,10 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 import os
+
 
 app = Flask(__name__)
 
@@ -17,16 +20,17 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME'])
+# set optional bootswatch theme
+app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 migrate = Migrate(app,db,render_as_batch= True)
 mail = Mail(app)
-ser=URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
+ser = URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
+admin = Admin(app, name='Find Your Tutor', template_mode='bootstrap3')
 
-
+#Add base_template='admin/admin.html' in Admin to use manually defined template.
 
 from . import routes
-from . import models
-
