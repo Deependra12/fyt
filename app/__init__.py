@@ -7,6 +7,7 @@ from itsdangerous import URLSafeTimedSerializer
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 import os
+import flask_monitoringdashboard as dashboard
 
 
 app = Flask(__name__)
@@ -20,14 +21,20 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME'])
+
 # set optional bootswatch theme
+
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 #captcha
 
 app.config["RECAPTCHA_PUBLIC_KEY"] = "6Le-EsAZAAAAAAQ24AEYft1b3RQ9BruHwJ9nfE7m "
 app.config["RECAPTCHA_PRIVATE_KEY"] = "6Le-EsAZAAAAALcaQUSPzGJs-BxURauFIfai__lo"
+#dashboard
+#useful for admin
+dashboard.config.init_from(file='config.cfg')
 
+dashboard.bind(app)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
