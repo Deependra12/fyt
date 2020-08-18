@@ -27,6 +27,7 @@
         width:44px;
         border: 1px solid lightgrey;
     }
+    
     .ml-1{
         color:darkblue;
     }
@@ -56,7 +57,7 @@
 
         <div class="form-group">
             <div class="label">
-            {{form.email.label(class='form-control-label')}}
+                {{form.email.label(class='form-control-label')}}
             </div>
             
             {% if form.email.errors %}
@@ -73,7 +74,7 @@
             {%else%}
             <div class="input-group bg-light">
                 <div class="input-group-addon ic">
-                    <i class="fa fa-envelope  icn" ></i>
+                    <i class="fa fa-envelope icn"></i>
                 </div>
                 {{form.email(class="form-control")}}
                </div>
