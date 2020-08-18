@@ -6,6 +6,7 @@ from flask import (
     request, 
     flash,
     session,
+    abort,
 )
 from flask_login import (
     login_required,
@@ -161,7 +162,7 @@ def student():
     if user.username == current_user.username and user.role == 'student':
         return render_template("student.html", user=user, profilepic=url_for('static', 
         filename='images/student.jpeg'))
-
+    abort(404)
 
 #@app.route('/tutor/<username>')
 #@login_required
@@ -178,6 +179,7 @@ def tutor():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'teacher':
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
+    abort(404)
 
 #@login_manager.user_loader
 #def load_user(login_id):

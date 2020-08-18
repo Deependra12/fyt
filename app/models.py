@@ -41,3 +41,5 @@ def load_user(id):
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
 admin.add_view(UserView(User, db.session))
+admin.add_view(ModelView(Student, db.session)) 
+admin.add_view(ModelView(Tutor, db.session)) 

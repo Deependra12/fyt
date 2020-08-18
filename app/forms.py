@@ -4,8 +4,11 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
 
 
+# Activate captcha later on using
+# {{form.recaptcha()}} 
+
 class RegistrationForm(FlaskForm):
-    recaptcha = RecaptchaField()
+    # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -26,7 +29,7 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    recaptcha = RecaptchaField()
+    # recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
@@ -39,6 +42,6 @@ class ResetForm(FlaskForm):
 
 
 class ResetLinkForm(FlaskForm):
-    recaptcha = RecaptchaField()
+    # recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send Reset Email')

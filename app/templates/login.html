@@ -34,10 +34,12 @@
     .ic i{
         margin-left:12px;
         margin-top: 15px;
-    }
+    } 
+
     .label-form{
         float:left;
     }
+
     .label-link{
         float:right;
     }
@@ -98,7 +100,7 @@
             {%else%}
             <div class="input-group bg-light">
                 <div class="input-group-addon ic">
-                    <i class="fa fa-lock" ></i>
+                    <i class="fa fa-lock"></i>
                 </div>
                 {{form.password(class="form-control")}}
                </div>
@@ -107,9 +109,6 @@
         </div>
 
         <!-- captcha-->
-
-        {{form.recaptcha()}}
-        
         
         <input class="btn btn-success" type="submit" value="Login">
     </form>
