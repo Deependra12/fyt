@@ -9,7 +9,7 @@
 
 <style>
     .container{
-        max-width:400px;
+        max-width:420px;
         background-color: none;   
     }
 
@@ -34,6 +34,12 @@
     .ic i{
         margin-left:12px;
         margin-top: 15px;
+    }
+    .label-form{
+        float:left;
+    }
+    .label-link{
+        float:right;
     }
 </style>
 
@@ -69,15 +75,16 @@
                 </div>
                 {{form.email(class="form-control")}}
                </div>
-           
-        
             {% endif %}
         </div>
         
 
         <div class="form-group">
             <div class="label">
-            {{form.password.label(class='form-control-label')}}
+                <div class="label-form">{{form.password.label(class='form-control-label')}}</div>
+                <div class="label-link">
+                Forgot <a href="/password-reset" class="ml-1">Password?</a>
+                    </div>
             </div>
             {% if form.password.errors %}
                 {{form.password(class="form-control is-invalid")}}
@@ -107,9 +114,6 @@
         <input class="btn btn-success" type="submit" value="Login">
     </form>
     <div class="border-top pt-3">
-        <small class =" label ml-3">
-            Forgot <a href="/password-reset" class="ml-1">Password?</a>
-        </small>
         <small class=' label ml-3'>
             Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
         </small>
