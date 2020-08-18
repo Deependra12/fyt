@@ -24,10 +24,6 @@ class RegistrationForm(FlaskForm):
         if user:
             raise ValidationError('That email is taken. Please choose a new email.')
 
-    def validate_phone(self, phone):
-        user = User.query.filter_by(phone=phone.data).first()
-        if user:
-            raise ValidationError('That phone is taken. Please choose a new phone.')
 
 class LoginForm(FlaskForm):
     recaptcha = RecaptchaField()

@@ -10,7 +10,8 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), index=True, unique=True)
     hash_password = db.Column(db.String(120))
     role = db.Column(db.String(7), index=True)
-    phone = db.Column(db.Integer, index=True, unique=True)
+    student = db.relationship('Student', backref='base', uselist=False)
+    teacher = db.relationship('Tutor', backref='base', uselist=False)
 
     def __repr__(self):
         return '<Email {}>'.format(self.email)
@@ -21,8 +22,18 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.hash_password, password)
 
+class Student(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    phone = db.Column(db.Integer)
+    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+
+class Tutor(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    phone = db.Column(db.Integer)
+    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+
 class UserView(ModelView):
-    form_columns = ['username', 'email', 'role', 'phone']
+    form_columns = ['username', 'email', 'role']
 
 @login_manager.user_loader
 def load_user(id):

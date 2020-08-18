@@ -21,8 +21,19 @@ from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
 #from .passwordhash import PasswordHasher
-from .models import User
+from .models import User, Student, Tutor
 
+def redirect_user(user):
+    if user.role == 'student':
+        return redirect(url_for('student'))
+    elif user.role == 'teacher':
+        return redirect(url_for('tutor'))
+
+def is_tutor(user):
+    if user.role == 'teacher':
+        return True
+    elif user.role == 'student':
+        return False
 
 @app.route('/')
 @app.route('/index')
@@ -35,10 +46,7 @@ def index():
 @app.route('/home')
 def home():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     return render_template('index.html')
 
 
@@ -65,10 +73,7 @@ def admin():
 @app.route('/login', methods=['GET', 'POST'] )
 def login():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -77,25 +82,24 @@ def login():
             return redirect (url_for('login'))
         login_user(user)
         flash('Successfully logged in.','success')
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, role=form.role.data, phone=form.phone.data)
+        user = User(username=form.username.data, email=form.email.data, role=form.role.data)
         user.set_password(form.password.data)
         db.session.add(user)
+        if is_tutor(user):
+            tutor = Tutor(phone=form.phone.data, base=user)
+            db.session.add(tutor)
+        else:
+            student = Student(phone=form.phone.data, base=user)
         db.session.commit()
         #message = "Welcome to Find Your Tutor"
         #em.send_mail(username, role, message, email)
