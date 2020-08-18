@@ -21,7 +21,14 @@ from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
 #from .passwordhash import PasswordHasher
-from .models import User
+from .models import Tutor, Student
+
+
+def redirect_user(manche):
+    if Tutor.query.filter_by(email=manche.email).first():
+        return redirect(url_for('tutor'))
+    elif Student.query.filter_by(email=manche.email).first():
+        return redirect(url_for('student'))
 
 
 @app.route('/')
@@ -35,10 +42,7 @@ def index():
 @app.route('/home')
 def home():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect(url_for('login'))
     return render_template('index.html')
 
 
@@ -65,35 +69,31 @@ def admin():
 @app.route('/login', methods=['GET', 'POST'] )
 def login():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
+        student = Student.query.filter_by(email=form.email.data)
+        tutor = Tutor.query.filter_by(email=form.email.data)
+        user = student.union_all(tutor).first()
+        if not user or not user.check_password(form.password.data):
             flash('Invalid email or password', 'danger')
             return redirect (url_for('login'))
         login_user(user)
         flash('Successfully logged in.','success')
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     return render_template('login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     if current_user.is_authenticated:
-        if current_user.role == "student":
-            return redirect(url_for('student'))
-        else:
-            return redirect(url_for('tutor'))
+        return redirect_user(current_user)
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, role=form.role.data, phone=form.phone.data)
+        if form.role.data == "teacher":
+            user = Tutor(username=form.username.data, email=form.email.data, phone=form.phone.data)
+        else:
+            user = Student(username=form.username.data, email=form.email.data, phone=form.phone.data)
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
@@ -153,10 +153,12 @@ def about_us():
 @app.route('/student/home')
 @login_required
 def student():
-    user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and user.role == 'student':
+    user = Student.query.filter_by(username=current_user.username).first()
+    if user:
         return render_template("student.html", user=user, profilepic=url_for('static', 
-        filename='images/student.jpeg'))
+            filename='images/student.jpeg'))
+    else:
+        return render_template("404.html")
 
 
 #@app.route('/tutor/<username>')
@@ -171,9 +173,11 @@ def student():
 @app.route('/tutor/home')
 @login_required
 def tutor():
-    user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and user.role == 'teacher':
+    user = Tutor.query.filter_by(username=current_user.username).first()
+    if user:
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
+    else:
+        return render_template("404.html")
 
 #@login_manager.user_loader
 #def load_user(login_id):

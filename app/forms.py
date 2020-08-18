@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from .models import User
+from .models import Student, Tutor
 
 
 class RegistrationForm(FlaskForm):
@@ -14,17 +14,23 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        tutor = Tutor.query.filter_by(username=username.data)
+        student = Student.query.filter_by(username=username.data)
+        user = student.union_all(tutor).first()
         if user:
             raise ValidationError('That username is taken. Please choose a new username.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        tutor = Tutor.query.filter_by(email=email.data)
+        student = Student.query.filter_by(email=email.data)
+        user = student.union_all(tutor).first()
         if user:
             raise ValidationError('That email is taken. Please choose a new email.')
 
     def validate_phone(self, phone):
-        user = User.query.filter_by(phone=phone.data).first()
+        tutor = Tutor.query.filter_by(phone=phone.data)
+        student = Student.query.filter_by(phone=phone.data)
+        user = student.union_all(tutor).first()
         if user:
             raise ValidationError('That phone is taken. Please choose a new phone.')
 
