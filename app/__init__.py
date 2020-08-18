@@ -32,7 +32,7 @@ app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get('PUBLIC_KEY')
 app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get('PRIVATE_KEY')
 #dashboard
 #useful for admin
-dashboard.config.init_from(file='config.cfg')
+dashboard.config.init_from(file='')
 
 dashboard.bind(app)
 
