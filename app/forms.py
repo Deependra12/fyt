@@ -43,5 +43,6 @@ class ResetForm(FlaskForm):
 
 
 class ResetLinkForm(FlaskForm):
+    recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send Reset Email')

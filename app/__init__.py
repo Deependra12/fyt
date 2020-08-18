@@ -28,8 +28,8 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 #captcha
 
-app.config["RECAPTCHA_PUBLIC_KEY"] = "6Le-EsAZAAAAAAQ24AEYft1b3RQ9BruHwJ9nfE7m "
-app.config["RECAPTCHA_PRIVATE_KEY"] = "6Le-EsAZAAAAALcaQUSPzGJs-BxURauFIfai__lo"
+app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get('PUBLIC_KEY')
+app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get('PRIVATE_KEY')
 #dashboard
 #useful for admin
 dashboard.config.init_from(file='config.cfg')
