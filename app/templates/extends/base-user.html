@@ -265,7 +265,11 @@
 
             <ul class='list-unstyled components'>
                 <p>Howdy, {{ user.username }}!</p>
-                <li class='active'>
+                <li id = 'home'>
+                    <a href="{{ url_for('student') }}"><i class="fas fa-map-marker-alt"></i>
+                        Home</a>
+                </li>
+                <li id='account'>
                     <a href='#accountSubmenu' data-toggle='collapse' aria-expanded="false" class="dropdown-toggle"><i class="fas fa-user"></i>
                         Account</a>
                     <ul class="collapse list-unstyled" id="accountSubmenu">
@@ -275,7 +279,7 @@
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-book"></i>
-                                Courses</a>
+                                My Courses</a>
                         </li>
                         <li>
                             <a href="#"><i class="fas fa-user-circle"></i>
@@ -283,8 +287,8 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <a href="#"><i class="fas fa-map-marker-alt"></i>
+                <li id = 'mylocation'>
+                    <a href="{{ url_for('student_option', option='mylocation') }}"><i class="fas fa-map-marker-alt"></i>
                         My Location</a>
                 </li>
                 {% block sidebar_menu %}
@@ -351,8 +355,15 @@
                 $('#sidebar').toggleClass('active');
                 $(this).toggleClass('active');                
             });
-
+            
         });
+        function activateMenu(myelement) {
+                document.getElementById(myelement).classList.add('active')
+            };
+            {% block active %}
+                activateMenu('home')
+            {% endblock %}
+        
     </script>
 
 </body>

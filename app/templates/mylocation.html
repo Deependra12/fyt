@@ -1,0 +1,14 @@
+
+{% if user.role=='student' %}
+    {% extends 'student.html' %}
+{% else %}
+    {% extends 'tutor.html' %}
+{% endif %}
+
+{% block content %}
+    <h1>My Location</h1>
+{% endblock %}
+
+{% block active %}
+    activateMenu('mylocation')
+{% endblock %}

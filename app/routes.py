@@ -155,12 +155,12 @@ def about_us():
 #    else:
 #        return render_template("404.html")
 
-@app.route('/student/home')
+@app.route('/student')
 @login_required
 def student():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
-        return render_template("student.html", user=user, profilepic=url_for('static', 
+        return render_template('student.html', user=user, profilepic=url_for('static', 
         filename='images/student.jpeg'))
     abort(404)
 
@@ -191,6 +191,14 @@ def tutor():
 #       if user_:
 #            return User(login_id, 'a')
 
+@app.route('/student/<option>')
+@login_required
+def student_option(option):
+    user = User.query.filter_by(username=current_user.username).first()
+    if user.username == current_user.username and user.role == 'student':
+        return render_template(option+".html", user=user, profilepic=url_for('static', 
+        filename='images/student.jpeg'))
+    abort(404)
 
 @app.errorhandler(404)
 def error_handler(e):
