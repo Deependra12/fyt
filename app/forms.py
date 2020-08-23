@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, Label
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
 import json
@@ -57,6 +57,7 @@ class MyLocationForm(FlaskForm):
     # district = SelectField(label='District', validators=[DataRequired()])
     # municipality = StringField('Municipality', validators=[DataRequired()])
     # wardno = StringField('Ward Number', validators=[DataRequired()])
+    geolocation_misguide_info = Label("geolocation-misguide-info","Location here is shown using your device location, which probably may be misguided. Please click your actual location below.")
     submit = SubmitField('Save')
     update = SubmitField('Edit')
 

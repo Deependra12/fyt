@@ -194,15 +194,19 @@ def tutor():
 @app.route('/<role>/<option>')
 @login_required
 def user_option(role,option):
-    api=''
+    google_api = ''
+    opencage_api = ''
     if option == 'mylocation':
         form = MyLocationForm()
-        api=app.config.get('GOOGLE_MAP_API_KEY')
+        google_api = app.config.get('GOOGLE_MAP_API_KEY')
+        opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student' and role == 'student':
-        return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'), form=form,api_key=api)
+        return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'),
+                               form=form, google_api_key=google_api, opencage_api_key=opencage_api)
     elif user.username == current_user.username and user.role == 'teacher' and role == 'tutor':
-        return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'), form=form,api_key=api)
+        return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'),
+                               form=form, google_api_key=google_api, opencage_api_key=opencage_api)
     abort(404)
 
 @app.errorhandler(404)
