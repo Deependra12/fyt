@@ -202,7 +202,6 @@
             transform: rotate(-45deg) translate(1px, -1px);
         }
 
-
         #sidebarCollapse.active span {
             transform: none;
             opacity: 1;
@@ -362,6 +361,9 @@
             };
             {% block active %}
                 activateMenu('home')
+            {% endblock %}
+
+            {% block javascript %}
             {% endblock %}
         
     </script>

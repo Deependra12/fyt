@@ -18,7 +18,7 @@ from flask_login import (
 from . import app, db
 from . import login_manager
 from . import email as em
-from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm
+from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm, MyLocationForm
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
 #from .passwordhash import PasswordHasher
@@ -194,10 +194,11 @@ def tutor():
 @app.route('/student/<option>')
 @login_required
 def student_option(option):
+    form = MyLocationForm()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         return render_template(option+".html", user=user, profilepic=url_for('static', 
-        filename='images/student.jpeg'))
+        filename='images/student.jpeg'), form=form)
     abort(404)
 
 @app.errorhandler(404)
