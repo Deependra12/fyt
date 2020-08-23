@@ -9,6 +9,46 @@
     activateMenu('mylocation')
 {% endblock %}
 
+{% block additional_style %}
+#map {
+        width: 100%;
+        height: 400px;
+        background-color: grey;
+      }
+{% endblock %}
+
+{% block document_javascript %}
+var map, marker
+function initMap() {
+        var place = {lat: 12.568547492342457, lng:85.63975811004639 };
+        map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 15, center: place});
+        marker = new google.maps.Marker({position:place , map: map});
+    }
+
+     if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {lat: position.coords.latitude,lng: position.coords.longitude};
+            marker = new google.maps.Marker({position:pos, map:map});
+            map.setCenter(pos);
+            document.getElementById('latitude-field').value=pos.lat
+            document.getElementById('longitude-field').value=pos.lng
+          }, function(){
+                console.error('Geolocation failed')
+            });
+        }
+    else{
+            console.log("No Geolocation service")
+    }
+{% endblock %}
+
+{% block additional_script%}
+     <script defer
+        src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap">
+    </script>
+{%endblock%}
+
+
 {% block content %}
     <div class="container">
 
@@ -29,64 +69,26 @@
 
             </div>
 
-            <div class="form-row">
-
-                <div class="form-group col-lg-6">
-
-                    {{ form.state.label(class='form-control-label')}}
-<!--                    {{ form.create_state_choice() }}-->
-                    {{form.state(class='form-control')}}
-
-                </div>
-
-                <div class="form-group col-lg-6">
-
-                    {{ form.district.label(class='form-control-label')}}
-<!--                    {{ form.create_district_choice() }}-->
-                    {{form.district(class='form-control')}}
-
-                </div>
-
-            </div>
-
-             <div class="form-row">
-
-                <div class="form-group col-lg-6">
-
-                    {{ form.municipality.label(class='form-control-label')}}
-                    {{form.municipality(class='form-control')}}
-
-                </div>
-
-                <div class="form-group col-lg-6">
-
-                    {{ form.wardno.label(class='form-control-label')}}
-                    {{form.wardno(class='form-control')}}
-
-                </div>
-
-            </div>
-
              <div class="form-row">
 
                 <div class="form-group col-lg-6">
 
                     {{ form.latitude.label(class='form-control-label')}}
-                    {{form.latitude(class='form-control')}}
+                    {{form.latitude(class='form-control', id='latitude-field')}}
 
                 </div>
 
                 <div class="form-group col-lg-6">
 
                     {{ form.longitude.label(class='form-control-label')}}
-                    {{form.longitude(class='form-control')}}
+                    {{form.longitude(class='form-control', id='longitude-field')}}
 
                 </div>
 
                  <div class="form-group col-lg-6">
 
                     {{ form.place.label(class='form-control-label')}}
-                    {{form.place(class='form-control')}}
+                    {{form.place(class='form-control', id='place-field')}}
 
                 </div>
 
@@ -95,4 +97,7 @@
         </form>
 
     </div>
+
+    <div id="map"></div>
+
 {% endblock %}

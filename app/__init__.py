@@ -21,6 +21,8 @@ app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_SENDER'] = 'FYT Admin <{0}>'.format(app.config['MAIL_USERNAME'])
+app.config['GOOGLE_MAP_API_KEY'] = os.environ.get('GOOGLE_MAP_API_KEY')
+app.config['OPENCAGE_GEOCODE_API_KEY'] = os.environ.get("OPENCAGE_GEOCODE_API_KEY")
 
 # set optional bootswatch theme
 

@@ -7,3 +7,5 @@ __pycache__
 venve
 *.pyc
 test.py
+test.html
+flask_monitoringdashboard.db

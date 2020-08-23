@@ -245,6 +245,8 @@
             margin-right: 20px !important;
         }
 
+    {% block additional_style %}
+    {% endblock %}
     </style>
 </head>
 
@@ -265,9 +267,17 @@
             <ul class='list-unstyled components'>
                 <p>Howdy, {{ user.username }}!</p>
                 <li id = 'home'>
-                    <a href="{{ url_for('student') }}"><i class="fas fa-map-marker-alt"></i>
-                        Home</a>
+                    {% if user.role == 'student' %}
+                        <a href="{{ url_for('student') }}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Home</a>
+                    {% else %}
+                        <a href="{{ url_for('tutor') }}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Home</a>
+                    {% endif%}
                 </li>
+
                 <li id='account'>
                     <a href='#accountSubmenu' data-toggle='collapse' aria-expanded="false" class="dropdown-toggle"><i class="fas fa-user"></i>
                         Account</a>
@@ -287,11 +297,20 @@
                     </ul>
                 </li>
                 <li id = 'mylocation'>
-                    <a href="{{ url_for('student_option', option='mylocation') }}"><i class="fas fa-map-marker-alt"></i>
-                        My Location</a>
+                     {% if user.role == 'student' %}
+                        <a href="{{ url_for('user_option',role='student',option='mylocation') }}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            My Location</a>
+                    {% else %}
+                        <a href="{{ url_for('user_option',role='tutor',option='mylocation') }}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            My Location</a>
+                    {% endif%}
                 </li>
+
                 {% block sidebar_menu %}
                 {% endblock %}
+
                 <li>
                     <a href="{{ url_for('logout')}}"><i class="fas fa-sign-out-alt"></i>
                         Logout</a>
@@ -359,14 +378,17 @@
         function activateMenu(myelement) {
                 document.getElementById(myelement).classList.add('active')
             };
-            {% block active %}
-                activateMenu('home')
-            {% endblock %}
+        {% block active %}
+            activateMenu('home')
+        {% endblock %}
 
-            {% block javascript %}
-            {% endblock %}
+        {% block document_javascript %}
+        {% endblock %}
         
     </script>
+
+    {% block additional_script %}
+    {% endblock %}
 
 </body>
 

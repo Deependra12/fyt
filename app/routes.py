@@ -51,19 +51,19 @@ def home():
     return render_template('index.html')
 
 
-@app.route('/a', methods=['GET', 'POST'])
-def admin_login():
-    ''' Route for admin login '''
-    if request.method == "POST":
-        username = request.form.get('username')
-        password = request.form.get('password')
-        stored_admin = get_admin(username)
-        if stored_admin and PH.validate_password(password,stored_admin['salt'],
-                stored_admin['password']):
-            user = User(username, role='a')
-            login_user(user, remember=True)
-            return redirect(url_for("admin"))
-    return render_template('admin/admin-login.html')
+# @app.route('/a', methods=['GET', 'POST'])
+# def admin_login():
+#     ''' Route for admin login '''
+#     if request.method == "POST":
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         stored_admin = get_admin(username)
+#         if stored_admin and PH.validate_password(password,stored_admin['salt'],
+#                 stored_admin['password']):
+#             user = User(username, role='a')
+#             login_user(user, remember=True)
+#             return redirect(url_for("admin"))
+#     return render_template('admin/admin-login.html')
 
 
 @app.route('/admin')
@@ -155,7 +155,7 @@ def about_us():
 #    else:
 #        return render_template("404.html")
 
-@app.route('/student')
+@app.route('/student/home')
 @login_required
 def student():
     user = User.query.filter_by(username=current_user.username).first()
@@ -191,14 +191,18 @@ def tutor():
 #       if user_:
 #            return User(login_id, 'a')
 
-@app.route('/student/<option>')
+@app.route('/<role>/<option>')
 @login_required
-def student_option(option):
-    form = MyLocationForm()
+def user_option(role,option):
+    api=''
+    if option == 'mylocation':
+        form = MyLocationForm()
+        api=app.config.get('GOOGLE_MAP_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and user.role == 'student':
-        return render_template(option+".html", user=user, profilepic=url_for('static', 
-        filename='images/student.jpeg'), form=form)
+    if user.username == current_user.username and user.role == 'student' and role == 'student':
+        return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'), form=form,api_key=api)
+    elif user.username == current_user.username and user.role == 'teacher' and role == 'tutor':
+        return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'), form=form,api_key=api)
     abort(404)
 
 @app.errorhandler(404)
