@@ -23,14 +23,12 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.hash_password, password)
 
 class Student(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
     phone = db.Column(db.Integer)
-    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer ,  db.ForeignKey('user.id'), primary_key = True ,)
 
 class Tutor(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
     phone = db.Column(db.Integer)
-    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer ,  db.ForeignKey('user.id'), primary_key = True ,)
 
 class UserView(ModelView):
     form_columns = ['username', 'email', 'role']
