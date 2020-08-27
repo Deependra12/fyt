@@ -18,7 +18,7 @@ from flask_login import (
 from . import app, db
 from . import login_manager
 from . import email as em
-from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm, MyLocationForm
+from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm, MyLocationForm, PersonalInfoForm, AccountInfoForm
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
 #from .passwordhash import PasswordHasher
@@ -191,15 +191,19 @@ def tutor():
 #       if user_:
 #            return User(login_id, 'a')
 
-@app.route('/<role>/<option>')
-@login_required
-def user_option(role,option):
+def fetch_optional_view(role, option):
     google_api = ''
     opencage_api = ''
     if option == 'mylocation':
         form = MyLocationForm()
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
+    elif option == "personal-info":
+        form = PersonalInfoForm()
+    elif option == "account-info":
+        form = AccountInfoForm()
+    else:
+        form = None
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student' and role == 'student':
         return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'),
@@ -207,6 +211,13 @@ def user_option(role,option):
     elif user.username == current_user.username and user.role == 'teacher' and role == 'tutor':
         return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'),
                                form=form, google_api_key=google_api, opencage_api_key=opencage_api)
+
+@app.route('/<role>/<option>')
+@login_required
+def user_option(role, option):
+    view = fetch_optional_view(role, option)
+    if view:
+        return view
     abort(404)
 
 @app.errorhandler(404)

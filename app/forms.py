@@ -1,11 +1,18 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, Label
+from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
 import json
 
 # Activate captcha later on using
 # {{form.recaptcha()}} 
+
+
+def create_choices_from_list(lists):
+    choices = []
+    for L in lists:
+        choices.append((L, L))
+    return choices
 
 class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
@@ -61,22 +68,41 @@ class MyLocationForm(FlaskForm):
     submit = SubmitField('Save')
     update = SubmitField('Edit')
 
-    def create_choices_from_list(self,lists):
-        choices = []
-        for L in lists:
-            choices.append((L, L))
-        return choices
-
     def create_travel_distance_choice(self):
         distances = ['O km (home)']
         for d in range(5, 55, 5):
             distances.append(str(d - 5) + '-' + str(d) + ' km')
-        distance_choice = self.create_choices_from_list(distances)
+        distance_choice = create_choices_from_list(distances)
         self.travel_distance.choices = distance_choice
 
 
+class PersonalInfoForm(FlaskForm):
+    name = StringField('Full Name', validators=[DataRequired()])
+    date_of_birth = DateField('Date of Birth', validators=[DataRequired()], format='%Y/%m/%d')
+    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    profile_pic = FileField('Profile Picture', validators=[DataRequired()])
+    state = SelectField(label="State", validators=[DataRequired()])
+    district = SelectField(label='District', validators=[DataRequired()])
+    municipality = StringField('Municipality', validators=[DataRequired()])
+    wardno = StringField('Ward Number', validators=[DataRequired()])
+    parents_name = StringField("Guardian's Full Name", validators=[DataRequired()])
+    parents_address = StringField("Guardian's Address", validators=[DataRequired()])
+    parents_phone = StringField("Guardian's Phone Number", validators=[DataRequired()])
+    submit = SubmitField('Save')
+    update = SubmitField('Edit')
+
+    def create_state_choices(self):
+        states = ['Province 1', 'Province 2', 'Bagmati', 'Gandaki', 'Province 5', 'Karnali', 'Sudurpaschim']
+        state_choice = create_choices_from_list(states)
+        self.state.choices = state_choice
+
 
     
+class AccountInfoForm(FlaskForm):
+    OldPassword = PasswordField('Give Your Old Password', validators=[DataRequired()])
+    NewPassword = PasswordField('New Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Update')
 
 
     
