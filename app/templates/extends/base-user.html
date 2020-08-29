@@ -297,15 +297,9 @@
                     </ul>
                 </li>
                 <li id = 'mylocation'>
-                     {% if user.role == 'student' %}
-                        <a href="{{ url_for('user_option',role='student',option='mylocation') }}">
+                        <a href="{{ url_for('user_option', role=user.role, option='mylocation') }}">
                             <i class="fas fa-map-marker-alt"></i>
                             My Location</a>
-                    {% else %}
-                        <a href="{{ url_for('user_option',role='tutor',option='mylocation') }}">
-                            <i class="fas fa-map-marker-alt"></i>
-                            My Location</a>
-                    {% endif%}
                 </li>
 
                 {% block sidebar_menu %}

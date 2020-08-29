@@ -79,15 +79,12 @@ class MyLocationForm(FlaskForm):
 class PersonalInfoForm(FlaskForm):
     name = StringField('Full Name', validators=[DataRequired()])
     date_of_birth = DateField('Date of Birth', validators=[DataRequired()], format='%Y/%m/%d')
-    phone_number = StringField('Phone Number', validators=[DataRequired()])
+    phone = StringField('Phone Number', validators=[DataRequired()])
     profile_pic = FileField('Profile Picture', validators=[DataRequired()])
     state = SelectField(label="State", validators=[DataRequired()])
     district = SelectField(label='District', validators=[DataRequired()])
     municipality = StringField('Municipality', validators=[DataRequired()])
-    wardno = StringField('Ward Number', validators=[DataRequired()])
-    parents_name = StringField("Guardian's Full Name", validators=[DataRequired()])
-    parents_address = StringField("Guardian's Address", validators=[DataRequired()])
-    parents_phone = StringField("Guardian's Phone Number", validators=[DataRequired()])
+    ward_no = StringField('Ward Number', validators=[DataRequired()])
     submit = SubmitField('Save')
     update = SubmitField('Edit')
 
@@ -97,12 +94,14 @@ class PersonalInfoForm(FlaskForm):
         self.state.choices = state_choice
 
 
-    
+class StudentPersonalInfoForm(PersonalInfoForm):
+    guardian_name = StringField("Guardian's Full Name", validators=[DataRequired()])
+    guardian_address = StringField("Guardian's Address", validators=[DataRequired()])
+    guardian_phone = StringField("Guardian's Phone Number", validators=[DataRequired()])
+
+
 class AccountInfoForm(FlaskForm):
     OldPassword = PasswordField('Give Your Old Password', validators=[DataRequired()])
     NewPassword = PasswordField('New Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update')
-
-
-    

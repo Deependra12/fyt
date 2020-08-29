@@ -44,6 +44,10 @@
     .label-link{
         float:right;
     }
+
+    .ext-box{
+        font-size: 0.8rem;
+    }
 </style>
 
 <div class="container">
@@ -85,9 +89,6 @@
         <div class="form-group">
             <div class="label">
                 <div class="label-form">{{form.password.label(class='form-control-label')}}</div>
-                <div class="label-link">
-                Forgot <a href="/password-reset" class="ml-1">Password?</a>
-                    </div>
             </div>
             {% if form.password.errors %}
                 {{form.password(class="form-control is-invalid")}}
@@ -113,14 +114,15 @@
         
         <input class="btn btn-success" type="submit" value="Login">
     </form>
-    <div class="border-top pt-3">
-        <small class=' label ml-3'>
-            Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
+    <div class="border-top pt-3 ext-box">
+        <span class="label-link">
+            Forgot <a href="/password-reset" class="ml-1">Password?</a>
         </small>
+        <span class="label ml-3">
+            Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
+        </span>
     </div>
 </div>
-
-
 
 
 {% endblock %}

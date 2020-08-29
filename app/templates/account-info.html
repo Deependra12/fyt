@@ -12,12 +12,13 @@
 
 {% block content %}
 <div class="container">
-  
-    <form action=" " class="form my-2" method="POST">
-      <legend class="border-bottom mb-4">Account information</legend>
+   <form action=" " class="form my-2" method="POST">
+
+      <legend class="border-bottom mb-4">Account Information</legend>
       {{form.hidden_tag()}}
-        <div class="form-row">
-            <div class="form-group col">
+
+          <div class="form-row">
+            <div class="form-group col-lg-6">
               {{form.OldPassword.label(class='form-control-label')}}
               {% if form.OldPassword.errors %}
                 {{form.OldPassword(class="form-control is-invalid")}}
@@ -32,9 +33,10 @@
                 {{form.OldPassword(class="form-control")}}
               {% endif %}
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-lg-6">
               {{form.NewPassword.label(class='form-control-label')}}
               {% if form.NewPassword.errors %}
                 {{form.password(class="form-control is-invalid")}}
@@ -49,9 +51,10 @@
                 {{form.NewPassword(class="form-control")}}
               {% endif %}
             </div>
-        </div>
-      <div class="form-row">
-            <div class="form-group col">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-lg-6">
               {{form.confirm_password.label(class='form-control-label')}}
               {% if form.confirm_password.errors %}
                 {{form.confirm_password(class="form-control is-invalid")}}
@@ -66,11 +69,10 @@
                 {{form.confirm_password(class="form-control")}}
               {% endif %}
             </div>
-      
           </div>
+
         <input class="btn btn-success" type="submit" value="Change Password">
+
     </form>
-
 </div>
-
 {% endblock %}

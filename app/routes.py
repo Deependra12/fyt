@@ -18,7 +18,16 @@ from flask_login import (
 from . import app, db
 from . import login_manager
 from . import email as em
-from .forms import RegistrationForm, LoginForm, ResetForm, ResetLinkForm, MyLocationForm, PersonalInfoForm, AccountInfoForm
+from .forms import (
+    RegistrationForm, 
+    LoginForm, 
+    ResetForm, 
+    ResetLinkForm, 
+    MyLocationForm, 
+    PersonalInfoForm,
+    StudentPersonalInfoForm,
+    AccountInfoForm,
+)
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
 #from .passwordhash import PasswordHasher
@@ -199,7 +208,10 @@ def fetch_optional_view(role, option):
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     elif option == "personal-info":
-        form = PersonalInfoForm()
+        if current_user.role == "student":
+            form = StudentPersonalInfoForm()
+        else:
+            form = PersonalInfoForm()
     elif option == "account-info":
         form = AccountInfoForm()
     else:
