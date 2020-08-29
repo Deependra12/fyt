@@ -1,4 +1,4 @@
-{% if user.role=='student' %}
+{% if user.role == 'student' %}
     {% extends 'student.html' %}
 {% else %}
     {% extends 'tutor.html' %}
@@ -12,52 +12,52 @@
 
 {% block content %}
 <div class="container">
-   <form action=" " class="form my-2" method="POST">
+   <form action="#" class="form my-2" method="POST">
 
       <legend class="border-bottom mb-4">Account Information</legend>
-      {{form.hidden_tag()}}
+      {{ form.hidden_tag() }}
 
           <div class="form-row">
             <div class="form-group col-lg-6">
-              {{form.OldPassword.label(class='form-control-label')}}
-              {% if form.OldPassword.errors %}
-                {{form.OldPassword(class="form-control is-invalid")}}
+              {{ form.old_password.label(class='form-control-label') }}
+              {% if form.old_password.errors %}
+                {{ form.old_password(class="form-control is-invalid") }}
                 <div class="invalid-feedback">
-                    {% for error in form.OldPassword.errors %}
+                    {% for error in form.old_password.errors %}
                         <span>
                             {{ error }}
                         </span>
                     {% endfor %}
                 </div>
-              {%else%}
-                {{form.OldPassword(class="form-control")}}
+              {% else %}
+                {{ form.old_password(class="form-control") }}
               {% endif %}
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-lg-6">
-              {{form.NewPassword.label(class='form-control-label')}}
-              {% if form.NewPassword.errors %}
-                {{form.password(class="form-control is-invalid")}}
+              {{ form.new_password.label(class='form-control-label') }}
+              {% if form.new_password.errors %}
+                {{ form.password(class="form-control is-invalid") }}
                 <div class="invalid-feedback">
-                    {% for error in form.NewPassword.errors %}
+                    {% for error in form.new_password.errors %}
                         <span>
                             {{ error }}
                         </span>
                     {% endfor %}
                 </div>
-              {%else%}
-                {{form.NewPassword(class="form-control")}}
+              {% else %}
+                {{ form.new_password(class="form-control") }}
               {% endif %}
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-lg-6">
-              {{form.confirm_password.label(class='form-control-label')}}
+              {{ form.confirm_password.label(class='form-control-label') }}
               {% if form.confirm_password.errors %}
-                {{form.confirm_password(class="form-control is-invalid")}}
+                {{ form.confirm_password(class="form-control is-invalid") }}
                 <div class="invalid-feedback">
                     {% for error in form.confirm_password.errors %}
                         <span>
@@ -65,8 +65,8 @@
                         </span>
                     {% endfor %}
                 </div>
-              {%else%}
-                {{form.confirm_password(class="form-control")}}
+              {% else %}
+                {{ form.confirm_password(class="form-control") }}
               {% endif %}
             </div>
           </div>

@@ -1,4 +1,4 @@
-{% if user.role=='student' %}
+{% if user.role == 'student' %}
     {% extends 'student.html' %}
 {% else %}
     {% extends 'tutor.html' %}
@@ -15,42 +15,42 @@
     <form action="#" class="form my-2" method="POST">
 
         <legend class="border-bottom mb-4">Personal Information</legend>
-        {{form.hidden_tag()}}
+        {{ form.hidden_tag() }}
 
         <div class="form-row">
             <div class="form-group col-lg-6">
-                {{ form.name.label(class='form-control-label')}}
+                {{ form.name.label(class='form-control-label') }}
                 {{ form.name(class='form-control') }}
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
-                {{ form.state.label(class='form-control-label')}}
+                {{ form.state.label(class='form-control-label') }}
                 {{ form.state(class='form-control') }}
             </div>
            
             <div class="form-group col-lg-6">
-                {{ form.district.label(class='form-control-label')}}
+                {{ form.district.label(class='form-control-label') }}
                 {{ form.district(class='form-control') }}
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
-                {{ form.municipality.label(class='form-control-label')}}
+                {{ form.municipality.label(class='form-control-label') }}
                 {{ form.municipality(class='form-control') }}
             </div>
     
             <div class="form-group col-lg-6">
-                {{ form.ward_no.label(class='form-control-label')}}
+                {{ form.ward_no.label(class='form-control-label') }}
                 {{ form.ward_no(class='form-control') }}
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
-                {{ form.phone.label(class='form-control-label')}}
+                {{ form.phone.label(class='form-control-label') }}
                 {{ form.phone(class='form-control') }}
             </div>
         </div>
@@ -58,26 +58,26 @@
         {% if current_user.role == "student" %}
         <div class="form-row">
             <div class="form-group col-lg-4">
-                {{form.guardian_name.label(class='form-control-label')}}
-                {{form.guardian_name(class='form-control', id='latitude-field')}}
+                {{ form.guardian_name.label(class='form-control-label') }}
+                {{ form.guardian_name(class='form-control', id='latitude-field') }}
             </div>
 
             <div class="form-group col-lg-4">
-                {{form.guardian_address.label(class='form-control-label')}}
-                {{form.guardian_address(class='form-control', id='latitude-field')}}
+                {{ form.guardian_address.label(class='form-control-label')}}
+                {{ form.guardian_address(class='form-control', id='latitude-field') }}
             </div>
 
             <div class="form-group col-lg-4">
-                {{form.guardian_phone.label(class='form-control-label')}}
-                {{form.guardian_phone(class='form-control', id='longitude-field')}}
+                {{ form.guardian_phone.label(class='form-control-label')}}
+                {{ form.guardian_phone(class='form-control', id='longitude-field') }}
             </div>            
         </div>
         {% endif %}
 
         <div class="form-row">
             <div class="form-group col-lg-4">
-                {{ form.profile_pic.label(class='form-control-label')}}
-                {{form.profile_pic(class='form-control', id='place-field')}}
+                {{ form.profile_pic.label(class='form-control-label') }}
+                {{ form.profile_pic(class='form-control', id='place-field') }}
             </div>
         </div>
 
@@ -90,5 +90,4 @@
     </form>
 
 </div>
-  
 {% endblock %}
