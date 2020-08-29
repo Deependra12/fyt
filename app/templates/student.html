@@ -10,8 +10,8 @@
 {% endblock %}
 
 {% block sidebar_menu %}
-    <li>
-        <a href="#"><i class="fas fa-chalkboard-teacher"></i>
+    <li id="my-tutors">
+        <a href="{{url_for('user_option', role='student', option='my-tutors')}}"><i class="fas fa-chalkboard-teacher"></i>
             My Tutors</a>
     </li>
 {% endblock %}

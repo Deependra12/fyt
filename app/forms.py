@@ -101,7 +101,7 @@ class StudentPersonalInfoForm(PersonalInfoForm):
 
 
 class AccountInfoForm(FlaskForm):
-    OldPassword = PasswordField('Give Your Old Password', validators=[DataRequired()])
-    NewPassword = PasswordField('New Password', validators=[DataRequired()])
+    old_password = PasswordField('Give Your Old Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update')
