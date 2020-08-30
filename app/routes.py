@@ -195,11 +195,13 @@ def fetch_optional_view(role, option):
     opencage_api = ''
     if option == 'mylocation':
         form = MyLocationForm()
+        form.create_travel_distance_choice()
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     elif option == "personal-info":
         if current_user.role == "student":
             form = StudentPersonalInfoForm()
+            form.create_state_choices()
         else:
             form = PersonalInfoForm()
     elif option == "account-info":
