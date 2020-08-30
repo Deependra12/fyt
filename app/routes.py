@@ -52,13 +52,11 @@ def index():
         return redirect(url_for('login'))
     return redirect(url_for('home'))
 
-
 @app.route('/home')
 def home():
     if current_user.is_authenticated:
         return redirect_user(current_user)
     return render_template('index.html')
-
 
 # @app.route('/a', methods=['GET', 'POST'])
 # def admin_login():
@@ -74,11 +72,9 @@ def home():
 #             return redirect(url_for("admin"))
 #     return render_template('admin/admin-login.html')
 
-
 @app.route('/admin')
 def admin():
     return render_template("admin/admin.html")
-
 
 @app.route('/login', methods=['GET', 'POST'] )
 def login():
@@ -94,7 +90,6 @@ def login():
         flash('Successfully logged in.','success')
         return redirect_user(current_user)
     return render_template('login.html', form=form)
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
@@ -117,7 +112,6 @@ def user_register():
         return redirect(url_for('login'))
     return render_template('register.html', form=form)
 
-
 @app.route('/password-reset', methods=['GET', 'POST'])
 def passwordresetlink():
     form = ResetLinkForm()
@@ -127,13 +121,11 @@ def passwordresetlink():
         return redirect(url_for('login'))
     return render_template('resetlink.html', form=form)
 
-
 @app.route('/reset', methods=['GET', 'POST'])
 def passwordreset():
     form = ResetForm()
     unhashed_password = form.password.data
     return render_template('reset.html', form=form)
-
 
 @app.route('/hello/<token>')
 def hello(token):
@@ -143,17 +135,15 @@ def hello(token):
         return '<h1>The token has expired!<h1>'
     return '<h1>The token is valid!<h1>'
 
-
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for("home"))
-
+    flash('You are now logged out. Log in to continue!', 'success')
+    return redirect(url_for('login'))
 
 @app.route('/about-us')
 def about_us():
     return render_template('about.html')
-
 
 #@app.route('/student/<username>')
 #@login_required
@@ -233,12 +223,12 @@ def user_option(role, option):
     abort(404)
 
 @app.errorhandler(404)
-def error_handler(e):
+def content_not_found_handler(e):
     ''' For Handling 404 error '''
     return render_template('404.html')
 
 @app.errorhandler(401)
-def error_handler(e):
+def unauthorized_access_handler(e):
     ''' For Handling 401 error '''
     flash('You must be logged in to access this page!', 'danger')
     return redirect(url_for('login'))

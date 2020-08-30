@@ -1,0 +1,15 @@
+{% if user.role=='student' %}
+    {% extends 'student.html' %}
+{% else %}
+    {% extends 'tutor.html' %}
+{% endif %}
+
+{% block active %}
+    activateMenu('my-courses')
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <legend class="border-bottom mb-4">My Courses</legend>
+</div>  
+{% endblock %}
