@@ -31,7 +31,6 @@ from .forms import (
     MyCourseForm,
 )
 from .models import User, Student, Tutor
-from .admin import admin
 
 def redirect_user(user):
     if user.role == 'student':
@@ -64,20 +63,21 @@ def home():
         return redirect_user(current_user)
     return render_template('index.html')
 
-@app.route('/a/login', methods=['GET', 'POST'])
-def admin_login():
-    """ Carry out admin login """
-    if current_user.is_authenticated:
-        return redirect_user(current_user)
-    form = LoginForm()
-    if form.validate_on_submit():
-        if not admin.check_password(form.password.data):
-            flash('Invalid admin login', 'danger')
-            return redirect(url_for('admin_login'))
-        login_user(admin)
-        flash('Successfully logged in.', 'success')
-        return redirect('/admin')
-    return render_template('login.html', form=form, admin=True)
+#@app.route('/a/login', methods=['GET', 'POST'])
+#def admin_login():
+#    """ Carry out admin login """
+#    if current_user.is_authenticated:
+#        return redirect_user(current_user)
+#    form = LoginForm()
+#    if form.validate_on_submit():
+#        user = User.query.filter_by(email=form.email.data).first()
+#        if not user or not user.check_password(form.password.data) or user.role != 'admin':
+#            flash('Invalid admin login', 'danger')
+#            return redirect(url_for('admin_login'))
+#        login_user(user)
+#        flash('Successfully logged in.', 'success')
+#        return redirect('/admin')
+#    return render_template('login.html', form=form, admin=True)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
