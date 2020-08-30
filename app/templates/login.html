@@ -52,13 +52,18 @@
 
 <div class="container">
 
+    {% if admin %}
+    <form action="{{url_for('admin_login')}}" class="form my-2" method="POST">
+    {% else %}
     <form action="{{url_for('login')}}" class="form my-2" method="POST">
+    {% endif %}
         
-        <legend class="border-bottom  title mb-4">Login</legend>
+        <legend class="border-bottom title mb-4">
+            {% if admin %}Admin{% endif %} Login
+        </legend>
         
         {{form.hidden_tag()}}
     
-
         <div class="form-group">
             <div class="label">
                 {{form.email.label(class='form-control-label')}}
@@ -114,6 +119,8 @@
         
         <input class="btn btn-success" type="submit" value="Login">
     </form>
+
+    {% if not admin %}
     <div class="border-top pt-3 ext-box">
         <span class="label-link">
             Forgot <a href="/password-reset" class="ml-1">Password?</a>
@@ -122,6 +129,7 @@
             Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
         </span>
     </div>
+    {% endif %}
 </div>
 
 

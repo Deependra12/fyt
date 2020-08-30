@@ -25,7 +25,7 @@ class User(UserMixin, db.Model):
 
 class Student(db.Model):
     phone = db.Column(db.Integer)
-    user_id = db.Column(db.Integer ,  db.ForeignKey('user.id'), primary_key = True ,)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key = True,)
     full_name = db.Column(db.String(64))
     guardian_name = db.Column(db.String(64))
     guardian_address = db.Column(db.String(64))
@@ -33,7 +33,7 @@ class Student(db.Model):
 
 class Tutor(db.Model):
     phone = db.Column(db.Integer)
-    user_id = db.Column(db.Integer ,  db.ForeignKey('user.id'), primary_key = True ,)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key = True,)
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key = True)

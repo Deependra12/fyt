@@ -40,7 +40,7 @@ dashboard.bind(app)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
-migrate = Migrate(app,db,render_as_batch= True)
+migrate = Migrate(app, db, render_as_batch=True)
 mail = Mail(app)
 ser = URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
 admin = Admin(app, name='Find Your Tutor', template_mode='bootstrap3')

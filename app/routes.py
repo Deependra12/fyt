@@ -30,10 +30,8 @@ from .forms import (
     AccountInfoForm,
     MyCourseForm,
 )
-#from .user import User
-#from .mockusers import get_admin, get_user, add_user
-#from .passwordhash import PasswordHasher
 from .models import User, Student, Tutor
+from .admin import admin
 
 def redirect_user(user):
     if user.role == 'student':
@@ -60,66 +58,54 @@ def home():
         return redirect_user(current_user)
     return render_template('index.html')
 
-# @app.route('/a', methods=['GET', 'POST'])
-# def admin_login():
-#     ''' Route for admin login '''
-#     if request.method == "POST":
-#         username = request.form.get('username')
-#         password = request.form.get('password')
-#         stored_admin = get_admin(username)
-#         if stored_admin and PH.validate_password(password,stored_admin['salt'],
-#                 stored_admin['password']):
-#             user = User(username, role='a')
-#             login_user(user, remember=True)
-#             return redirect(url_for("admin"))
-#     return render_template('admin/admin-login.html')
-
-@app.route('/a/login')
+@app.route('/a/login', methods=['GET', 'POST'])
 def admin_login():
-    # if current_user.is_authenticated:
-    #     return redirect_user(current_user)
-    # form = LoginForm()
-    # if form.validate_on_submit():
-    #     if admin.check_password():
-    #         flash('Invalid email or password', 'danger')
-    #         return redirect (url_for('login'))
-    #     login_user(user)
-    #     flash('Successfully logged in.','success')
-    #     return redirect_user(current_user)
-    # return render_template('login.html', form=form)
-    return "admin_login"
-
-
-@app.route('/admin')
-@login_required
-def admin():
+    """ Carry out admin login """
     if current_user.is_authenticated:
         return redirect_user(current_user)
     form = LoginForm()
     if form.validate_on_submit():
-        
-        login_user(user)
-        flash('Successfully logged in.','success')
-        return redirect_user(current_user)
-    return render_template('login.html', form=form)
+        if not admin.check_password(form.password.data):
+            print(form.password.data)
+            flash('Invalid admin login', 'danger')
+            return redirect(url_for('admin_login'))
+        login_user(admin)
+        flash('Successfully logged in.', 'success')
+        return redirect('/admin')
+    return render_template('login.html', form=form, admin=True)
 
-@app.route('/login', methods=['GET', 'POST'] )
+# @app.route('/admin')
+# @login_required
+# def admin():
+#     """ Render admin page """
+#     if current_user.is_authenticated:
+#         return redirect_user(current_user)
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         login_user(user)
+#         flash('Successfully logged in.','success')
+#         return redirect_user(current_user)
+#     return render_template('login.html', form=form)
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    """ Carry out user login """
     if current_user.is_authenticated:
         return redirect_user(current_user)
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user is None or not user.check_password(form.password.data):
+        if not user or not user.check_password(form.password.data):
             flash('Invalid email or password', 'danger')
             return redirect (url_for('login'))
         login_user(user)
-        flash('Successfully logged in.','success')
+        flash('Successfully logged in.', 'success')
         return redirect_user(current_user)
     return render_template('login.html', form=form)
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
+    """ Carry out user registration """
     if current_user.is_authenticated:
         return redirect_user(current_user)
     form = RegistrationForm()
@@ -164,12 +150,14 @@ def hello(token):
 
 @app.route("/logout")
 def logout():
+    """ Log users out of their accounts """
     logout_user()
     flash('You are now logged out. Log in to continue!', 'success')
     return redirect(url_for('login'))
 
 @app.route('/about-us')
 def about_us():
+    """ Render the about us page """
     return render_template('about.html')
 
 #@app.route('/student/<username>')
@@ -177,17 +165,19 @@ def about_us():
 #def student(username):
 #    user = User.query.filter_by(username=username).first()
 #    if user.username == current_user.username and user.role == 'student':
-#        return render_template("student.html", user=user, profilepic=url_for('static',filename='images/student.jpeg'))
+#        return render_template("student.html", user=user, 
+#           profilepic=url_for('static',filename='images/student.jpeg'))
 #    else:
 #        return render_template("404.html")
 
 @app.route('/student/home')
 @login_required
 def student():
+    """ Render the student account page """
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         return render_template('student.html', user=user, profilepic=url_for('static', 
-        filename='images/student.jpeg'))
+            filename='images/student.jpeg'))
     abort(404)
 
 #@app.route('/tutor/<username>')
@@ -195,16 +185,19 @@ def student():
 #def tutor(username):
 #    user = User.query.filter_by(username=username).first()
 #    if user.username == current_user.username and user.role == 'teacher':
-#        return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
+#        return render_template("tutor.html", user=user, profilepic=url_for('static',
+#           filename='images/teacher.jpg'))
 #    else:
 #        return render_template("404.html")
 
 @app.route('/tutor/home')
 @login_required
 def tutor():
+    """ Render the tutor account page """
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
-        return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
+        return render_template("tutor.html", user=user, profilepic=url_for('static',
+            filename='images/teacher.jpg'))
     abort(404)
 
 #@login_manager.user_loader
@@ -218,6 +211,7 @@ def tutor():
 #            return User(login_id, 'a')
 
 def fetch_optional_view(role, option):
+    """ Get the view of pages accourding to the context """
     google_api = ''
     opencage_api = ''
     if option == 'mylocation':
@@ -240,15 +234,18 @@ def fetch_optional_view(role, option):
         form = None
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
-        return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'),
-                               form=form, google_api_key=google_api, opencage_api_key=opencage_api)
+        return render_template(option+".html", user=user, profilepic=url_for('static', 
+            filename='images/student.jpeg'), form=form, google_api_key=google_api, 
+            opencage_api_key=opencage_api)
     elif user.username == current_user.username and is_tutor(user):
-        return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'),
-                               form=form, google_api_key=google_api, opencage_api_key=opencage_api)
+        return render_template(option+".html", user=user, profilepic=url_for('static',
+            filename='images/teacher.jpg'), form=form, google_api_key=google_api, 
+            opencage_api_key=opencage_api)
 
 @app.route('/<role>/<option>')
 @login_required
 def user_option(role, option):
+    """ Handle redirection of user related routes """
     view = fetch_optional_view(role, option)
     if view:
         return view
@@ -256,11 +253,11 @@ def user_option(role, option):
 
 @app.errorhandler(404)
 def content_not_found_handler(e):
-    ''' For Handling 404 error '''
+    """ For Handling 404 error """
     return render_template('404.html')
 
 @app.errorhandler(401)
 def unauthorized_access_handler(e):
-    ''' For Handling 401 error '''
+    """ For Handling 401 error """
     flash('You must be logged in to access this page!', 'danger')
     return redirect(url_for('login'))
