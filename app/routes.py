@@ -38,11 +38,11 @@ from .models import User, Student, Tutor
 def redirect_user(user):
     if user.role == 'student':
         return redirect(url_for('student'))
-    elif user.role == 'teacher':
+    elif user.role == 'tutor':
         return redirect(url_for('tutor'))
 
 def is_tutor(user):
-    if user.role == 'teacher':
+    if user.role == 'tutor':
         return True
     elif user.role == 'student':
         return False
@@ -203,7 +203,7 @@ def student():
 @login_required
 def tutor():
     user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and user.role == 'teacher':
+    if user.username == current_user.username and is_tutor(user):
         return render_template("tutor.html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'))
     abort(404)
 
@@ -226,11 +226,11 @@ def fetch_optional_view(role, option):
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     elif option == "personal-info":
-        if current_user.role == "student":
+        if is_tutor(current_user):
+            form = PersonalInfoForm()
+        else:
             form = StudentPersonalInfoForm()
             form.create_state_choices()
-        else:
-            form = PersonalInfoForm()
     elif option == "account-info":
         form = AccountInfoForm()
     elif option == "my-courses":
@@ -239,10 +239,10 @@ def fetch_optional_view(role, option):
     else:
         form = None
     user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and user.role == 'student' and role == 'student':
+    if user.username == current_user.username and not is_tutor(user):
         return render_template(option+".html", user=user, profilepic=url_for('static', filename='images/student.jpeg'),
                                form=form, google_api_key=google_api, opencage_api_key=opencage_api)
-    elif user.username == current_user.username and user.role == 'teacher' and role == 'tutor':
+    elif user.username == current_user.username and is_tutor(user):
         return render_template(option+".html", user=user, profilepic=url_for('static',filename='images/teacher.jpg'),
                                form=form, google_api_key=google_api, opencage_api_key=opencage_api)
 
