@@ -38,7 +38,7 @@ def redirect_user(user):
         return redirect(url_for('student'))
     elif user.role == 'tutor':
         return redirect(url_for('tutor'))
-    else:
+    elif user.role == 'admin':
         return redirect('/admin')
 
 def is_tutor(user):
@@ -48,6 +48,8 @@ def is_tutor(user):
         return False
     elif user.role == 'admin':
         return False
+
+
 
 @app.route('/')
 @app.route('/index')

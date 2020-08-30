@@ -1,10 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
 from . import login_manager
 
-class Admin(UserMixin):
+class Admin:
     def __init__(self, id):
-        self.id = 1
+        self.id = id
         self.role = 'admin' 
         self.email = 'admin@admin.com'
         self.password = 'admin'
@@ -14,8 +13,13 @@ class Admin(UserMixin):
         # return check_password_hash(self.password, password)
         return self.password == password
 
-admin = Admin(1)
+    def is_active(self):
+        return True
 
-@login_manager.user_loader
-def load_user(id):
-    return admin
+    def get_id(self):
+        return  self.id
+
+    def is_authenticated(self):
+        return True
+
+admin = Admin(1)

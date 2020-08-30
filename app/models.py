@@ -1,8 +1,7 @@
 from . import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
-
-from . import ModelView, admin
+from flask_login import UserMixin, current_user
+from . import  admin,ModelView
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -47,14 +46,24 @@ class Location(db.Model):
     ward_no = db.Column(db.Integer)
     user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
 
-class UserView(ModelView):
-    form_columns = ['username', 'email', 'role']
+
+
 
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
+class CustomView(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role == 'admin'
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('admin_login'))
+
+class UserView(CustomView):
+    form_columns = ['username', 'email', 'role']
+
 # For general models, admin.add_view(ModelView(User, db.session)) 
 admin.add_view(UserView(User, db.session))
-admin.add_view(ModelView(Student, db.session)) 
-admin.add_view(ModelView(Tutor, db.session)) 
+admin.add_view(CustomView(Student, db.session)) 
+admin.add_view(CustomView(Tutor, db.session)) 
