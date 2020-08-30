@@ -7,12 +7,12 @@ import json
 # Activate captcha later on using
 # {{form.recaptcha()}} 
 
-
 def create_choices_from_list(lists):
     choices = []
     for L in lists:
         choices.append((L, L))
     return choices
+
 
 class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
@@ -52,7 +52,6 @@ class ResetLinkForm(FlaskForm):
     # recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send Reset Email')
-
 
 
 class MyLocationForm(FlaskForm):
@@ -105,3 +104,19 @@ class AccountInfoForm(FlaskForm):
     new_password = PasswordField('New Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Update')
+
+
+class MyCourseForm(FlaskForm):
+    education_level = SelectField("Education Level", validators=[DataRequired()])
+    course = SelectField("Course", validators=[DataRequired()])
+    cost = SelectField('Cost', validators=[DataRequired()])
+    add = SubmitField("Add New Course")
+    update = SubmitField("Update Course")
+    save = SubmitField('Save')
+    
+    def create_cost_choices(self):
+        cost = []
+        for d in range(500, 5500, 500):
+            cost.append('Rs. ' + str(d - 500) + ' - ' + 'Rs. ' + str(d))
+        cost_choice = create_choices_from_list(cost)
+        self.cost.choices = cost_choice    

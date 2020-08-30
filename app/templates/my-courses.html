@@ -10,6 +10,38 @@
 
 {% block content %}
 <div class="container">
-    <legend class="border-bottom mb-4">My Courses</legend>
-</div>  
+
+    <form action="#" class="form my-2" method="POST">
+
+        <legend class="border-bottom mb-4">My Courses</legend>
+        {{ form.hidden_tag() }}
+
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                {{ form.course.label(class='form-control-label') }}
+                {{ form.course(class='form-control') }}
+            </div>
+        </div>
+
+         <div class="form-row">
+            <div class="form-group col-lg-6">
+                {{ form.education_level.label(class='form-control-label') }}
+                {{ form.education_level(class='form-control') }}
+            </div>
+
+            <div class="form-group col-lg-6">
+                {{ form.cost.label(class='form-control-label') }}
+                {{ form.cost(class='form-control') }}
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-lg-6">
+                {{ form.save(class='btn btn-success') }}
+            </div>
+        </div>
+
+    </form>
+
+</div> 
 {% endblock %}

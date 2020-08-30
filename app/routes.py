@@ -8,6 +8,7 @@ from flask import (
     session,
     abort,
 )
+
 from flask_login import (
     login_required,
     login_user,
@@ -27,6 +28,7 @@ from .forms import (
     PersonalInfoForm,
     StudentPersonalInfoForm,
     AccountInfoForm,
+    MyCourseForm,
 )
 #from .user import User
 #from .mockusers import get_admin, get_user, add_user
@@ -72,9 +74,34 @@ def home():
 #             return redirect(url_for("admin"))
 #     return render_template('admin/admin-login.html')
 
+@app.route('/a/login')
+def admin_login():
+    # if current_user.is_authenticated:
+    #     return redirect_user(current_user)
+    # form = LoginForm()
+    # if form.validate_on_submit():
+    #     if admin.check_password():
+    #         flash('Invalid email or password', 'danger')
+    #         return redirect (url_for('login'))
+    #     login_user(user)
+    #     flash('Successfully logged in.','success')
+    #     return redirect_user(current_user)
+    # return render_template('login.html', form=form)
+    return "admin_login"
+
+
 @app.route('/admin')
+@login_required
 def admin():
-    return render_template("admin/admin.html")
+    if current_user.is_authenticated:
+        return redirect_user(current_user)
+    form = LoginForm()
+    if form.validate_on_submit():
+        
+        login_user(user)
+        flash('Successfully logged in.','success')
+        return redirect_user(current_user)
+    return render_template('login.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'] )
 def login():
@@ -206,6 +233,9 @@ def fetch_optional_view(role, option):
             form = PersonalInfoForm()
     elif option == "account-info":
         form = AccountInfoForm()
+    elif option == "my-courses":
+        form = MyCourseForm()
+        form.create_cost_choices()
     else:
         form = None
     user = User.query.filter_by(username=current_user.username).first()
