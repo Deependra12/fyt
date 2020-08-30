@@ -38,11 +38,15 @@ def redirect_user(user):
         return redirect(url_for('student'))
     elif user.role == 'tutor':
         return redirect(url_for('tutor'))
+    else:
+        return redirect('/admin')
 
 def is_tutor(user):
     if user.role == 'tutor':
         return True
     elif user.role == 'student':
+        return False
+    elif user.role == 'admin':
         return False
 
 @app.route('/')
@@ -66,26 +70,12 @@ def admin_login():
     form = LoginForm()
     if form.validate_on_submit():
         if not admin.check_password(form.password.data):
-            print(form.password.data)
             flash('Invalid admin login', 'danger')
             return redirect(url_for('admin_login'))
         login_user(admin)
         flash('Successfully logged in.', 'success')
         return redirect('/admin')
     return render_template('login.html', form=form, admin=True)
-
-# @app.route('/admin')
-# @login_required
-# def admin():
-#     """ Render admin page """
-#     if current_user.is_authenticated:
-#         return redirect_user(current_user)
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         login_user(user)
-#         flash('Successfully logged in.','success')
-#         return redirect_user(current_user)
-#     return render_template('login.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -174,6 +164,8 @@ def about_us():
 @login_required
 def student():
     """ Render the student account page """
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         return render_template('student.html', user=user, profilepic=url_for('static', 
@@ -194,6 +186,8 @@ def student():
 @login_required
 def tutor():
     """ Render the tutor account page """
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
         return render_template("tutor.html", user=user, profilepic=url_for('static',
