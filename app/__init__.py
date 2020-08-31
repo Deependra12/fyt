@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_mail import Mail
 from itsdangerous import URLSafeTimedSerializer
-from flask_admin import Admin
+from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
 import os
 import flask_monitoringdashboard as dashboard
@@ -35,7 +35,6 @@ app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get('PRIVATE_KEY')
 #dashboard
 #useful for admin
 dashboard.config.init_from(file='')
-
 dashboard.bind(app)
 
 db = SQLAlchemy(app)
@@ -43,7 +42,6 @@ login_manager = LoginManager(app)
 migrate = Migrate(app, db, render_as_batch=True)
 mail = Mail(app)
 ser = URLSafeTimedSerializer(os.environ.get('SECRET_KEY'))
-admin = Admin(app, name='Find Your Tutor', template_mode='bootstrap3')
 
 #Add base_template='admin/admin.html' in Admin to use manually defined template.
 

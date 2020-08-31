@@ -1,7 +1,11 @@
-from . import db, login_manager
+from flask import abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
-from . import  admin,ModelView
+from flask_admin.menu import MenuLink
+
+from . import db, login_manager
+from . import  app, Admin, ModelView, AdminIndexView
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +26,7 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.hash_password, password)
 
+
 class Student(db.Model):
     phone = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key = True,)
@@ -30,9 +35,11 @@ class Student(db.Model):
     guardian_address = db.Column(db.String(64))
     guardian_phone = db.Column(db.Integer)
 
+
 class Tutor(db.Model):
     phone = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key = True,)
+
 
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -47,23 +54,48 @@ class Location(db.Model):
     user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
 
 
-
-
 @login_manager.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
-class CustomView(ModelView):
+
+# Admin Panel
+
+
+class AdminView(AdminIndexView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role == 'admin'
 
     def inaccessible_callback(self, name, **kwargs):
-        return redirect(url_for('admin_login'))
+        abort(401)
+
+
+admin = Admin(app, name='FYT Admin', template_mode='bootstrap3', index_view=AdminView())
+
+class CustomView(ModelView):
+    can_create = False
+    can_edit = False
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.role == 'admin'
+
+    def inaccessible_callback(self, name, **kwargs):
+        abort(401)
+
 
 class UserView(CustomView):
-    form_columns = ['username', 'email', 'role']
+    column_exclude_list = ['hash_password',] 
+    column_searchable_list = ['username', 'email']
+    column_filters = ['role']
+
+
+class LogoutMenuLink(MenuLink):
+    def is_accessible(self):
+        return current_user.is_authenticated    
+
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
 admin.add_view(UserView(User, db.session))
 admin.add_view(CustomView(Student, db.session)) 
 admin.add_view(CustomView(Tutor, db.session)) 
+admin.add_link(LogoutMenuLink(name='Logout', category='', url="/logout"))
