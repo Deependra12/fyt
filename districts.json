@@ -1,12 +1,99 @@
-["Bhojpur", "Dhankuta", "Ilam", "Jhapa", "Khotang", "Morang", "Okhaldhunga",
-    "Panchthar", "Sankhuwasabha", "Solukhumbu", "Sunsari", "Taplejung",
-    "Terhathum", "Udayapur", "Saptari", "Siraha", "Dhanusa", "Mahottari",
-    "Sarlahi", "Bara", "Parsa", "Rautahat", "Sindhuli", "Ramechhap", "Dolakha",
-    "Bhaktapur", "Dhading", "Kathmandu", "Kavrepalanchok", "Lalitpur", "Nuwakot",
-    "Rasuwa", "Sindhupalchok", "Chitwan", "Makwanpur", "Baglung", "Gorkha", "Kaski",
-    "Lamjung", "Manang", "Mustang", "Myagdi", "Nawalpur", "Parbat", "Syangja", "Tanahun",
-    "Kapilvastu", "Parasi", "Rupandehi", "Arghakhanchi", "Gulmi", "Palpa", "Dang",
-    "Pyuthan", "Rolpa", "Rukum ( Eastern )", "Banke", "Bardiya", "Rukum ( Western )", "Salyan",
-    "Dolpa", "Humla", "Jumla", "Kalikot", "Mugu", "Surkhet", "Dailekh", "Jajarkot", "Kailali",
-    "Achham", "Doti", "Bajhang", "Bajura", "Kanchanpur", "Dadeldhura", "Baitadi", "Darchula"
-]
+{
+    "Province 1":[
+        "Bhojpur",
+        "Dhankuta",
+        "Ilam",
+        "Jhapa",
+        "Khotang",
+        "Morang",
+        "Okhaldhunga",
+        "Panchthar",
+        "Sankhuwasabha",
+        "Solukhumbu",
+        "Sunsari",
+        "Taplejung",
+        "Terhathum",
+        "Udayapur"
+    ],
+
+    "Province 2": [
+        "Saptari",
+        "Siraha",
+        "Dhanusa",
+        "Mahottari",
+        "Sarlahi",
+        "Bara",
+        "Parsa",
+        "Rautahat"
+    ],
+
+    "Bagmati": [
+        "Sindhuli",
+        "Ramechhap",
+        "Dolakha",
+        "Bhaktapur",
+        "Dhading",
+        "Kathmandu",
+        "Kavrepalanchok",
+        "Lalitpur",
+        "Nuwakot",
+        "Rasuwa",
+        "Sindhupalchok",
+        "Chitwan",
+        "Makwanpur"
+    ],
+
+    "Gandaki": [
+        "Baglung",
+        "Gorkha",
+        "Kaski",
+        "Lamjung",
+        "Manang",
+        "Mustang",
+        "Myagdi",
+        "Nawalpur",
+        "Parbat",
+        "Syangja",
+        "Tanahun"
+    ],
+
+    "Province 5": [
+        "Kapilvastu",
+        "Parasi",
+        "Rupandehi",
+        "Arghakhanchi",
+        "Gulmi",
+        "Palpa",
+        "Dang",
+        "Pyuthan",
+        "Rolpa",
+        "Rukum ( Eastern )",
+        "Banke",
+        "Bardiya"
+    ],
+
+    "Karnali": [
+        "Rukum ( Western )",
+        "Salyan",
+        "Dolpa",
+        "Humla",
+        "Jumla",
+        "Kalikot",
+        "Mugu",
+        "Surkhet",
+        "Dailekh",
+        "Jajarkot"
+    ],
+
+    "'Sudurpaschim": [
+        "Kailali",
+        "Achham",
+        "Doti",
+        "Bajhang",
+        "Bajura",
+        "Kanchanpur",
+        "Dadeldhura",
+        "Baitadi",
+        "Darchula"
+    ]
+}

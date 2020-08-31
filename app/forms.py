@@ -10,7 +10,7 @@ import json
 def create_choices_from_list(lists):
     choices = []
     for L in lists:
-        choices.append((L, L))
+        choices.append((L.lower().replace(' ',''), L))
     return choices
 
 
