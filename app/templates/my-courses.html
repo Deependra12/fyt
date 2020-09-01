@@ -18,17 +18,20 @@
 
         <div class="form-row">
             <div class="form-group col-lg-6">
+                {{ form.education_level.label(class='form-control-label') }}
+                {{ form.education_level(class='form-control') }}
+            </div>
+            <div class="form-group col-lg-6">
                 {{ form.course.label(class='form-control-label') }}
                 {{ form.course(class='form-control') }}
-            </div>
+            </div>         
         </div>
 
          <div class="form-row">
             <div class="form-group col-lg-6">
-                {{ form.education_level.label(class='form-control-label') }}
-                {{ form.education_level(class='form-control') }}
+                {{ form.time.label(class='form-control-label') }}
+                {{ form.time(class='form-control', type='time') }}
             </div>
-
             <div class="form-group col-lg-6">
                 {{ form.cost.label(class='form-control-label') }}
                 {{ form.cost(class='form-control') }}

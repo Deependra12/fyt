@@ -30,7 +30,7 @@ from .forms import (
     AccountInfoForm,
     MyCourseForm,
 )
-from .models import User, Student, Tutor
+from .models import User, Student, Tutor, Location
 
 def redirect_user(user):
     if user.role == 'student':
@@ -215,9 +215,15 @@ def fetch_optional_view(role, option):
         form.create_travel_distance_choice()
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
+        if form.validate_on_submit():
+            location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
+                longitude=form.longitude.data, place_details=form.place.data, User=current_user )
+            db.session.add(location)
+            db.session.commit()
     elif option == "personal-info":
         if is_tutor(current_user):
             form = PersonalInfoForm()
+            form.create_state_choices()
         else:
             form = StudentPersonalInfoForm()
             form.create_state_choices()
@@ -238,7 +244,7 @@ def fetch_optional_view(role, option):
             filename='images/teacher.jpg'), form=form, google_api_key=google_api, 
             opencage_api_key=opencage_api)
 
-@app.route('/<role>/<option>')
+@app.route('/<role>/<option>', methods=['POST','GET'])
 @login_required
 def user_option(role, option):
     """ Handle redirection of user related routes """

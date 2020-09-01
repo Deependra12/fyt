@@ -42,23 +42,23 @@ class Tutor(db.Model):
 
 
 class Location(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
     travel_distance = db.Column(db.String(64))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
-    address = db.Column(db.String(64))
+    place_details = db.Column(db.String(255))
     state = db.Column(db.String(64))
     district = db.Column(db.String(64))
     municipality = db.Column(db.String(64))
     ward_no = db.Column(db.Integer)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
 
 
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(100), nullable=False)
     course_level = db.Column(db.String(100), nullable=False)
-    
+    course_description = db.Column(db.String(255))    
+
 
 @login_manager.user_loader
 def load_user(id):

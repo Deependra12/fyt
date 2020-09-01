@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label
+from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label, TimeField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
 import json
@@ -110,6 +110,7 @@ class MyCourseForm(FlaskForm):
     education_level = SelectField("Education Level", validators=[DataRequired()])
     course = SelectField("Course", validators=[DataRequired()])
     cost = SelectField('Cost', validators=[DataRequired()])
+    time = TimeField('Time', validators=[DataRequired()])
     add = SubmitField("Add New Course")
     update = SubmitField("Update Course")
     save = SubmitField('Save')
