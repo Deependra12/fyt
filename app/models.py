@@ -51,8 +51,14 @@ class Location(db.Model):
     district = db.Column(db.String(64))
     municipality = db.Column(db.String(64))
     ward_no = db.Column(db.Integer)
-    user_id = db.Column(db.Integer , db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+
+class Course(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_title = db.Column(db.String(100), nullable=False)
+    course_level = db.Column(db.String(100), nullable=False)
+    
 
 @login_manager.user_loader
 def load_user(id):
@@ -89,6 +95,17 @@ class UserView(CustomView):
     column_filters = ['role']
 
 
+class CourseView(ModelView):
+    form_choices = {
+    'course_level': [
+        ('basic','Basic Education(Grade 1-8)'),
+        ('secondary','Secondary Education(Grade 9-12)'),
+        ('bachelor','Bachelor Level'),
+        ('master','Master Level')
+    ]
+    }
+
+
 class LogoutMenuLink(MenuLink):
     def is_accessible(self):
         return current_user.is_authenticated    
@@ -98,4 +115,5 @@ class LogoutMenuLink(MenuLink):
 admin.add_view(UserView(User, db.session))
 admin.add_view(CustomView(Student, db.session)) 
 admin.add_view(CustomView(Tutor, db.session)) 
+admin.add_view(CourseView(Course, db.session))
 admin.add_link(LogoutMenuLink(name='Logout', category='', url="/logout"))
