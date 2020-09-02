@@ -16,6 +16,8 @@ from flask_login import (
     current_user,
 )
 
+import secrets
+from sqlalchemy_sample import session
 from . import app, db
 from . import login_manager
 from . import email as em
@@ -206,27 +208,94 @@ def tutor():
 #       if user_:
 #            return User(login_id, 'a')
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    f_name , f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/images/profile_pic', picture_fn)
+    output_size =(125,125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+    return picture_fn
+
+def delete_picture(user_picture):
+    f_name , f_ext = os.path.splitext(user_picture)
+    location = "/static/images/profile_pic"
+    picture_fn = f_name + f_ext
+    picture_path = os.path.join(app.root_path , 'static/profile_pic', picture_fn)
+    os.remove(picture_path)
+
 def fetch_optional_view(role, option):
     """ Get the view of pages accourding to the context """
     google_api = ''
     opencage_api = ''
+    values = None
     if option == 'mylocation':
         form = MyLocationForm()
         form.create_travel_distance_choice()
         google_api = app.config.get('GOOGLE_MAP_API_KEY')
         opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
+        location = Location.query.filter_by(User=current_user)
+        values = location
         if form.validate_on_submit():
-            location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
-                longitude=form.longitude.data, place_details=form.place.data, User=current_user )
-            db.session.add(location)
-            db.session.commit()
+            if location:
+                location.travel_distance = form.travel_distance.data
+                location.latitude = form.latitude.data 
+                location.longitude = form.longitude.data
+                location.place_details = form.place.data
+                db.session.commit()
+            else:
+                new_location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
+                    longitude=form.longitude.data, place_details=form.place.data, User=current_user )
+                db.session.add(new_location)
+                db.session.commit()
     elif option == "personal-info":
+        print(4)
         if is_tutor(current_user):
+            print(0)
             form = PersonalInfoForm()
             form.create_state_choices()
+            print(1)
+            if form.validate_on_submit():
+                current = session.query(Tutor, User).filter(User.id==Tutor.user_id)
+                print(2)
+                print(current)
+                #.filter_by(User.id==current_user.id).first()
+                if form.profile_pic.data:
+                    delete_picture(current.profile_pic)
+                    picture_file = save_picture(form.picture.data)
+                    current.image_file = picture_file
+                current.full_name = form.name.data
+                current.state = form.state.data
+                current.district = form.district.data
+                current.date_of_birth = form.date_of_birth.data
+                current.municipality = form.municipality.data
+                current.ward_no = form.ward_no.data
+                current.phone = form.phone.data
+                db.session.commit()
         else:
             form = StudentPersonalInfoForm()
             form.create_state_choices()
+            if form.validate_on_submit():
+                if form.profile_pic.data:
+                    current = session.query(Student, User).filter(User.id==Student.user_id).filter_by(User.id==current_user.id).first()
+                    print(current)
+                    delete_picture(current.profile_pic)
+                    picture_file = save_picture(form.picture.data)
+                    current.image_file = picture_file
+                current.full_name = form.name.data
+                current.state = form.state.data
+                current.district = form.district.data
+                current.date_of_birth = form.date_of_birth.data
+                current.municipality = form.municipality.data
+                current.ward_no = form.ward_no.data
+                current.phone = form.phone.data 
+                current.guardian_name = form.guardian_name.data
+                current.guardian_address = form.guardian_address.data
+                current.guardian_phone = form.guardian_phone.data
+                db.session.commit()
+
     elif option == "account-info":
         form = AccountInfoForm()
     elif option == "my-courses":
@@ -238,11 +307,11 @@ def fetch_optional_view(role, option):
     if user.username == current_user.username and not is_tutor(user):
         return render_template(option+".html", user=user, profilepic=url_for('static', 
             filename='images/student.jpeg'), form=form, google_api_key=google_api, 
-            opencage_api_key=opencage_api)
+            opencage_api_key=opencage_api, values=values)
     elif user.username == current_user.username and is_tutor(user):
         return render_template(option+".html", user=user, profilepic=url_for('static',
             filename='images/teacher.jpg'), form=form, google_api_key=google_api, 
-            opencage_api_key=opencage_api)
+            opencage_api_key=opencage_api, values=values)
 
 @app.route('/<role>/<option>', methods=['POST','GET'])
 @login_required
