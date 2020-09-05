@@ -249,7 +249,7 @@
             <!-- Sidebar Menu -->
 
             <ul class='list-unstyled components'>
-                <p>Howdy, {{ user.username }}!</p>
+                <p>Hello, {{ user.username }}!</p>
                 <li id = 'home'>
                     {% if user.role == 'student' %}
                         <a href="{{ url_for('student') }}">
@@ -267,23 +267,52 @@
                         Account</a>
                     <ul class="collapse list-unstyled" id="accountSubmenu">
                         <li id="personal-info">
-                            <a href="{{url_for('user_option', role=user.role, option='personal-info')}}"><i class="fas fa-info-circle"></i>
-                                Personal Information</a>
+                            {% if current_user.role == "student" %}
+                            <a href="{{url_for('student_personal_info')}}"><i class="fas fa-info-circle"></i>
+                                Personal Information
+                            </a>
+                            {% else %}
+                            <a href="{{url_for('tutor_personal_info')}}"><i class="fas fa-info-circle"></i>
+                                Personal Information
+                            </a>
+                            {% endif %}
                         </li>
                         <li id="my-courses">
-                            <a href="{{url_for('user_option', role=user.role, option='my-courses')}}"><i class="fas fa-book"></i>
-                                My Courses</a>
+                            {% if current_user.role == "student" %}
+                            <a href="{{url_for('student_courses')}}"><i class="fas fa-book"></i>
+                                My Courses
+                            </a>
+                            {% else %}
+                            <a href="{{url_for('tutor_courses')}}"><i class="fas fa-book"></i>
+                                My Courses
+                            </a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="{{url_for('user_option', role=user.role, option='account-info')}}"><i class="fas fa-user-circle"></i>
-                                Account Information</a>                        
+                            {% if current_user.role == "student" %}
+                            <a href="{{url_for('student_account_info')}}"><i class="fas fa-user-circle"></i>
+                                Account Information
+                            </a>
+                            {% else %}
+                            <a href="{{url_for('tutor_account_info')}}"><i class="fas fa-user-circle"></i>
+                                Account Information
+                            </a>
+                            {% endif %}                      
                         </li>
                     </ul>
                 </li>
                 <li id = 'mylocation'>
-                        <a href="{{ url_for('user_option', role=user.role, option='mylocation') }}">
+                        {% if current_user.role=='student' %}
+                        <a href="{{ url_for('student_location') }}">
                             <i class="fas fa-map-marker-alt"></i>
-                            My Location</a>
+                            My Location
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('tutor_location') }}">
+                            <i class="fas fa-map-marker-alt"></i>
+                            My Location
+                        </a>
+                        {% endif %}
                 </li>
 
                 {% block sidebar_menu %}

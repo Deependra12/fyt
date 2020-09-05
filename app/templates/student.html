@@ -11,7 +11,7 @@
 
 {% block sidebar_menu %}
     <li id="my-tutors">
-        <a href="{{url_for('user_option', role='student', option='my-tutors')}}"><i class="fas fa-chalkboard-teacher"></i>
+        <a href="{{ url_for('student_followed_tutors') }}"><i class="fas fa-chalkboard-teacher"></i>
             My Tutors</a>
     </li>
 {% endblock %}

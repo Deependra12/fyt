@@ -11,7 +11,7 @@
 
 {% block sidebar_menu %}
     <li id="my-followers">
-        <a href="{{url_for('user_option', role='tutor', option='my-followers')}}"><i class="fas fa-user-friends"></i>
+        <a href="{{ url_for('tutor_followers') }}"><i class="fas fa-user-friends"></i>
             My Followers</a>
     </li>
 {% endblock %}
