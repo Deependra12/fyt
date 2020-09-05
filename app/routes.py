@@ -182,7 +182,7 @@ def student():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         return render_template('student.html', user=user, profilepic=url_for('static', 
-            filename='images/student.jpeg'))
+            filename='profile_pics/student.jpeg'))
     abort(404)
 
 
@@ -211,7 +211,7 @@ def student_location():
     
     if user.username == current_user.username and not is_tutor(user):
         return render_template("mylocation.html", user=user, profilepic=url_for('static', 
-            filename='images/student.jpeg'), form=form, google_api_key=google_api, 
+            filename='profile_pics/student.jpeg'), form=form, google_api_key=google_api, 
             opencage_api_key=opencage_api, values=values)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_location'))
@@ -247,7 +247,7 @@ def student_personal_info():
         user = User.query.filter_by(username=current_user.username).first()
 
         return render_template("personal-info.html", user=user, profilepic=url_for('static', 
-                filename='images/student.jpeg'), form=form)
+                filename='profile_pics/student.jpeg'), form=form)
 
 
 @app.route('/student/account-info', methods=['POST','GET'])
@@ -259,7 +259,7 @@ def student_account_info():
     
     if user.username == current_user.username and not is_tutor(user):
         return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='images/student.jpeg'), form=form)
+            filename='profile_pics/student.jpeg'), form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_account_info'))
 
@@ -274,7 +274,7 @@ def student_courses():
     
     if user.username == current_user.username and not is_tutor(user):
         return render_template("my-courses.html", user=user, profilepic=url_for('static', 
-            filename='images/student.jpeg'), form=form)
+            filename='profile_pics/student.jpeg'), form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_login'))
 
@@ -286,7 +286,7 @@ def student_followed_tutors():
 
     if user.username == current_user.username and not is_tutor(user):
         return render_template('my-tutors.html', profilepic=url_for('static', 
-            filename='images/student.jpeg'), user=user)
+            filename='profile_pics/student.jpeg'), user=user)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_followers'))
         
@@ -309,7 +309,7 @@ def tutor():
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
         return render_template("tutor.html", user=user, profilepic=url_for('static',
-            filename='images/tutor.jpg'))
+            filename='profile_pics/tutor.jpg'))
     abort(404)
 
 
@@ -339,7 +339,7 @@ def tutor_location():
         return redirect(url_for('student_location'))
     elif user.username == current_user.username and is_tutor(user):
         return render_template("mylocation.html", user=user, profilepic=url_for('static',
-            filename='images/tutor.jpg'), form=form, google_api_key=google_api, 
+            filename='profile_pics/tutor.jpg'), form=form, google_api_key=google_api, 
             opencage_api_key=opencage_api)
 
 
@@ -367,7 +367,7 @@ def tutor_personal_info():
             db.session.commit()
 
         return render_template("personal-info.html", user=user, profilepic=url_for('static',
-                filename='images/tutor.jpg'), form=form)
+                filename='profile_pics/tutor.jpg'), form=form)
     else:
         return redirect(url_for('student_personal_info'))
 
@@ -381,7 +381,7 @@ def tutor_account_info():
         return redirect(url_for('student_account_info'))
     elif user.username == current_user.username and is_tutor(user):
         return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='images/tutor.jpg'), form=form)
+            filename='profile_pics/tutor.jpg'), form=form)
 
 
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
@@ -396,7 +396,7 @@ def tutor_courses():
         return redirect(url_for('student_login'))
     elif user.username == current_user.username and is_tutor(user):
         return render_template("my-courses.html", user=user, profilepic=url_for('static',
-            filename='images/tutor.jpg'), form=form)
+            filename='profile_pics/tutor.jpg'), form=form)
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
@@ -408,7 +408,7 @@ def tutor_followers():
         return redirect(url_for('student_followed_tutors'))
     elif user.username == current_user.username and is_tutor(user):
         return render_template('my-followers.html', profilepic=url_for('static',
-            filename='images/tutor.jpg'), user=user)
+            filename='profile_pics/tutor.jpg'), user=user)
 
     
 # Error Handlers

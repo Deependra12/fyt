@@ -1,7 +1,10 @@
+import os.path as op
+
 from flask import abort
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
 from flask_admin.menu import MenuLink
+from flask_admin.contrib.fileadmin import FileAdmin
 
 from . import db, login_manager
 from . import  app, Admin, ModelView, AdminIndexView
@@ -134,6 +137,11 @@ class LogoutMenuLink(MenuLink):
 admin.add_view(UserView(User, db.session))
 admin.add_view(CustomView(Student, db.session)) 
 admin.add_view(CustomView(Tutor, db.session)) 
+
 admin.add_view(CustomView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
+
+path = op.join(op.dirname(__file__), 'static/profile_pics')
+admin.add_view(FileAdmin(path, '/static/profile_pics/', name='Profile Pics'))
+
 admin.add_link(LogoutMenuLink(name='Logout', category='', url="/logout"))

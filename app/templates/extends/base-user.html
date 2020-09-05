@@ -253,11 +253,11 @@
                 <li id = 'home'>
                     {% if user.role == 'student' %}
                         <a href="{{ url_for('student') }}">
-                            <i class="fas fa-map-marker-alt"></i>
+                            <i class="fas fa-home"></i>
                             Home</a>
                     {% else %}
                         <a href="{{ url_for('tutor') }}">
-                            <i class="fas fa-map-marker-alt"></i>
+                            <i class="fas fa-home"></i>
                             Home</a>
                     {% endif%}
                 </li>
