@@ -274,7 +274,7 @@ def student_courses():
     
     if user.username == current_user.username and not is_tutor(user):
         return render_template("my-courses.html", user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), form=form)
+            filename='profile_pics/student.jpeg'), form=form, values='')
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_login'))
 
@@ -389,6 +389,7 @@ def tutor_account_info():
 def tutor_courses():
     form = MyCourseForm()
     form.create_cost_choices()
+    mock_courses = [('Basic Education(Grade 1-8)','Science','19:00','Rs. 1000 - Rs. 1500'),('Bachelor','Physics','20:00','Rs. 4000 - Rs. 4500')]
     
     user = User.query.filter_by(username=current_user.username).first()
     
@@ -396,7 +397,7 @@ def tutor_courses():
         return redirect(url_for('student_login'))
     elif user.username == current_user.username and is_tutor(user):
         return render_template("my-courses.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form)
+            filename='profile_pics/tutor.jpg'), form=form, values=mock_courses)
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
