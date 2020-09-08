@@ -32,10 +32,8 @@ app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 
 app.config["RECAPTCHA_PUBLIC_KEY"] = os.environ.get('PUBLIC_KEY')
 app.config["RECAPTCHA_PRIVATE_KEY"] = os.environ.get('PRIVATE_KEY')
-#dashboard
-#useful for admin
-dashboard.config.init_from(file='')
-dashboard.bind(app)
+
+
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
