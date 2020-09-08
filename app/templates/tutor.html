@@ -10,6 +10,12 @@
 {% endblock %}
 
 {% block sidebar_menu %}
+
+    <li id="my-profile">
+        <a href="#"><i class="fas fa-id-badge"></i>
+            My Profile</a>
+    </li>
+
     <li id="my-followers">
         <a href="{{ url_for('tutor_followers') }}"><i class="fas fa-user-friends"></i>
             My Followers</a>

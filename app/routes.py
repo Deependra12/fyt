@@ -343,7 +343,7 @@ def tutor_location():
             opencage_api_key=opencage_api)
 
 
-@app.route('/tutor/personal-info', methods=['POST','GET'])
+@app.route('/tutor/personal-info', methods=['POST' ,'GET'])
 @login_required
 def tutor_personal_info():
     if is_tutor(current_user):
@@ -389,6 +389,8 @@ def tutor_account_info():
 def tutor_courses():
     form = MyCourseForm()
     form.create_cost_choices()
+    form.education_level.choices=[('Basic Education(Grade 1-8)','Basic Education(Grade 1-8)'),('Secondary','Secondary'),('Bachelor','Bachelor')]
+    form.course.choices=[('Physics','Physics'),('Computer','Computer'),('Health','Health')]
     mock_courses = [('Basic Education(Grade 1-8)','Science','19:00','Rs. 1000 - Rs. 1500'),('Bachelor','Physics','20:00','Rs. 4000 - Rs. 4500')]
     
     user = User.query.filter_by(username=current_user.username).first()

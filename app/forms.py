@@ -113,6 +113,7 @@ class MyCourseForm(FlaskForm):
     time = TimeField('Time', validators=[DataRequired()])
     add = SubmitField("Add New Course")
     update = SubmitField("Update Course")
+    delete = SubmitField (" Delete Course ")
     save = SubmitField('Save')
     
     def create_cost_choices(self):
