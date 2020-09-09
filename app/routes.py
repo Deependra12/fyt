@@ -250,12 +250,15 @@ def student_personal_info():
     if is_tutor(current_user):
         return redirect(url_for('tutor_personal_info'))
     else:
+        user = User.query.filter_by(username=current_user.username).first()
+        student=Student.query.filter_by(user_id=user.id).first()
         form = StudentPersonalInfoForm()
         form.create_state_choices()
         form.create_district_choices()
         if form.validate_on_submit():
             if form.profile_pic.data:
-                # delete_picture(current_user.profile_pic)
+                if student.profile_pic:
+                    delete_picture(student.profile_pic)
                 current_user.update_student(profile_pic = save_picture(form.profile_pic.data))
             current_user.update_student(
                 full_name=form.name.data, 
@@ -270,8 +273,6 @@ def student_personal_info():
                 guardian_phone = form.guardian_phone.data
                 
             )
-        user = User.query.filter_by(username=current_user.username).first()
-        student=Student.query.filter_by(user_id=user.id).first()
         return render_template("personal-info.html", user=user, user_obj=student, profilepic= fetch_profile_pic(student), form=form)
 
 
@@ -380,12 +381,14 @@ def tutor_location():
 def tutor_personal_info():
     if is_tutor(current_user):
         user = User.query.filter_by(username=current_user.username).first()
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
         form = PersonalInfoForm()
         form.create_state_choices()
         form.create_district_choices()
         if form.validate_on_submit():   
             if form.profile_pic.data:
-                # delete_picture(current_user.profile_pic)
+                if tutor.profile_pic:
+                    delete_picture(tutor.profile_pic)
                 user.update_tutor(profile_pic = save_picture(form.profile_pic.data))
             user.update_tutor(
                 full_name=form.name.data, 
@@ -396,7 +399,6 @@ def tutor_personal_info():
                 ward_no = form.ward_no.data,
                 phone = form.phone.data 
             )
-        tutor=Tutor.query.filter_by(user_id=user.id).first()
         return render_template("personal-info.html", user=user, user_obj=tutor, profilepic= fetch_profile_pic(tutor), form=form)
     else:
         return redirect(url_for('student_personal_info'))
