@@ -13,7 +13,6 @@ def create_choices_from_list(lists):
         choices.append((L.lower().replace(' ',''), L))
     return choices
 
-
 class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
@@ -77,20 +76,35 @@ class MyLocationForm(FlaskForm):
 
 class PersonalInfoForm(FlaskForm):
     name = StringField('Full Name', validators=[DataRequired()])
-    date_of_birth = DateField('Date of Birth', validators=[DataRequired()], format='%Y/%m/%d')
+    date_of_birth = StringField('Date of Birth', validators=[DataRequired()])
     phone = StringField('Phone Number', validators=[DataRequired()])
-    profile_pic = FileField('Profile Picture', validators=[DataRequired()])
     state = SelectField(label="State", validators=[DataRequired()])
-    district = SelectField(label='District', validators=[DataRequired()])
+    district= SelectField(label='District', validators=[DataRequired()])
     municipality = StringField('Municipality', validators=[DataRequired()])
     ward_no = StringField('Ward Number', validators=[DataRequired()])
+    profile_pic = FileField('Profile Picture')    
     submit = SubmitField('Save')
-    update = SubmitField('Edit')
+    
 
     def create_state_choices(self):
         states = ['Province 1', 'Province 2', 'Bagmati', 'Gandaki', 'Province 5', 'Karnali', 'Sudurpaschim']
         state_choice = create_choices_from_list(states)
         self.state.choices = state_choice
+
+    def create_district_choices(self):
+        D = ['Bhojpur', 'Dhankuta', 'Ilam', 'Jhapa', 'Khotang', 'Morang', 'Okhaldhunga', 
+            'Panchthar', 'Sankhuwasabha', 'Solukhumbu', 'Sunsari', 'Taplejung', 'Terhathum', 'Udayapur',
+            'Saptari', 'Siraha', 'Dhanusa', 'Mahottari', 'Sarlahi', 'Bara', 'Parsa', 'Rautahat',
+            'Sindhuli', 'Ramechhap', 'Dolakha', 'Bhaktapur', 'Dhading', 'Kathmandu', 'Kavrepalanchok', 
+            'Lalitpur', 'Nuwakot', 'Rasuwa', 'Sindhupalchok', 'Chitwan', 'Makwanpur',
+            'Baglung', 'Gorkha', 'Kaski', 'Lamjung', 'Manang', 'Mustang', 'Myagdi', 'Nawalpur', 
+            'Parbat', 'Syangja', 'Tanahun', 'Kapilvastu', 'Parasi', 'Rupandehi', 'Arghakhanchi', 
+            'Gulmi', 'Palpa', 'Dang', 'Pyuthan', 'Rolpa', 'Rukum ( Eastern )', 'Banke', 'Bardiya', 
+            'Rukum ( Western )', 'Salyan', 'Dolpa', 'Humla', 'Jumla', 'Kalikot', 'Mugu', 'Surkhet', 'Dailekh','Jajarkot', 
+            'Kailali', 'Achham', 'Doti', 'Bajhang', 'Bajura', 'Kanchanpur', 'Dadeldhura', 'Baitadi', 'Darchula']
+        districts = sorted(D)
+        district_choice = create_choices_from_list(districts)
+        self.district.choices = district_choice
 
 
 class StudentPersonalInfoForm(PersonalInfoForm):

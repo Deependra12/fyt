@@ -30,6 +30,32 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.hash_password, password)
 
+    def set_location(self):
+        self.location = Location(User=self)
+
+    def update_location(self, **kwargs):
+        for column,value in kwargs.items():
+            location = self.location
+            setattr(location,column,value)
+        db.session.commit()
+
+    def set_tutor(self):
+        self.teacher = Tutor(base=self)
+
+    def update_tutor(self, **kwargs):
+        for column,value in kwargs.items():
+            tutor = self.teacher
+            setattr(tutor,column,value)
+        db.session.commit()
+
+    def set_student(self):
+        self.student = Student(base=self)
+    
+    def update_student(self, **kwargs):
+        for column,value in kwargs.items():
+            student = self.student
+            setattr(student,column,value)
+        db.session.commit()
 
 class Student(db.Model):
     phone = db.Column(db.Integer)
@@ -42,7 +68,7 @@ class Student(db.Model):
     district = db.Column(db.String(64))
     municipality = db.Column(db.String(64))
     ward_no = db.Column(db.Integer)
-    date_of_birth = db.Column(db.Date)
+    date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
 
 
@@ -54,7 +80,7 @@ class Tutor(db.Model):
     district = db.Column(db.String(64))
     municipality = db.Column(db.String(64))
     ward_no = db.Column(db.Integer)
-    date_of_birth = db.Column(db.Date)
+    date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
 
 
@@ -70,7 +96,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(100), nullable=False)
     course_level = db.Column(db.String(100), nullable=False)
-    course_description = db.Column(db.String(255))   
+    course_description = db.Column(db.String(255))  
     mycourse = db.relationship('Mycourse', backref='Course', cascade="all, delete")
 
 
@@ -100,6 +126,7 @@ class AdminView(AdminIndexView):
 
 admin = Admin(app, name='FYT Admin', template_mode='bootstrap3', index_view=AdminView())
 
+
 class CustomView(ModelView):
     can_create = False
     can_edit = False
@@ -126,6 +153,10 @@ class CourseView(ModelView):
             ('master','Master Level')
         ]
     }
+    form_create_rules = ('course_title', 'course_level', 'course_description')
+    form_edit_rules = ('course_title', 'course_level', 'course_description')
+
+
 
 
 class LogoutMenuLink(MenuLink):
@@ -134,7 +165,6 @@ class LogoutMenuLink(MenuLink):
 
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
-admin.add_view(UserView(User, db.session))
 admin.add_view(CustomView(Student, db.session)) 
 admin.add_view(CustomView(Tutor, db.session)) 
 

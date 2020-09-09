@@ -11,8 +11,9 @@
 
 {% block content %}
 <div class="container">
+    
 
-    <form action="#" id="personalInfoForm" class="form my-2" method="POST">
+    <form  action="{% if user.role =='tutor' %} {{url_for('tutor_personal_info')}} {% else %} {{url_for('student_personal_info')}} {% endif %}" id="personalInfoForm" class="form my-2" method="POST" enctype="multipart/form-data">
 
         <legend class="border-bottom mb-4">Personal Information</legend>
         {{ form.hidden_tag() }}
@@ -20,43 +21,122 @@
         <div class="form-row">
             <div class="form-group col-lg-6">
                 {{ form.name.label(class='form-control-label') }}
-                {{ form.name(class='form-control') }}
+                {% if form.name.errors %}
+                    {{form.name(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.name.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.name(class="form-control")}}
+                {% endif %}
             </div>
 
             <div class="form-group col-lg-6">
                 {{ form.date_of_birth.label(class='form-control-label') }}
-                {{ form.date_of_birth(class='form-control', type='date') }}
+                {% if form.date_of_birth.errors %}
+                    {{form.date_of_birth(class="form-control is-invalid", type='date')}}
+                    <div class="invalid-feedback">
+                    {% for error in form.date_of_birth.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.date_of_birth(class="form-control", type='date')}}
+                {% endif %}
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
                 {{ form.state.label(class='form-control-label') }}
-                {{ form.state(class='form-control') }}
+                {% if form.state.errors %}
+                    {{form.state(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.state.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.state(class="form-control")}}
+                {% endif %}
             </div>
+           
            
             <div class="form-group col-lg-6">
                 {{ form.district.label(class='form-control-label') }}
-                {{ form.district(class='form-control') }}
-            </div>
+                {% if form.district.errors %}
+                    {{form.district(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.district.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.district(class="form-control")}}
+                {% endif %}
+            </div> 
+
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
                 {{ form.municipality.label(class='form-control-label') }}
-                {{ form.municipality(class='form-control') }}
+                {% if form.municipality.errors %}
+                    {{form.municipality(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.municipality.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.municipality(class="form-control")}}
+                {% endif %}
             </div>
     
             <div class="form-group col-lg-6">
                 {{ form.ward_no.label(class='form-control-label') }}
-                {{ form.ward_no(class='form-control') }}
+                {% if form.ward_no.errors %}
+                    {{form.ward_no(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.ward_no.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.ward_no(class="form-control")}}
+                {% endif %}
             </div>
         </div>
 
         <div class="form-row">
             <div class="form-group col-lg-6">
                 {{ form.phone.label(class='form-control-label') }}
-                {{ form.phone(class='form-control') }}
+                {% if form.phone.errors %}
+                    {{form.phone(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.phone.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.phone(class="form-control")}}
+                {% endif %}
             </div>
         </div>
 
@@ -64,17 +144,50 @@
         <div class="form-row">
             <div class="form-group col-lg-4">
                 {{ form.guardian_name.label(class='form-control-label') }}
-                {{ form.guardian_name(class='form-control', id='latitude-field') }}
+                {% if form.guardian_name.errors %}
+                    {{form.guardian_name(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.guardian_name.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.guardian_name(class="form-control")}}
+                {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_address.label(class='form-control-label')}}
-                {{ form.guardian_address(class='form-control', id='latitude-field') }}
+                {% if form.guardian_address.errors %}
+                    {{form.guardian_address(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.guardian_address.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.guardian_address(class="form-control")}}
+                {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_phone.label(class='form-control-label')}}
-                {{ form.guardian_phone(class='form-control', id='longitude-field') }}
+                {% if form.guardian_phone.errors %}
+                    {{form.guardian_phone(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.guardian_phone.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.guardian_phone(class="form-control")}}
+                {% endif %}
             </div>            
         </div>
         {% endif %}
@@ -82,7 +195,18 @@
         <div class="form-row">
             <div class="form-group col-lg-4">
                 {{ form.profile_pic.label(class='form-control-label') }}
-                {{ form.profile_pic(class='form-control', id='place-field') }}
+                {% if form.profile_pic.errors %}
+                    {{form.profile_pic(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                    {% for error in form.profile_pic.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.profile_pic(class="form-control")}}
+                {% endif %}
             </div>
         </div>
 
@@ -98,117 +222,3 @@
 {% endblock %}
 
 <!--<select class="form-control" id="district" name="district" required></select>-->
-
-{% block document_javascript %}
-
-    var Select_List_Data = {
-        'district' : {
-            province1 : {
-                text : ['Bhojpur', 'Dhankuta', 'Ilam', 'Jhapa', 'Khotang', 'Morang', 'Okhaldhunga', 'Panchthar', 'Sankhuwasabha', 'Solukhumbu', 'Sunsari', 'Taplejung', 'Terhathum', 'Udayapur'],
-                value : ['bhojpur', 'dhankuta', 'ilam', 'jhapa', 'khotang', 'morang', 'okhaldhunga', 'panchthar', 'sankhuwasabha', 'solukhumbu', 'sunsari', 'taplejung', 'terhathum', 'udayapur']
-            },
-            province2 : {
-                text : ['Saptari', 'Siraha', 'Dhanusa', 'Mahottari', 'Sarlahi', 'Bara', 'Parsa', 'Rautahat'],
-                value : ['saptari', 'siraha', 'dhanusa', 'mahottari', 'sarlahi', 'bara', 'parsa', 'rautahat']
-            },
-            bagmati : {
-                text :['Sindhuli', 'Ramechhap', 'Dolakha', 'Bhaktapur', 'Dhading', 'Kathmandu', 'Kavrepalanchok', 'Lalitpur', 'Nuwakot', 'Rasuwa', 'Sindhupalchok', 'Chitwan', 'Makwanpur'],
-                value : ['sindhuli', 'ramechhap', 'dolakha', 'bhaktapur', 'dhading', 'kathmandu', 'kavrepalanchok', 'lalitpur', 'nuwakot', 'rasuwa', 'sindhupalchok', 'chitwan', 'makwanpur']
-            },
-            gandaki : {
-                text : ['Baglung', 'Gorkha', 'Kaski', 'Lamjung', 'Manang', 'Mustang', 'Myagdi', 'Nawalpur', 'Parbat', 'Syangja', 'Tanahun'],
-                value : ['baglung', 'gorkha', 'kaski', 'lamjung', 'manang', 'mustang', 'myagdi', 'nawalpur', 'parbat', 'syangja', 'tanahun']
-            },
-            province5 : {
-                text : ['Kapilvastu', 'Parasi', 'Rupandehi', 'Arghakhanchi', 'Gulmi', 'Palpa', 'Dang', 'Pyuthan', 'Rolpa', 'Rukum ( Eastern )', 'Banke', 'Bardiya'],
-                value : ['kapilvastu', 'parasi', 'rupandehi', 'arghakhanchi', 'gulmi', 'palpa', 'dang', 'pyuthan', 'rolpa', 'rukum(eastern)', 'banke', 'bardiya']
-            },
-            karnali : {
-                text :['Rukum ( Western )', 'Salyan', 'Dolpa', 'Humla', 'Jumla', 'Kalikot', 'Mugu', 'Surkhet', 'Dailekh', 'Jajarkot'] ,
-                value : ['rukum(western)', 'salyan', 'dolpa', 'humla', 'jumla', 'kalikot', 'mugu', 'surkhet', 'dailekh', 'jajarkot']
-            },
-            sudurpaschim : {
-                text : ['Kailali', 'Achham', 'Doti', 'Bajhang', 'Bajura', 'Kanchanpur', 'Dadeldhura', 'Baitadi', 'Darchula'],
-                value : ['kailali', 'achham', 'doti', 'bajhang', 'bajura', 'kanchanpur', 'dadeldhura', 'baitadi', 'darchula']
-            }
-        }
-    };
-
-function removeAllOptions(sel, removeGrp) {
-    var len, groups, par;
-    if (removeGrp) {
-        groups = sel.getElementsByTagName('optgroup');
-        len = groups.length;
-        for (var i=len; i; i--) {
-            sel.removeChild( groups[i-1] );
-        }
-    }
-
-    len = sel.options.length;
-    for (var i=len; i; i--) {
-        par = sel.options[i-1].parentNode;
-        par.removeChild( sel.options[i-1] );
-    }
-}
-
-function appendDataToSelect(sel, obj) {
-    var f = document.createDocumentFragment();
-    var labels = [], group, opts;
-
-    function addOptions(obj) {
-        var f = document.createDocumentFragment();
-        var o;
-
-        for (var i=0, len=obj.text.length; i< len; i++) {
-            o = document.createElement('option');
-            o.appendChild( document.createTextNode( obj.text[i] ) );
-
-            if ( obj.value ) {
-                o.value = obj.value[i];
-            }
-
-            f.appendChild(o);
-        }
-        return f;
-    }
-
-    if ( obj.text ) {
-        opts = addOptions(obj);
-        f.appendChild(opts);
-    } else {
-        for ( var prop in obj ) {
-            if ( obj.hasOwnProperty(prop) ) {
-                labels.push(prop);
-            }
-        }
-
-        for (var i=0, len=labels.length; i< len; i++) {
-            group = document.createElement('optgroup');
-            group.label = labels[i];
-            f.appendChild(group);
-            opts = addOptions(obj[ labels[i] ] );
-            group.appendChild(opts);
-        }
-    }
-    sel.appendChild(f);
-}
-
-document.forms['personalInfoForm'].elements['state'].onchange = function(e){
-   var relName = 'district';
-    var relList = this.form.elements[relName];
-    var obj = Select_List_Data[relName][this.value];
-    removeAllOptions(relList, true);
-    appendDataToSelect(relList, obj);
-};
-
-(function(){
-    var form = document.forms['personalInfoForm'];
-    var sel = form.elements['state'];
-    sel.selectIndex = 0;
-    var relName = 'district';
-    var rel = form.elements[relName];
-    var data = Select_List_Data[relName][sel.value];
-    appendDataToSelect(rel, data);
-}());
-
-{% endblock %}

@@ -17,7 +17,8 @@ from flask_login import (
 )
 
 import secrets
-# from sqlalchemy_sample import session
+import os
+from PIL import Image
 from . import app, db
 from . import login_manager
 from . import email as em
@@ -100,10 +101,12 @@ def user_register():
         user.set_password(form.password.data)
         db.session.add(user)
         if is_tutor(user):
-            tutor = Tutor(phone=form.phone.data, base=user)
-            db.session.add(tutor)
+            user.set_tutor()
+            user.update_tutor(phone=form.phone.data)
         else:
-            student = Student(phone=form.phone.data, base=user)
+            user.set_student()
+            user.update_student(phone=form.phone.data)
+        user.set_location()
         db.session.commit()
         #message = "Welcome to Find Your Tutor"
         #em.send_mail(username, role, message, email)
@@ -149,7 +152,7 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     f_name, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/images/profile_pic', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
     output_size = (125,125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
@@ -159,9 +162,9 @@ def save_picture(form_picture):
 
 def delete_picture(user_picture):
     f_name , f_ext = os.path.splitext(user_picture)
-    location = "/static/images/profile_pic"
+    location = "/static/profile_pics"
     picture_fn = f_name + f_ext
-    picture_path = os.path.join(app.root_path , 'static/profile_pic', picture_fn)
+    picture_path = os.path.join(app.root_path , 'static/profile_pics', picture_fn)
     os.remove(picture_path)
 
 
@@ -227,23 +230,21 @@ def student_personal_info():
         form.create_state_choices()
         if form.validate_on_submit():
             if form.profile_pic.data:
-                current = session.query(Student, User).filter(User.id==Student.user_id).filter_by(User.id==current_user.id).first()
-                print(current)
-                delete_picture(current.profile_pic)
-                picture_file = save_picture(form.picture.data)
-                current.image_file = picture_file
-            current.full_name = form.name.data
-            current.state = form.state.data
-            current.district = form.district.data
-            current.date_of_birth = form.date_of_birth.data
-            current.municipality = form.municipality.data
-            current.ward_no = form.ward_no.data
-            current.phone = form.phone.data 
-            current.guardian_name = form.guardian_name.data
-            current.guardian_address = form.guardian_address.data
-            current.guardian_phone = form.guardian_phone.data
-            db.session.commit()
-
+#                delete_picture(current_user.profile_pic)
+                current_user.update_student(profile_pic = save_picture(form.profile_pic.data))
+            current_user.update_student(
+                full_name=form.name.data, 
+                state=form.state.data,
+                district = form.district.data,
+                date_of_birth = form.date_of_birth.data,
+                municipality = form.municipality.data,
+                ward_no = form.ward_no.data,
+                phone = form.phone.data ,
+                guardian_name = form.guardian_name.data,
+                guardian_address = form.guardian_address.data,
+                guardian_phone = form.guardian_phone.data
+                
+            )
         user = User.query.filter_by(username=current_user.username).first()
 
         return render_template("personal-info.html", user=user, profilepic=url_for('static', 
@@ -350,21 +351,20 @@ def tutor_personal_info():
         user = User.query.filter_by(username=current_user.username).first()
         form = PersonalInfoForm()
         form.create_state_choices()
-        if form.validate_on_submit():
-            current = session.query(Tutor, User).filter(User.id==Tutor.user_id)
-            #.filter_by(User.id==current_user.id).first()
+        form.create_district_choices()
+        if form.validate_on_submit():   
             if form.profile_pic.data:
-                delete_picture(current.profile_pic)
-                picture_file = save_picture(form.picture.data)
-                current.image_file = picture_file
-            current.full_name = form.name.data
-            current.state = form.state.data
-            current.district = form.district.data
-            current.date_of_birth = form.date_of_birth.data
-            current.municipality = form.municipality.data
-            current.ward_no = form.ward_no.data
-            current.phone = form.phone.data
-            db.session.commit()
+#                delete_picture(current_user.profile_pic)
+                user.update_tutor(profile_pic = save_picture(form.profile_pic.data))
+            user.update_tutor(
+                full_name=form.name.data, 
+                state=form.state.data,
+                district = form.district.data,
+                date_of_birth = form.date_of_birth.data,
+                municipality = form.municipality.data,
+                ward_no = form.ward_no.data,
+                phone = form.phone.data 
+            )
 
         return render_template("personal-info.html", user=user, profilepic=url_for('static',
                 filename='profile_pics/tutor.jpg'), form=form)
