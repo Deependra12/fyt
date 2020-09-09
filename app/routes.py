@@ -16,9 +16,10 @@ from flask_login import (
     current_user,
 )
 
-import secrets
 import os
+import secrets
 from PIL import Image
+
 from . import app, db
 from . import login_manager
 from . import email as em
@@ -149,6 +150,9 @@ def logout():
     return redirect(url_for('login'))
 
 
+# Utility functions
+
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     f_name, f_ext = os.path.splitext(form_picture.filename)
@@ -162,21 +166,31 @@ def save_picture(form_picture):
 
 
 def delete_picture(user_picture):
-    f_name , f_ext = os.path.splitext(user_picture)
+    f_name, f_ext = os.path.splitext(user_picture)
     location = "/static/profile_pics"
     picture_fn = f_name + f_ext
-    picture_path = os.path.join(app.root_path , 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
     os.remove(picture_path)
+
+
+def fetch_default_profile_pic(user_obj):
+    if isinstance(user_obj, Tutor):
+        return url_for('static', filename='profile_pics/tutor.jpg')
+    else:
+        return url_for('static', filename='profile_pics/student.jpeg')
+
 
 def fetch_profile_pic(user_obj):
     try:
-        profile_pic = url_for('static',filename='profile_pics/' + getattr(user_obj,'profile_pic'))
-        return profile_pic
+        pic_name_from_db = getattr(user_obj, 'profile_pic')
+        picture_path = os.path.join(app.root_path, 'static/profile_pics')
+        if pic_name_from_db in os.listdir(picture_path):
+            profile_pic = url_for('static',filename='profile_pics/' + pic_name_from_db)
+            return profile_pic
+        return fetch_default_profile_pic(user_obj)
     except:
-        if isinstance(user_obj,Tutor):
-            return url_for('static',filename='profile_pics/tutor.jpg')
-        else:
-            return url_for('static', filename='profile_pics/student.jpeg')
+        return fetch_default_profile_pic(user_obj)
+
 
 # Student Routes
 
@@ -241,7 +255,7 @@ def student_personal_info():
         form.create_district_choices()
         if form.validate_on_submit():
             if form.profile_pic.data:
-#                delete_picture(current_user.profile_pic)
+                # delete_picture(current_user.profile_pic)
                 current_user.update_student(profile_pic = save_picture(form.profile_pic.data))
             current_user.update_student(
                 full_name=form.name.data, 
@@ -291,7 +305,7 @@ def student_courses():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        student = Student.query.filter_by(id=user.id).first()
+        student = Student.query.filter_by(user_id=user.id).first()
         return render_template("my-courses.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, values='')
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor'))
@@ -303,7 +317,7 @@ def student_followed_tutors():
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
-        student = Student.query.filter_by(id=user.id).first()
+        student = Student.query.filter_by(user_id=user.id).first()
         return render_template('my-tutors.html', profilepic= fetch_profile_pic(student), user=user)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_followers'))
@@ -371,7 +385,7 @@ def tutor_personal_info():
         form.create_district_choices()
         if form.validate_on_submit():   
             if form.profile_pic.data:
-#                delete_picture(current_user.profile_pic)
+                # delete_picture(current_user.profile_pic)
                 user.update_tutor(profile_pic = save_picture(form.profile_pic.data))
             user.update_tutor(
                 full_name=form.name.data, 
