@@ -165,9 +165,9 @@ class LogoutMenuLink(MenuLink):
 
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
-admin.add_view(CustomView(Student, db.session)) 
-admin.add_view(CustomView(Tutor, db.session)) 
-
+admin.add_view(UserView(User, db.session))
+admin.add_view(CustomView(Student, db.session))
+admin.add_view(CustomView(Tutor, db.session))
 admin.add_view(CustomView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
 

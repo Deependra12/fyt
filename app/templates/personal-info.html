@@ -22,7 +22,7 @@
             <div class="form-group col-lg-6">
                 {{ form.name.label(class='form-control-label') }}
                 {% if form.name.errors %}
-                    {{form.name(class="form-control is-invalid", value=user_obj.full_name)}}
+                    {{form.name(class="form-control is-invalid", value=user_obj.full_name or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.name.errors %}
                         <span>
@@ -31,7 +31,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.name(class="form-control", value=user_obj.full_name)}}
+                    {{form.name(class="form-control", value=user_obj.full_name or '')}}
                 {% endif %}
             </div>
 
@@ -94,7 +94,7 @@
             <div class="form-group col-lg-6">
                 {{ form.municipality.label(class='form-control-label') }}
                 {% if form.municipality.errors %}
-                    {{form.municipality(class="form-control is-invalid", value=user_obj.municipality)}}
+                    {{form.municipality(class="form-control is-invalid", value=user_obj.municipality or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.municipality.errors %}
                         <span>
@@ -103,14 +103,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.municipality(class="form-control", value=user_obj.municipality)}}
+                    {{form.municipality(class="form-control", value=user_obj.municipality or '')}}
                 {% endif %}
             </div>
     
             <div class="form-group col-lg-6">
                 {{ form.ward_no.label(class='form-control-label') }}
                 {% if form.ward_no.errors %}
-                    {{form.ward_no(class="form-control is-invalid", value=user_obj.ward_no)}}
+                    {{form.ward_no(class="form-control is-invalid", value=user_obj.ward_no or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.ward_no.errors %}
                         <span>
@@ -119,7 +119,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.ward_no(class="form-control",value=user_obj.ward_no)}}
+                    {{form.ward_no(class="form-control",value=user_obj.ward_no or '')}}
                 {% endif %}
             </div>
         </div>
@@ -128,7 +128,7 @@
             <div class="form-group col-lg-6">
                 {{ form.phone.label(class='form-control-label') }}
                 {% if form.phone.errors %}
-                    {{form.phone(class="form-control is-invalid", value=user_obj.phone)}}
+                    {{form.phone(class="form-control is-invalid", value=user_obj.phone or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.phone.errors %}
                         <span>
@@ -137,7 +137,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.phone(class="form-control", value=user_obj.phone)}}
+                    {{form.phone(class="form-control", value=user_obj.phone or '')}}
                 {% endif %}
             </div>
         </div>
@@ -145,9 +145,9 @@
         {% if current_user.role == "student" %}
         <div class="form-row">
             <div class="form-group col-lg-4">
-                {{ form.guardian_name.label(class='form-control-label', value=user_obj.guardian_name) }}
+                {{ form.guardian_name.label(class='form-control-label') }}
                 {% if form.guardian_name.errors %}
-                    {{form.guardian_name(class="form-control is-invalid")}}
+                    {{form.guardian_name(class="form-control is-invalid", value=user_obj.guardian_name or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_name.errors %}
                         <span>
@@ -156,14 +156,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_name(class="form-control", value=user_obj.guardian_name)}}
+                    {{form.guardian_name(class="form-control", value=user_obj.guardian_name or '')}}
                 {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_address.label(class='form-control-label')}}
                 {% if form.guardian_address.errors %}
-                    {{form.guardian_address(class="form-control is-invalid", value=user_obj.guardian_address)}}
+                    {{form.guardian_address(class="form-control is-invalid", value=user_obj.guardian_address or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_address.errors %}
                         <span>
@@ -172,14 +172,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_address(class="form-control", value=user_obj.guardian_address)}}
+                    {{form.guardian_address(class="form-control", value=user_obj.guardian_address or '')}}
                 {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_phone.label(class='form-control-label')}}
                 {% if form.guardian_phone.errors %}
-                    {{form.guardian_phone(class="form-control is-invalid", value=user_obj.guardian_address)}}
+                    {{form.guardian_phone(class="form-control is-invalid", value=user_obj.guardian_address or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_phone.errors %}
                         <span>
@@ -188,7 +188,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_phone(class="form-control", value=user_obj.guardian_phone)}}
+                    {{form.guardian_phone(class="form-control", value=user_obj.guardian_phone or '')}}
                 {% endif %}
             </div>            
         </div>

@@ -116,7 +116,7 @@ class StudentPersonalInfoForm(PersonalInfoForm):
 class AccountInfoForm(FlaskForm):
     old_password = PasswordField('Give Your Old Password', validators=[DataRequired()])
     new_password = PasswordField('New Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
     submit = SubmitField('Update')
 
 
@@ -139,9 +139,9 @@ class MyCourseForm(FlaskForm):
 
 class MyProfileForm(FlaskForm):
     experience = StringField ("Experience")
-    experience_certificate = MultipleFileField("Certifiaction for your experience")
+    experience_certificate = MultipleFileField("Certification for your experience")
     qualification = StringField ("Qualification")
-    qualification_certificate = MultipleFileField("Certifiaction for your qualification")
+    qualification_certificate = MultipleFileField("Certification for your qualification")
     achievement = StringField ("Achievement")
-    achievement_certificate = MultipleFileField("Certifiaction for your achievement")
+    achievement_certificate = MultipleFileField("Certification for your achievement")
 
