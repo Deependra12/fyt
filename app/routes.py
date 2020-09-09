@@ -32,6 +32,7 @@ from .forms import (
     StudentPersonalInfoForm,
     AccountInfoForm,
     MyCourseForm,
+    MyProfileForm,
 )
 from .models import User, Student, Tutor, Location
 
@@ -184,8 +185,10 @@ def student():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
-        return render_template('student.html', user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'))
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template('student.html', user=user, student=student, profilepic= url_for('static',
+                filename='profile_pics/'+student.profile_pic) or url_for('static',
+                filename='profile_pics/student.jpeg'))
     abort(404)
 
 
@@ -206,15 +209,17 @@ def student_location():
             location.place_details = form.place.data
             db.session.commit()
         else:
-            new_location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
+            new_location = Location(travel_distance=form.travel_distance.data,latitude=form.latitude.data,
                 longitude=form.longitude.data, place_details=form.place.data, User=current_user )
             db.session.add(new_location)
             db.session.commit()
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("mylocation.html", user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), form=form, google_api_key=google_api, 
+        student=Student.query.filter_by(user_id=user.id).first()
+        return render_template("mylocation.html", user=user, student=student, profilepic= url_for('static',
+                filename='profile_pics/'+student.profile_pic) or url_for('static', 
+                filename='profile_pics/student.jpeg'), form=form, google_api_key=google_api, 
             opencage_api_key=opencage_api, values=values)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_location'))
@@ -246,8 +251,9 @@ def student_personal_info():
                 
             )
         user = User.query.filter_by(username=current_user.username).first()
-
-        return render_template("personal-info.html", user=user, profilepic=url_for('static', 
+        student=Student.query.filter_by(user_id=user.id).first()
+        return render_template("personal-info.html", user=user, user_obj=student, profilepic= url_for('static',
+                filename='profile_pics/'+student.profile_pic) or url_for('static', 
                 filename='profile_pics/student.jpeg'), form=form)
 
 
@@ -259,8 +265,10 @@ def student_account_info():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/student.jpeg'), form=form)
+        student=Student.query.filter_by(user_id=user.id).first()
+        return render_template("account-info.html", user=user, student=student, profilepic= url_for('static',
+                filename='profile_pics/'+student.profile_pic) or url_for('static', 
+                filename='profile_pics/student.jpeg'), form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_account_info'))
 
@@ -274,10 +282,12 @@ def student_courses():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("my-courses.html", user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), form=form, values='')
+        student = Student.query.filter_by(id=user.id).first()
+        return render_template("my-courses.html", user=user, student=student, profilepic= url_for('static',
+                filename='profile_pics/'+student.profile_pic) or url_for('static', 
+                filename='profile_pics/student.jpeg'), form=form, values='')
     elif user.username == current_user.username and is_tutor(user):
-        return redirect(url_for('tutor_login'))
+        return redirect(url_for('tutor'))
 
 
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
@@ -286,8 +296,10 @@ def student_followed_tutors():
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
-        return render_template('my-tutors.html', profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), user=user)
+        student = Student.query.filter_by(id=user.id).first()
+        return render_template('my-tutors.html', profilepic= url_for('static', 
+                filename='profile_pics/'+student.profile_pic) or url_for('static', 
+                filename='profile_pics/student.jpeg'), user=user)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_followers'))
         
@@ -309,8 +321,10 @@ def tutor():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
-        return render_template("tutor.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'))
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("tutor.html", user=user, tutor=tutor, profilepic= url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static',
+                filename='profile_pics/tutor.jpg'))
     abort(404)
 
 
@@ -339,8 +353,10 @@ def tutor_location():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_location'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("mylocation.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form, google_api_key=google_api, 
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("mylocation.html", user=user, tutor=tutor, profilepic= url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static', 
+                filename='profile_pics/tutor.jpg'), form=form, google_api_key=google_api, 
             opencage_api_key=opencage_api)
 
 
@@ -365,8 +381,9 @@ def tutor_personal_info():
                 ward_no = form.ward_no.data,
                 phone = form.phone.data 
             )
-
-        return render_template("personal-info.html", user=user, profilepic=url_for('static',
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("personal-info.html", user=user, user_obj=tutor, profilepic= url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static', 
                 filename='profile_pics/tutor.jpg'), form=form)
     else:
         return redirect(url_for('student_personal_info'))
@@ -380,8 +397,10 @@ def tutor_account_info():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_account_info'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("account-info.html", user=user, tutor=tutor, profilepic=url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static', 
+                filename='profile_pics/tutor.jpg'), form=form)
 
 
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
@@ -396,10 +415,27 @@ def tutor_courses():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return redirect(url_for('student_login'))
+        return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("my-courses.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form, values=mock_courses)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static',
+                filename='profile_pics/tutor.jpg'), form=form, values=mock_courses)
+
+
+@app.route('/tutor/my-profile', methods=['POST','GET'])
+@login_required
+def tutor_educational_profile():
+    form = MyProfileForm()
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and is_tutor(user):
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template('my-profile.html', profilepic=url_for('static',
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static', 
+                filename='profile_pics/tutor.jpg'), user=user, tutor=tutor, form=form)
+    elif user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
@@ -410,8 +446,10 @@ def tutor_followers():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_followed_tutors'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template('my-followers.html', profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), user=user)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template('my-followers.html', profilepic= url_for('static', 
+                filename='profile_pics/'+tutor.profile_pic) or url_for('static', 
+                filename='profile_pics/tutor.jpg'), tutor=tutor, user=user)
 
     
 # Error Handlers

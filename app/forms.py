@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label, TimeField
+from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label, TimeField, MultipleFileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
 import json
@@ -135,4 +135,13 @@ class MyCourseForm(FlaskForm):
         for d in range(500, 5500, 500):
             cost.append('Rs. ' + str(d - 500) + ' - ' + 'Rs. ' + str(d))
         cost_choice = create_choices_from_list(cost)
-        self.cost.choices = cost_choice    
+        self.cost.choices = cost_choice
+
+class MyProfileForm(FlaskForm):
+    experience = StringField ("Experience")
+    experience_certificate = MultipleFileField("Certifiaction for your experience")
+    qualification = StringField ("Qualification")
+    qualification_certificate = MultipleFileField("Certifiaction for your qualification")
+    achievement = StringField ("Achievement")
+    achievement_certificate = MultipleFileField("Certifiaction for your achievement")
+
