@@ -220,26 +220,20 @@ def student_location():
     form.create_travel_distance_choice()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
-    location = Location.query.filter_by(User=current_user)
-    values = location
-    if form.validate_on_submit():
-        if location:
-            location.travel_distance = form.travel_distance.data
-            location.latitude = form.latitude.data 
-            location.longitude = form.longitude.data
-            location.place_details = form.place.data
-            db.session.commit()
-        else:
-            new_location = Location(travel_distance=form.travel_distance.data,latitude=form.latitude.data,
-                longitude=form.longitude.data, place_details=form.place.data, User=current_user )
-            db.session.add(new_location)
-            db.session.commit()
     user = User.query.filter_by(username=current_user.username).first()
+    if form.validate_on_submit():
+        user.update_location(
+            travel_distance=form.travel_distance.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            place_details=form.place.data
+        )
+    location = Location.query.filter_by(user_id=user.id).first()
     
     if user.username == current_user.username and not is_tutor(user):
         student=Student.query.filter_by(user_id=user.id).first()
         return render_template("mylocation.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, google_api_key=google_api,
-            opencage_api_key=opencage_api, values=values)
+            opencage_api_key=opencage_api, location=location)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_location'))
 
@@ -352,27 +346,22 @@ def tutor_location():
     form.create_travel_distance_choice()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
-    location = Location.query.filter_by(User=current_user)
-    if form.validate_on_submit():
-        if location:
-            location.travel_distance = form.travel_distance.data
-            location.latitude = form.latitude.data 
-            location.longitude = form.longitude.data
-            location.place_details = form.place.data
-            db.session.commit()
-        else:
-            new_location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
-                longitude=form.longitude.data, place_details=form.place.data, User=current_user )
-            db.session.add(new_location)
-            db.session.commit()
     user = User.query.filter_by(username=current_user.username).first()
+    if form.validate_on_submit():
+        user.update_location(
+            travel_distance=form.travel_distance.data,
+            latitude=form.latitude.data,
+            longitude=form.longitude.data,
+            place_details=form.place.data
+        )
+    location = Location.query.filter_by(user_id=user.id).first()
     
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_location'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
         return render_template("mylocation.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor), form=form, google_api_key=google_api,
-            opencage_api_key=opencage_api)
+            opencage_api_key=opencage_api, location=location)
 
 
 @app.route('/tutor/personal-info', methods=['POST' ,'GET'])

@@ -16,89 +16,6 @@
       }
 {% endblock %}
 
-{% block document_javascript %}
-
-if (document.getElementById('latitude-field').value && document.getElementById('longitude-field').value){
-    var map, marker;    
-    function initMap() {
-        var center = {lat: parseFloat(document.getElementById('latitude-field').value), 
-            lng: parseFloat(document.getElementById('longitude-field').value)};
-        map = new google.maps.Map(
-            document.getElementById('map'), {zoom: 10, center: center});
-        marker = new google.maps.Marker({position:center , map: map});
-    }
-}
-else{
-    var map, marker;
-    function initMap() {
-            var center = {lat: 27.619550810842103, lng:85.53862810134888 };
-            map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 10, center: center});
-            google.maps.event.addListener(map,'click',
-                function(event){
-                    placeMarker(event.latLng);
-                    document.getElementById('latitude-field').value=event.latLng.lat();
-                    document.getElementById('longitude-field').value=event.latLng.lng();
-                    setPlace(event.latLng.lat(),event.latLng.lng());
-            });
-    <!--        marker = new google.maps.Marker({position:place , map: map});-->
-        }
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-                    var pos = {lat: position.coords.latitude,lng: position.coords.longitude};
-                    placeMarker(pos);
-                    map.setCenter(pos);
-                    document.getElementById('latitude-field').value=pos.lat;
-                    document.getElementById('longitude-field').value=pos.lng;
-                    setPlace(pos.lat,pos.lng);
-        }, function(){
-                console.error('Geolocation failed')
-            });
-        }
-    else{
-            console.log("No Geolocation service")
-    }
-
-
-    function placeMarker(location){
-        if(marker){
-            marker.setPosition(location);
-        }
-        else{
-            marker=new google.maps.Marker({
-                position: location,
-                map:map
-            });
-        }
-    }
-
-    function setPlace(latitude,longitude){
-        var apikey = '{{ opencage_api_key }}';
-        var api_url =  'https://api.opencagedata.com/geocode/v1/json';
-        var request_url = api_url + '?key=' + apikey +
-                '&q=' + encodeURIComponent(latitude + ',' + longitude) +
-                '&pretty=1&no_annotations=1';
-        var request = new XMLHttpRequest();
-        request.open('GET', request_url, true);
-        request.onload = function() {
-            if (request.status == 200) {
-                var data = JSON.parse(request.responseText);
-                document.getElementById('place-field').value = data.results[0].formatted;
-            }
-        };
-        request.send();
-    }
-}
-{% endblock %}
-
-{% block additional_script%}
-     <script defer
-        src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
-    </script>
-{%endblock%}
-
-
 {% block content %}
     <div class="container">
 
@@ -110,7 +27,7 @@ else{
             <div class="form-row">
                 <div class="form-group col-lg-6">
                     {{ form.travel_distance.label(class='form-control-label') }}
-                    <!-- {{ form.create_travel_distance_choice() }} -->
+                    {% set z = form.travel_distance.process_data(location.travel_distance) %}
                     {{ form.travel_distance(class='form-control') }}
                 </div>
             </div>
@@ -118,17 +35,17 @@ else{
              <div class="form-row">
                 <div class="form-group col-lg-6">
                     {{ form.latitude.label(class='form-control-label')}}
-                    {{ form.latitude(class='form-control', id='latitude-field') }}
+                    {{ form.latitude(class='form-control', id='latitude-field', value=location.latitude or '') }}
                 </div>
 
                 <div class="form-group col-lg-6">
                     {{ form.longitude.label(class='form-control-label')}}
-                    {{ form.longitude(class='form-control', id='longitude-field') }}
+                    {{ form.longitude(class='form-control', id='longitude-field', value=location.longitude or '') }}
                 </div>
 
                  <div class="form-group col-lg-6">
                     {{ form.place.label(class='form-control-label')}}
-                    {{ form.place(class='form-control', id='place-field') }}
+                    {{ form.place(class='form-control', id='place-field', value=location.place_details or '') }}
                 </div>
             </div>
 
@@ -148,3 +65,92 @@ else{
     <div id="map"></div>
 
 {% endblock %}
+
+{% block document_javascript %}
+
+if (document.getElementById('latitude-field').value && document.getElementById('longitude-field').value){
+    var map, marker;
+    function initMap() {
+        var center = {lat: parseFloat(document.getElementById('latitude-field').value),
+            lng: parseFloat(document.getElementById('longitude-field').value)};
+        map = new google.maps.Map(
+            document.getElementById('map'), {zoom: 10, center: center});
+        google.maps.event.addListener(map,'click',
+                function(event){
+                    placeMarker(event.latLng);
+                    document.getElementById('latitude-field').value=event.latLng.lat();
+                    document.getElementById('longitude-field').value=event.latLng.lng();
+                    setPlace(event.latLng.lat(),event.latLng.lng());
+            });
+        marker = new google.maps.Marker({position:center , map: map});
+    }
+}
+else{
+    var map, marker;
+    function initMap() {
+            var center = {lat: 27.619550810842103, lng:85.53862810134888 };
+            map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 10, center: center});
+            google.maps.event.addListener(map,'click',
+                function(event){
+                    placeMarker(event.latLng);
+                    document.getElementById('latitude-field').value=event.latLng.lat();
+                    document.getElementById('longitude-field').value=event.latLng.lng();
+                    setPlace(event.latLng.lat(),event.latLng.lng());
+            });
+        }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {lat: position.coords.latitude,lng: position.coords.longitude};
+                    placeMarker(pos);
+                    map.setCenter(pos);
+                    document.getElementById('latitude-field').value=pos.lat;
+                    document.getElementById('longitude-field').value=pos.lng;
+                    setPlace(pos.lat,pos.lng);
+        }, function(){
+                console.error('Geolocation failed')
+            });
+        }
+    else{
+            console.log("No Geolocation service")
+    }
+}
+
+function placeMarker(location){
+    if(marker){
+        marker.setPosition(location);
+    }
+    else{
+        marker=new google.maps.Marker({
+            position: location,
+            map:map
+        });
+    }
+}
+
+function setPlace(latitude,longitude){
+    var apikey = '{{ opencage_api_key }}';
+    var api_url =  'https://api.opencagedata.com/geocode/v1/json';
+    var request_url = api_url + '?key=' + apikey +
+            '&q=' + encodeURIComponent(latitude + ',' + longitude) +
+            '&pretty=1&no_annotations=1';
+    var request = new XMLHttpRequest();
+    request.open('GET', request_url, true);
+    request.onload = function() {
+        if (request.status == 200) {
+            var data = JSON.parse(request.responseText);
+            document.getElementById('place-field').value = data.results[0].formatted;
+        }
+    };
+    request.send();
+}
+
+{% endblock %}
+
+
+{% block additional_script%}
+     <script defer
+        src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
+{%endblock%}
