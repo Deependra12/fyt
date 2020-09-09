@@ -22,7 +22,7 @@
             <div class="form-group col-lg-6">
                 {{ form.name.label(class='form-control-label') }}
                 {% if form.name.errors %}
-                    {{form.name(class="form-control is-invalid")}}
+                    {{form.name(class="form-control is-invalid", value=user_obj.full_name or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.name.errors %}
                         <span>
@@ -31,14 +31,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.name(class="form-control")}}
+                    {{form.name(class="form-control", value=user_obj.full_name or '')}}
                 {% endif %}
             </div>
 
             <div class="form-group col-lg-6">
                 {{ form.date_of_birth.label(class='form-control-label') }}
                 {% if form.date_of_birth.errors %}
-                    {{form.date_of_birth(class="form-control is-invalid", type='date')}}
+                    {{form.date_of_birth(class="form-control is-invalid", type='date', value=user_obj.date_of_birth)}}
                     <div class="invalid-feedback">
                     {% for error in form.date_of_birth.errors %}
                         <span>
@@ -47,7 +47,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.date_of_birth(class="form-control", type='date')}}
+                    {{form.date_of_birth(class="form-control", type='date',  value=user_obj.date_of_birth)}}
                 {% endif %}
             </div>
         </div>
@@ -55,6 +55,7 @@
         <div class="form-row">
             <div class="form-group col-lg-6">
                 {{ form.state.label(class='form-control-label') }}
+                {% set z = form.state.process_data(user_obj.state) %}
                 {% if form.state.errors %}
                     {{form.state(class="form-control is-invalid")}}
                     <div class="invalid-feedback">
@@ -72,6 +73,7 @@
            
             <div class="form-group col-lg-6">
                 {{ form.district.label(class='form-control-label') }}
+                {% set z = form.district.process_data(user_obj.district) %}
                 {% if form.district.errors %}
                     {{form.district(class="form-control is-invalid")}}
                     <div class="invalid-feedback">
@@ -92,7 +94,7 @@
             <div class="form-group col-lg-6">
                 {{ form.municipality.label(class='form-control-label') }}
                 {% if form.municipality.errors %}
-                    {{form.municipality(class="form-control is-invalid")}}
+                    {{form.municipality(class="form-control is-invalid", value=user_obj.municipality or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.municipality.errors %}
                         <span>
@@ -101,14 +103,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.municipality(class="form-control")}}
+                    {{form.municipality(class="form-control", value=user_obj.municipality or '')}}
                 {% endif %}
             </div>
     
             <div class="form-group col-lg-6">
                 {{ form.ward_no.label(class='form-control-label') }}
                 {% if form.ward_no.errors %}
-                    {{form.ward_no(class="form-control is-invalid")}}
+                    {{form.ward_no(class="form-control is-invalid", value=user_obj.ward_no or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.ward_no.errors %}
                         <span>
@@ -117,7 +119,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.ward_no(class="form-control")}}
+                    {{form.ward_no(class="form-control",value=user_obj.ward_no or '')}}
                 {% endif %}
             </div>
         </div>
@@ -126,7 +128,7 @@
             <div class="form-group col-lg-6">
                 {{ form.phone.label(class='form-control-label') }}
                 {% if form.phone.errors %}
-                    {{form.phone(class="form-control is-invalid")}}
+                    {{form.phone(class="form-control is-invalid", value=user_obj.phone or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.phone.errors %}
                         <span>
@@ -135,7 +137,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.phone(class="form-control")}}
+                    {{form.phone(class="form-control", value=user_obj.phone or '')}}
                 {% endif %}
             </div>
         </div>
@@ -145,7 +147,7 @@
             <div class="form-group col-lg-4">
                 {{ form.guardian_name.label(class='form-control-label') }}
                 {% if form.guardian_name.errors %}
-                    {{form.guardian_name(class="form-control is-invalid")}}
+                    {{form.guardian_name(class="form-control is-invalid", value=user_obj.guardian_name or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_name.errors %}
                         <span>
@@ -154,14 +156,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_name(class="form-control")}}
+                    {{form.guardian_name(class="form-control", value=user_obj.guardian_name or '')}}
                 {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_address.label(class='form-control-label')}}
                 {% if form.guardian_address.errors %}
-                    {{form.guardian_address(class="form-control is-invalid")}}
+                    {{form.guardian_address(class="form-control is-invalid", value=user_obj.guardian_address or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_address.errors %}
                         <span>
@@ -170,14 +172,14 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_address(class="form-control")}}
+                    {{form.guardian_address(class="form-control", value=user_obj.guardian_address or '')}}
                 {% endif %}
             </div>
 
             <div class="form-group col-lg-4">
                 {{ form.guardian_phone.label(class='form-control-label')}}
                 {% if form.guardian_phone.errors %}
-                    {{form.guardian_phone(class="form-control is-invalid")}}
+                    {{form.guardian_phone(class="form-control is-invalid", value=user_obj.guardian_address or '')}}
                     <div class="invalid-feedback">
                     {% for error in form.guardian_phone.errors %}
                         <span>
@@ -186,7 +188,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.guardian_phone(class="form-control")}}
+                    {{form.guardian_phone(class="form-control", value=user_obj.guardian_phone or '')}}
                 {% endif %}
             </div>            
         </div>

@@ -16,9 +16,10 @@ from flask_login import (
     current_user,
 )
 
-import secrets
 import os
+import secrets
 from PIL import Image
+
 from . import app, db
 from . import login_manager
 from . import email as em
@@ -32,6 +33,7 @@ from .forms import (
     StudentPersonalInfoForm,
     AccountInfoForm,
     MyCourseForm,
+    MyProfileForm,
 )
 from .models import User, Student, Tutor, Location
 
@@ -148,6 +150,9 @@ def logout():
     return redirect(url_for('login'))
 
 
+# Utility functions
+
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     f_name, f_ext = os.path.splitext(form_picture.filename)
@@ -161,11 +166,30 @@ def save_picture(form_picture):
 
 
 def delete_picture(user_picture):
-    f_name , f_ext = os.path.splitext(user_picture)
+    f_name, f_ext = os.path.splitext(user_picture)
     location = "/static/profile_pics"
     picture_fn = f_name + f_ext
-    picture_path = os.path.join(app.root_path , 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
     os.remove(picture_path)
+
+
+def fetch_default_profile_pic(user_obj):
+    if isinstance(user_obj, Tutor):
+        return url_for('static', filename='profile_pics/tutor.jpg')
+    else:
+        return url_for('static', filename='profile_pics/student.jpeg')
+
+
+def fetch_profile_pic(user_obj):
+    try:
+        pic_name_from_db = getattr(user_obj, 'profile_pic')
+        picture_path = os.path.join(app.root_path, 'static/profile_pics')
+        if pic_name_from_db in os.listdir(picture_path):
+            profile_pic = url_for('static',filename='profile_pics/' + pic_name_from_db)
+            return profile_pic
+        return fetch_default_profile_pic(user_obj)
+    except:
+        return fetch_default_profile_pic(user_obj)
 
 
 # Student Routes
@@ -184,8 +208,8 @@ def student():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
-        return render_template('student.html', user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'))
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template('student.html', user=user, student=student, profilepic= fetch_profile_pic(student))
     abort(404)
 
 
@@ -206,15 +230,15 @@ def student_location():
             location.place_details = form.place.data
             db.session.commit()
         else:
-            new_location = Location(travel_distance=form.travel_distance.data, latitude=form.latitude.data, 
+            new_location = Location(travel_distance=form.travel_distance.data,latitude=form.latitude.data,
                 longitude=form.longitude.data, place_details=form.place.data, User=current_user )
             db.session.add(new_location)
             db.session.commit()
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("mylocation.html", user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), form=form, google_api_key=google_api, 
+        student=Student.query.filter_by(user_id=user.id).first()
+        return render_template("mylocation.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, google_api_key=google_api,
             opencage_api_key=opencage_api, values=values)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_location'))
@@ -228,9 +252,10 @@ def student_personal_info():
     else:
         form = StudentPersonalInfoForm()
         form.create_state_choices()
+        form.create_district_choices()
         if form.validate_on_submit():
             if form.profile_pic.data:
-#                delete_picture(current_user.profile_pic)
+                # delete_picture(current_user.profile_pic)
                 current_user.update_student(profile_pic = save_picture(form.profile_pic.data))
             current_user.update_student(
                 full_name=form.name.data, 
@@ -246,21 +271,27 @@ def student_personal_info():
                 
             )
         user = User.query.filter_by(username=current_user.username).first()
-
-        return render_template("personal-info.html", user=user, profilepic=url_for('static', 
-                filename='profile_pics/student.jpeg'), form=form)
+        student=Student.query.filter_by(user_id=user.id).first()
+        return render_template("personal-info.html", user=user, user_obj=student, profilepic= fetch_profile_pic(student), form=form)
 
 
 @app.route('/student/account-info', methods=['POST','GET'])
 @login_required
 def student_account_info():
     form = AccountInfoForm()
-
     user = User.query.filter_by(username=current_user.username).first()
-    
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/student.jpeg'), form=form)
+        student = Student.query.filter_by(user_id=user.id).first()
+        if form.validate_on_submit():
+            if not user.check_password(form.old_password.data):
+                flash("Wrong password!","danger")
+                return redirect(url_for('student_account_info'))
+            else:
+                user.set_password(form.new_password.data)
+                db.session.commit()
+                flash("Successfully changed password!", "success")
+                return redirect(url_for('student'))
+        return render_template("account-info.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_account_info'))
 
@@ -274,10 +305,10 @@ def student_courses():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return render_template("my-courses.html", user=user, profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), form=form, values='')
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template("my-courses.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, values='')
     elif user.username == current_user.username and is_tutor(user):
-        return redirect(url_for('tutor_login'))
+        return redirect(url_for('tutor'))
 
 
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
@@ -286,8 +317,8 @@ def student_followed_tutors():
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
-        return render_template('my-tutors.html', profilepic=url_for('static', 
-            filename='profile_pics/student.jpeg'), user=user)
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template('my-tutors.html', profilepic= fetch_profile_pic(student), user=user)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_followers'))
         
@@ -309,8 +340,8 @@ def tutor():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
-        return render_template("tutor.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'))
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("tutor.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor))
     abort(404)
 
 
@@ -339,8 +370,8 @@ def tutor_location():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_location'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("mylocation.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form, google_api_key=google_api, 
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("mylocation.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor), form=form, google_api_key=google_api,
             opencage_api_key=opencage_api)
 
 
@@ -354,7 +385,7 @@ def tutor_personal_info():
         form.create_district_choices()
         if form.validate_on_submit():   
             if form.profile_pic.data:
-#                delete_picture(current_user.profile_pic)
+                # delete_picture(current_user.profile_pic)
                 user.update_tutor(profile_pic = save_picture(form.profile_pic.data))
             user.update_tutor(
                 full_name=form.name.data, 
@@ -365,9 +396,8 @@ def tutor_personal_info():
                 ward_no = form.ward_no.data,
                 phone = form.phone.data 
             )
-
-        return render_template("personal-info.html", user=user, profilepic=url_for('static',
-                filename='profile_pics/tutor.jpg'), form=form)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("personal-info.html", user=user, user_obj=tutor, profilepic= fetch_profile_pic(tutor), form=form)
     else:
         return redirect(url_for('student_personal_info'))
 
@@ -380,8 +410,17 @@ def tutor_account_info():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_account_info'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("account-info.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        if form.validate_on_submit():
+            if not user.check_password(form.old_password.data):
+                flash("Wrong password!","danger")
+                return redirect(url_for('tutor_account_info'))
+            else:
+                user.set_password(form.new_password.data)
+                db.session.commit()
+                flash("Successfully changed password!", "success")
+                return redirect(url_for('tutor'))
+        return render_template("account-info.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form)
 
 
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
@@ -396,10 +435,23 @@ def tutor_courses():
     user = User.query.filter_by(username=current_user.username).first()
     
     if user.username == current_user.username and not is_tutor(user):
-        return redirect(url_for('student_login'))
+        return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template("my-courses.html", user=user, profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), form=form, values=mock_courses)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form, values=mock_courses)
+
+
+@app.route('/tutor/my-profile', methods=['POST','GET'])
+@login_required
+def tutor_educational_profile():
+    form = MyProfileForm()
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and is_tutor(user):
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, form=form)
+    elif user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
@@ -410,8 +462,8 @@ def tutor_followers():
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_followed_tutors'))
     elif user.username == current_user.username and is_tutor(user):
-        return render_template('my-followers.html', profilepic=url_for('static',
-            filename='profile_pics/tutor.jpg'), user=user)
+        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        return render_template('my-followers.html', profilepic=fetch_profile_pic(tutor), tutor=tutor, user=user)
 
     
 # Error Handlers

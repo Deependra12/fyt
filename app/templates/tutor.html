@@ -4,17 +4,12 @@
     {{ user.username }}
 {% endblock %}
 
-{% block profilepic %} 
-<img class="image-responsive" style="width:200px;height:141.5px;"
-    src='{{ profilepic }}'/>
+{% block profilepic %}
+    <img class="image-responsive shadow rounded-circle img-size no-select"
+         style="width:200px;height:200px;" src='{{ profilepic }}'/>
 {% endblock %}
 
 {% block sidebar_menu %}
-
-    <li id="my-profile">
-        <a href="#"><i class="fas fa-id-badge"></i>
-            My Profile</a>
-    </li>
 
     <li id="my-followers">
         <a href="{{ url_for('tutor_followers') }}"><i class="fas fa-user-friends"></i>

@@ -284,6 +284,12 @@
                             </a>
                             {% endif %}
                         </li>
+                        {% if current_user.role == "tutor" %}
+                            <li id="my-profile">
+                                <a href=" {{ url_for('tutor_educational_profile') }} "><i class="fas fa-id-badge"></i>
+                                    My Profile</a>
+                            </li>
+                        {% endif %}
                         <li>
                             {% if current_user.role == "student" %}
                             <a href="{{url_for('student_account_info')}}"><i class="fas fa-user-circle"></i>
