@@ -1,0 +1,65 @@
+{% if user.role=='student' %}
+    {% extends 'student.html' %}
+{% else %}
+    {% extends 'tutor.html' %}
+{% endif %}
+
+{% block active %}
+    activateMenu('my-courses')
+{% endblock %}
+
+
+{% block content %}
+    <style>
+        .container{
+            padding: 3%;
+        }
+
+        .card{
+            margin-bottom: 6%;
+            background-color: #049BBA; 
+               
+        }
+
+        .card-body{
+            color:white;
+        }
+
+        .card-text{
+            height: 150px ;
+            color:white;
+            
+        }
+        
+    </style>
+    <div class="container-fluid">
+        <legend class="border-bottom mb-4 ">Courses</legend>
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title" >
+                                <a href="{{url_for('courses_by_id', id=course.id)}}">
+                                    {{ course.course_title }}
+                                </a>
+                                <a class="btn btn-secondary btn-sm " href="#" style="float:right;"> 
+                                    <i class="fas fa-plus"></i>
+                                    <span></span>
+                                </a>
+                            </h3>
+                            <h5 class="card-title">
+                                {{ course.course_level.title() }}
+                            </h5>
+                            <p class="card-text">
+                                {% if course.course_description %} 
+                                    {{ course.course_description }} 
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -98,6 +98,7 @@ class Course(db.Model):
     course_level = db.Column(db.String(100), nullable=False)
     course_description = db.Column(db.String(255))  
     mycourse = db.relationship('Mycourse', backref='Course', cascade="all, delete")
+    
 
 
 class Mycourse(db.Model):

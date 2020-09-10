@@ -7,6 +7,7 @@ from flask import (
     flash,
     session,
     abort,
+    jsonify,
 )
 
 from flask_login import (
@@ -35,7 +36,7 @@ from .forms import (
     MyCourseForm,
     MyProfileForm,
 )
-from .models import User, Student, Tutor, Location
+from .models import User, Student, Tutor, Location, Course
 
 
 def redirect_user(user):
@@ -456,7 +457,20 @@ def tutor_followers():
         tutor=Tutor.query.filter_by(user_id=user.id).first()
         return render_template('my-followers.html', profilepic=fetch_profile_pic(tutor), tutor=tutor, user=user)
 
+
+@app.route('/courses')
+@login_required
+def courses():
+    user = User.query.filter_by(username=current_user.username).first()
+    courses = Course.query.all()
+    return render_template('courses.html',profilepic=fetch_profile_pic(tutor),courses=courses,user=user)
     
+
+
+@app.route('/courses/<int:id>')
+def courses_by_id(id):
+    course = Course.query.filter_by(id=id).first_or_404()
+    return course.course_title
 # Error Handlers
 
 
