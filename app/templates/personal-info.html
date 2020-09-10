@@ -196,7 +196,7 @@
 
         <div class="form-row">
             <div class="form-group col-lg-4">
-                {{ form.profile_pic.label(class='form-control-label') }}
+                {{ form.profile_pic.label(class='form-control-label' ) }}
                 {% if form.profile_pic.errors %}
                     {{form.profile_pic(class="form-control is-invalid")}}
                     <div class="invalid-feedback">
@@ -211,6 +211,26 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="form-row">
+            <div class="form-group col-lg-8">
+                {{ form.self_description.label(class='form-control-label') }}
+                {% if form.self_description.errors %}
+                    {{form.self_description(class="form-control is-invalid", value=user_obj.description or '')}}
+                    <div class="invalid-feedback">
+                    {% for error in form.self_description.errors %}
+                        <span>
+                            {{ error }}
+                        </span>
+                    {% endfor %}
+                    </div>
+                {%else%}
+                    {{form.self_description(class="form-control", value=user_obj.description or '')}}
+                {% endif %}
+            </div>
+        </div>
+
+        
 
         <div class="form-row">
             <div class="form-group col-lg-6">

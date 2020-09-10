@@ -78,6 +78,7 @@ class PersonalInfoForm(FlaskForm):
     district= SelectField(label='District', validators=[DataRequired()])
     municipality = StringField('Municipality', validators=[DataRequired()])
     ward_no = StringField('Ward Number', validators=[DataRequired()])
+    self_description = TextAreaField ("Describe yourself!")
     profile_pic = FileField('Profile Picture')    
     submit = SubmitField('Save')
     
@@ -145,7 +146,3 @@ class MyAchievementForm(FlaskForm):
     achievement = StringField ("Achievement", [DataRequired()])
     achievement_certificate = FileField("Certification for your achievement", [DataRequired()])
     save_achievement = SubmitField("Save")
-
-class MyProfileForm(MyExperienceForm, MyQualificationForm, MyAchievementForm):
-    self_description = TextAreaField ("Write something about yourself")
-    save = SubmitField ("Save")

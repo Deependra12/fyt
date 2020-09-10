@@ -34,7 +34,9 @@ from .forms import (
     StudentPersonalInfoForm,
     AccountInfoForm,
     MyCourseForm,
-    MyProfileForm,
+    MyExperienceForm,
+    MyAchievementForm,
+    MyQualificationForm
 )
 from .models import User, Student, Tutor, Location, Course
 
@@ -263,6 +265,7 @@ def student_personal_info():
                 municipality = form.municipality.data,
                 ward_no = form.ward_no.data,
                 phone = form.phone.data ,
+                description = form.self_description.data,
                 guardian_name = form.guardian_name.data,
                 guardian_address = form.guardian_address.data,
                 guardian_phone = form.guardian_phone.data
@@ -387,7 +390,8 @@ def tutor_personal_info():
                 date_of_birth = form.date_of_birth.data,
                 municipality = form.municipality.data,
                 ward_no = form.ward_no.data,
-                phone = form.phone.data 
+                phone = form.phone.data,
+                description = form.self_description.data
             )
         return render_template("personal-info.html", user=user, user_obj=tutor, profilepic= fetch_profile_pic(tutor), form=form)
     else:
@@ -436,9 +440,11 @@ def tutor_courses():
 @app.route('/tutor/my-profile', methods=['POST','GET'])
 @login_required
 def tutor_educational_profile():
-    form = MyProfileForm()
+    form_experience = MyExperienceForm()
+    form_qualification = MyQualificationForm()
+    form_achievement = MyAchievementForm()
     user = User.query.filter_by(username=current_user.username).first()
-
+    
     if user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
         return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, form=form)

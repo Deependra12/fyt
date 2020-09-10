@@ -70,6 +70,7 @@ class Student(db.Model):
     ward_no = db.Column(db.Integer)
     date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
+    description = db.Column(db.String(1000))
 
 
 class Tutor(db.Model):
@@ -82,6 +83,31 @@ class Tutor(db.Model):
     ward_no = db.Column(db.Integer)
     date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
+    description = db.Column(db.String(1000))
+    experience = db.relationship('Experience', backref='Tutor', uselist=True ,cascade="all, delete")
+    qualification = db.relationship('Qualification', backref='Tutor', uselist=True ,cascade="all, delete")
+    achievement = db.relationship('Achievement', backref='Tutor', uselist=True ,cascade="all, delete")
+
+
+class Experience(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
+    experience = db.Column(db.String(255))
+    experience_file = db.Column(db.String(255))
+
+
+class Qualification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
+    qualification = db.Column(db.String(255))
+    qualification_file = db.Column(db.String(255))
+
+
+class Achievement(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
+    achievement = db.Column(db.String(255))
+    achievement_file = db.Column(db.String(255))
 
 
 class Location(db.Model):
@@ -96,10 +122,9 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_title = db.Column(db.String(100), nullable=False)
     course_level = db.Column(db.String(100), nullable=False)
-    course_description = db.Column(db.String(255))  
+    course_description = db.Column(db.String(1000))
     mycourse = db.relationship('Mycourse', backref='Course', cascade="all, delete")
     
-
 
 class Mycourse(db.Model):
     id = db.Column(db.Integer, primary_key=True)  
