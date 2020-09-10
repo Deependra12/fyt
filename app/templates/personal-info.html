@@ -198,7 +198,7 @@
             <div class="form-group col-lg-4">
                 {{ form.profile_pic.label(class='form-control-label' ) }}
                 {% if form.profile_pic.errors %}
-                    {{form.profile_pic(class="form-control is-invalid")}}
+                    {{ form.profile_pic(class="form-control is-invalid") }}
                     <div class="invalid-feedback">
                     {% for error in form.profile_pic.errors %}
                         <span>
@@ -207,7 +207,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.profile_pic(class="form-control")}}
+                    {{ form.profile_pic(class="form-control") }}
                 {% endif %}
             </div>
         </div>
@@ -216,7 +216,7 @@
             <div class="form-group col-lg-8">
                 {{ form.self_description.label(class='form-control-label') }}
                 {% if form.self_description.errors %}
-                    {{form.self_description(class="form-control is-invalid", value=user_obj.description or '')}}
+                    {{ form.self_description(class="form-control is-invalid self-description") }}
                     <div class="invalid-feedback">
                     {% for error in form.self_description.errors %}
                         <span>
@@ -225,7 +225,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.self_description(class="form-control", value=user_obj.description or '')}}
+                    {{ form.self_description(class="form-control self-description") }}
                 {% endif %}
             </div>
         </div>
@@ -241,6 +241,13 @@
     </form>
 
 </div>
+
+<script async>
+    const experienceTextArea = document.querySelector('.self-description');
+    experienceTextArea.value = "{{ user_obj.description }}" != "None" ? "{{ user_obj.description }}" : "";
+</script>
+
 {% endblock %}
+
 
 <!--<select class="form-control" id="district" name="district" required></select>-->

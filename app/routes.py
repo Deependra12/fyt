@@ -468,10 +468,13 @@ def tutor_followers():
 @login_required
 def courses():
     user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
     courses = Course.query.all()
-    return render_template('courses.html',profilepic=fetch_profile_pic(tutor),courses=courses,user=user)
+    return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses,user=user)
     
-
 
 @app.route('/courses/<int:id>')
 def courses_by_id(id):
