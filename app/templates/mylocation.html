@@ -48,15 +48,17 @@
                     {{ form.place(class='form-control', id='place-field', value=location.place_details or '') }}
                 </div>
             </div>
-
             <div class="form-row">
-                <div class="form-group col-lg-6">
-                    {{ form.geolocation_misguide_info(class='form-control-label') }}
-                </div>
                 <div class="form-group col-lg-6">
                     {{ form.submit(class='btn btn-success') }}
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group col-lg-12">
+                    {{ form.geolocation_misguide_info(class='form-control-label') }}
+                </div>
+            </div>
+
 
         </form>
 

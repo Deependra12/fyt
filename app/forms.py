@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm, RecaptchaField
-from wtforms import StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField, FileField, Label, TimeField, MultipleFileField
+from wtforms import (StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField,
+                    FileField, Label, TimeField, MultipleFileField, TextAreaField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from .models import User
-import json
 
 # Activate captcha later on using
 # {{form.recaptcha()}} 
@@ -122,8 +122,6 @@ class MyCourseForm(FlaskForm):
     cost = SelectField('Cost', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
     add = SubmitField("Add New Course")
-    update = SubmitField("Update Course")
-    delete = SubmitField (" Delete Course ")
     save = SubmitField('Save')
     
     def create_cost_choices(self):
@@ -133,11 +131,21 @@ class MyCourseForm(FlaskForm):
         cost_choice = create_choices_from_list(cost)
         self.cost.choices = cost_choice
 
-class MyProfileForm(FlaskForm):
-    experience = StringField ("Experience")
-    experience_certificate = MultipleFileField("Certification for your experience")
-    qualification = StringField ("Qualification")
-    qualification_certificate = MultipleFileField("Certification for your qualification")
-    achievement = StringField ("Achievement")
-    achievement_certificate = MultipleFileField("Certification for your achievement")
+class MyExperienceForm(FlaskForm):
+    experience = StringField (label="Experience", validators=[DataRequired()])
+    experience_certificate = FileField("Certification for your experience", [DataRequired()])
+    save_experience = SubmitField("Save")
 
+class MyQualificationForm(FlaskForm):
+    qualification = StringField ("Qualification", [DataRequired()])
+    qualification_certificate = FileField("Certification for your qualification", [DataRequired()])
+    save_qualification = SubmitField("Save")
+
+class MyAchievementForm(FlaskForm):
+    achievement = StringField ("Achievement", [DataRequired()])
+    achievement_certificate = FileField("Certification for your achievement", [DataRequired()])
+    save_achievement = SubmitField("Save")
+
+class MyProfileForm(MyExperienceForm, MyQualificationForm, MyAchievementForm):
+    self_description = TextAreaField ("Write something about yourself")
+    save = SubmitField ("Save")
