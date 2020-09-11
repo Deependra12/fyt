@@ -307,14 +307,12 @@ def student_account_info():
 @app.route('/student/my-courses', methods=['POST','GET'])
 @login_required
 def student_courses():
-    form = MyCourseForm()
-    form.create_cost_choices()
-    
     user = User.query.filter_by(username=current_user.username).first()
+    my_courses = Mycourse.query.filter_by(user_id=current_user.id)
     
     if user.username == current_user.username and not is_tutor(user):
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template("my-courses.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, values='')
+        return render_template("my-courses.html", user=user, student=student, profilepic= fetch_profile_pic(student), my_courses=my_courses)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor'))
 
@@ -431,15 +429,13 @@ def tutor_account_info():
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
 @login_required
 def tutor_courses():
-    form = MyCourseForm()
-    form.create_cost_choices()
     user = User.query.filter_by(username=current_user.username).first()
     my_courses = Mycourse.query.filter_by(user_id=current_user.id)
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form, my_courses=my_courses)
+        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), my_courses=my_courses)
 
 
 @app.route('/tutor/my-profile', methods=['POST','GET'])
@@ -499,13 +495,20 @@ def courses():
 @app.route('/my-courses/add/<int:id>', methods=['GET','POST'])
 @login_required
 def add_course(id):
+    user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
     form = MyCourseForm()
-    if form.validate.validate_on_submit():
-        course= Course.query.filter_by(id=id).first_or_404()
-        mycourse = Mycourse(Course=course, User=current_user)
+    form.create_cost_choices()
+    course= Course.query.filter_by(id=id).first_or_404()
+    if form.validate_on_submit():
+        mycourse = Mycourse(Course=course, User=current_user, time=form.time.data, cost=form.cost.data)
         db.session.add(mycourse)
         db.session.commit()
-    render
+    return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(user_obj), user=user, course=course)
+
 
 
 @app.route('/courses/<int:id>')
