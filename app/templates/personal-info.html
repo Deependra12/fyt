@@ -216,7 +216,7 @@
             <div class="form-group col-lg-8">
                 {{ form.self_description.label(class='form-control-label') }}
                 <small class="form-text text-muted">
-                    Text should be less than 1000 words.
+                    Text should be less than 250 words.
                 </small>
                 {% if form.self_description.errors %}
                     {{ form.self_description(class="form-control is-invalid self-description") }}
@@ -230,6 +230,9 @@
                 {%else%}
                     {{ form.self_description(class="form-control self-description") }}
                 {% endif %}
+            </div>
+            <div id="bio-count" class="form-group col-lg-8 text-danger">
+                
             </div>
         </div>
 
@@ -245,9 +248,21 @@
 
 </div>
 
-<script async>
+<script>
     const experienceTextArea = document.querySelector('.self-description');
+    const bioCount = document.getElementById('bio-count');
     experienceTextArea.value = "{{ user_obj.description }}" != "None" ? "{{ user_obj.description }}" : "";
+    experienceTextArea.addEventListener('keyup', showLength, false);
+
+    function showLength() {
+        var numberRemaining = 250 - experienceTextArea.value.length;
+        if (numberRemaining <= 5) {
+            bioCount.innerHTML = numberRemaining + " " + "words remaining";
+        }
+        else {
+            bioCount.innerHTML = "";
+        }
+    }
 </script>
 
 {% endblock %}
