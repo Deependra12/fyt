@@ -1,0 +1,35 @@
+{% if user.role=='student' %}
+    {% extends 'student.html' %}
+{% else %}
+    {% extends 'tutor.html' %}
+{% endif %}
+
+{% block active %}
+    activateMenu('my-courses')
+{% endblock %}
+
+
+{% block content %}
+<div class="col-sm-11 mx-auto">
+    <div class="jumbotron">
+        <div class='row'>
+            <div class = 'col-md-6'>
+                <legend class="border-bottom mb-4">
+                    <h3> {{ course.course_title }} </h3>
+                    <small class="text-muted">{{ course.course_level }}</small>
+                </legend>
+            </div>
+        </div>
+        <div class='row'>
+            <div class='col-md-12'>
+                <p class='text-dark'>{{ course.course_description }}</p>
+            </div>
+        </div>
+        <p>
+            <a class="btn btn-primary" href="{{url_for('add_course',id=course.id)}}" role="button">Add to my course
+                <i class="fas fa-plus fa-sm"></i>
+                <span></span></a>
+        </p>
+    </div>
+</div>
+{% endblock %}

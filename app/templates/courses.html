@@ -33,7 +33,20 @@
         
     </style>
     <div class="container-fluid">
-        <legend class="border-bottom mb-4 ">Courses</legend>
+        
+        <div class='row'>
+            <div class="col-md-6">
+                <legend class="border-bottom mb-4 ">
+                    Courses
+                </legend>
+            </div>
+            <div class="col-md-6">
+                <form action='' method="GET" style="float:right;" class="form">
+                    <input name="educational_level" type='text' placeholder="Search by educational level">
+                </form>
+            </div>
+        </div>
+        
         <div class="row">
             {% for course in courses %}
                 <div class="col-md-4">

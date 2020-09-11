@@ -181,10 +181,10 @@ class UserView(CustomView):
 class CourseView(ModelView):
     form_choices = {
         'course_level': [
-            ('basic','Basic Education(Grade 1-8)'),
-            ('secondary','Secondary Education(Grade 9-12)'),
-            ('bachelor','Bachelor Level'),
-            ('master','Master Level')
+            ('Basic Education(Grade 1-8)','Basic Education(Grade 1-8)'),
+            ('Secondary Education(Grade 9-12)','Secondary Education(Grade 9-12)'),
+            ('Bachelor Level','Bachelor Level'),
+            ('Master Level','Master Level')
         ]
     }
     form_create_rules = ('course_title', 'course_level', 'course_description')

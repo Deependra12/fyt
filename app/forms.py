@@ -10,7 +10,7 @@ from .models import User
 def create_choices_from_list(lists):
     choices = []
     for L in lists:
-        choices.append((L.lower().replace(' ',''), L))
+        choices.append((L, L))
     return choices
 
 class RegistrationForm(FlaskForm):

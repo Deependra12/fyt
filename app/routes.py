@@ -481,16 +481,22 @@ def tutor_followers():
         return render_template('my-followers.html', profilepic=fetch_profile_pic(tutor), tutor=tutor, user=user)
 
 
+#Courses
+
 @app.route('/courses')
 @login_required
 def courses():
+    educational_level = request.args.get('educational_level', None)
+    if educational_level:
+        courses = Course.query.filter_by(course_level=educational_level)
+    else:
+        courses = Course.query.all()
     user = User.query.filter_by(username=current_user.username).first()
     if is_tutor(user):
         user_obj = Tutor.query.filter_by(user_id=user.id).first()
     else:
         user_obj = Student.query.filter_by(user_id=user.id).first()
-    courses = Course.query.all()
-    return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses,user=user)
+    return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses, user=user)
     
 @app.route('/my-courses/add/<int:id>', methods=['GET','POST'])
 @login_required
@@ -507,6 +513,10 @@ def add_course(id):
         mycourse = Mycourse(Course=course, User=current_user, time=form.time.data, cost=form.cost.data)
         db.session.add(mycourse)
         db.session.commit()
+        if is_tutor(user):
+            return redirect(url_for('tutor_courses'))
+        else:
+            return redirect(url_for('student_courses'))
     return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(user_obj), user=user, course=course)
 
 
@@ -515,7 +525,14 @@ def add_course(id):
 @login_required
 def courses_by_id(id):
     course = Course.query.filter_by(id=id).first_or_404()
-    return course.course_title
+    user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
+    return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(user_obj), user=user)
+
+
 # Error Handlers
 
 
