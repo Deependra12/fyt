@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import (StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField,
                     FileField, Label, TimeField, MultipleFileField, TextAreaField)
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
 from .models import User
 
 # Activate captcha later on using
@@ -78,7 +78,7 @@ class PersonalInfoForm(FlaskForm):
     district= SelectField(label='District', validators=[DataRequired()])
     municipality = StringField('Municipality', validators=[DataRequired()])
     ward_no = StringField('Ward Number', validators=[DataRequired()])
-    self_description = TextAreaField ("Describe yourself!")
+    self_description = TextAreaField ("Describe yourself!", validators=[Length(max=250)])
     profile_pic = FileField('Profile Picture')    
     submit = SubmitField('Save')
     

@@ -70,7 +70,7 @@ class Student(db.Model):
     ward_no = db.Column(db.Integer)
     date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
-    description = db.Column(db.String(1000))
+    description = db.Column(db.String(250))
 
     def __repr__(self):
         student = User.query.filter_by(id = self.user_id ).first()
@@ -87,7 +87,7 @@ class Tutor(db.Model):
     ward_no = db.Column(db.Integer)
     date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
-    description = db.Column(db.String(1000))
+    description = db.Column(db.String(250))
     experience = db.relationship('Experience', backref='Tutor', uselist=True ,cascade="all, delete")
     qualification = db.relationship('Qualification', backref='Tutor', uselist=True ,cascade="all, delete")
     achievement = db.relationship('Achievement', backref='Tutor', uselist=True ,cascade="all, delete")
