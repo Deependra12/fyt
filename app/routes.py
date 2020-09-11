@@ -145,16 +145,6 @@ def hello(token):
         return '<h1>The token has expired!<h1>'
     return '<h1>The token is valid!<h1>'
 
-@app.route('/profiles/<username>')
-@login_required
-def profile(username):
-    user = User.query.filter_by(username=current_user.username).first()
-    if is_tutor(user):
-        user_obj = Tutor.query.filter_by(user_id=user.id).first()
-    else:
-        user_obj = Student.query.filter_by(user_id=user.id).first()
-    view_user = User.query.filter_by(username=username).first_or_404()
-    return render_template('public-profile.html', user=user, view_user=view_user, profilepic= fetch_profile_pic(user_obj))
 
 @app.route("/logout")
 def logout():
@@ -214,8 +204,22 @@ def fetch_profile_pic(user_obj):
         return fetch_default_profile_pic(user_obj)
 
 
-# Student Routes
+# Public Profile
 
+
+@app.route('/profiles/<username>')
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
+    view_user = User.query.filter_by(username=username).first_or_404()
+    return render_template('public-profile.html', user=user, view_user=view_user, profilepic= fetch_profile_pic(user_obj))
+
+
+# Student Routes
 
 
 @app.route('/student/home')
@@ -334,9 +338,7 @@ def student_followed_tutors():
         return redirect(url_for('tutor_followers'))
         
 
-
 # Tutor Routes
-
 
 
 @app.route('/tutor/home')
@@ -438,6 +440,19 @@ def tutor_courses():
         return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), my_courses=my_courses)
 
 
+@app.route('/tutor/delete/mycourse/<int:id>', methods=['POST', 'GET'])
+def delete_tutor_courses(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
+    elif user.username == current_user.username and is_tutor(user):
+        mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
+        db.session.delete(mycourse_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('tutor_courses'))   
+
+
 @app.route('/tutor/my-profile', methods=['POST','GET'])
 @login_required
 def tutor_educational_profile():
@@ -458,15 +473,57 @@ def tutor_educational_profile():
         qualification = Qualification(qualification=form_qualification.qualification.data, qualification_file=save_docs(form_qualification.qualification_certificate.data, "qualification"), Tutor=tutor)
         db.session.add(qualification)
         db.session.commit()
-    qualification = Qualification.query.filter_by(tutor_id=user.id)
-    achievement = Achievement.query.filter_by(tutor_id=user.id)
-    experience = Experience.query.filter_by(tutor_id=user.id)
+    qualifications = Qualification.query.filter_by(tutor_id=user.id)
+    achievements = Achievement.query.filter_by(tutor_id=user.id)
+    experiences = Experience.query.filter_by(tutor_id=user.id)
     if user.username == current_user.username and is_tutor(user):
         return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, 
-            qualifications=qualification, achievements=achievement, experiences=experience,
+            qualifications=qualifications, achievements=achievements, experiences=experiences,
             form_experience=form_experience, form_qualification=form_qualification, form_achievement=form_achievement)
     elif user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
+
+
+@app.route('/delete/experience/<int:id>')
+@login_required
+def delete_tutor_experience(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
+    elif user.username == current_user.username and is_tutor(user):
+        experience_to_be_deleted = Experience.query.filter_by(id=id).first_or_404()
+        db.session.delete(experience_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('tutor_educational_profile'))   
+
+
+@app.route('/delete/qualification/<int:id>')
+@login_required
+def delete_tutor_qualification(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
+    elif user.username == current_user.username and is_tutor(user):
+        qualification_to_be_deleted = Qualification.query.filter_by(id=id).first_or_404()
+        db.session.delete(qualification_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('tutor_educational_profile'))  
+
+
+@app.route('/delete/achievement/<int:id>')
+@login_required
+def delete_tutor_achievement(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
+    elif user.username == current_user.username and is_tutor(user):
+        achievement_to_be_deleted = Achievement.query.filter_by(id=id).first_or_404()
+        db.session.delete(achievement_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('tutor_educational_profile'))      
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
@@ -483,6 +540,7 @@ def tutor_followers():
 
 #Courses
 
+
 @app.route('/courses')
 @login_required
 def courses():
@@ -498,6 +556,22 @@ def courses():
         user_obj = Student.query.filter_by(user_id=user.id).first()
     return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses, user=user)
     
+
+@app.route('/courses/<int:id>')
+@login_required
+def courses_by_id(id):
+    course = Course.query.filter_by(id=id).first_or_404()
+    user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
+    return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(user_obj), user=user)
+
+
+# MyCourse
+
+
 @app.route('/my-courses/add/<int:id>', methods=['GET','POST'])
 @login_required
 def add_course(id):
@@ -518,19 +592,6 @@ def add_course(id):
         else:
             return redirect(url_for('student_courses'))
     return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(user_obj), user=user, course=course)
-
-
-
-@app.route('/courses/<int:id>')
-@login_required
-def courses_by_id(id):
-    course = Course.query.filter_by(id=id).first_or_404()
-    user = User.query.filter_by(username=current_user.username).first()
-    if is_tutor(user):
-        user_obj = Tutor.query.filter_by(user_id=user.id).first()
-    else:
-        user_obj = Student.query.filter_by(user_id=user.id).first()
-    return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(user_obj), user=user)
 
 
 # Error Handlers

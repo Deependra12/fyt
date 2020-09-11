@@ -58,7 +58,7 @@ class MyLocationForm(FlaskForm):
     longitude = StringField('Longitude', validators=[DataRequired()], render_kw={'readonly':True})
     place = StringField('Place Details', validators=[DataRequired()], render_kw={'readonly':True})
     travel_distance = SelectField('Distance Willing To Travel (in kms)', validators=[DataRequired()])
-    geolocation_misguide_info = Label("geolocation-misguide-info","Location here is shown using your device location, which probably may be misguided. Please click your actual location below.")
+    geolocation_misguide_info = Label("geolocation-misguide-info","Location here is shown using your device location, which probably may be misleading. Please mark your actual location below.")
     submit = SubmitField('Save')
     update = SubmitField('Edit')
 

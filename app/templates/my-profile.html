@@ -49,6 +49,8 @@
             </div>
         </div>
     </form>
+
+
     <div class = "table-responsive">
         <table class="table table-hover" id="my-experience-table">
             <thead>
@@ -67,7 +69,7 @@
                {% for experience in experiences %}
                     <tr>
                         <td scope="row">
-                            <a class="btn btn-link btn-sm" href="#">
+                            <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_experience', id=experience.id)}}">
                                 <i class="fas fa-trash"></i>
                                 <span></span>
                             </a>
@@ -127,14 +129,13 @@
                 {{ form_qualification.save_qualification(class='form-control btn btn-success') }}
             </div>
         </div>
-
     </form>
 
     <div class = "table-responsive">
         <table class="table table-hover" id="my-qualification-table">
             <thead>
                <tr>
-                    <th scope="col" >
+                    <th scope="col">
                         <button type="button" class="btn btn-secondary btn-sm" id='add-new-qualification'>
                             <i class="fas fa-plus"></i>
                             <span></span>
@@ -145,6 +146,27 @@
                </tr>
            </thead>
            <tbody>
+            {% for qualification in qualifications %}
+                <tr>
+                    <td scope="row">
+                        <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_qualification', id=qualification.id)}}">
+                            <i class="fas fa-trash"></i>
+                            <span></span>
+                        </a>
+                        <a class="btn btn-link btn-sm" href="#">
+                            <i class="fas fa-edit"></i>
+                            <span></span>
+                        </a>
+                    </td>
+                    <td> {{ qualification.qualification }} </td>
+                    <td> 
+                        <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm"> 
+                            <i class="fas fa-external-link-alt "></i>
+                            Open file
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
            </tbody>
         </table>
     </div>
@@ -205,6 +227,27 @@
                </tr>
            </thead>
            <tbody>
+            {% for achievement in achievements %}
+                <tr>
+                    <td scope="row">
+                        <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_achievement', id=achievement.id)}}">
+                            <i class="fas fa-trash"></i>
+                            <span></span>
+                        </a>
+                        <a class="btn btn-link btn-sm" href="#">
+                            <i class="fas fa-edit"></i>
+                            <span></span>
+                        </a>
+                    </td>
+                    <td> {{ achievement.achievement }} </td>
+                    <td> 
+                        <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm"> 
+                            <i class="fas fa-external-link-alt "></i>
+                            Open file
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
            </tbody>
         </table>
     </div>
