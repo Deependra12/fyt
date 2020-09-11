@@ -1,6 +1,6 @@
 import os.path as op
 
-from flask import abort
+from flask import abort, Markup, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin, current_user
 from flask_admin.menu import MenuLink
@@ -171,6 +171,47 @@ class CustomView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         abort(401)
 
+class RoleView(CustomView):
+    def _user_formatter(view, context, model, name):
+        if model.profile_pic:
+           markupstring = f"<a href='{url_for('static', filename='profile_pics/' + model.profile_pic)}'>{model.profile_pic}</a>"
+           return Markup(markupstring)
+        else:
+           return ""
+
+    column_formatters = {
+        'profile_pic': _user_formatter
+    }
+
+
+class ShowLinkView(CustomView):
+    def _experience_formatter(view, context, model, name):
+        if model.experience_file:
+           markupstring = f"<a href='{url_for('static', filename='docs/experience/' + model.experience_file)}'>{model.experience_file}</a>"
+           return Markup(markupstring)
+        else:
+           return ""
+    
+    def _qualification_formatter(view, context, model, name):
+        if model.qualification_file:
+           markupstring = f"<a href='{url_for('static', filename='docs/qualification/' + model.qualification_file)}'>{model.qualification_file}</a>"
+           return Markup(markupstring)
+        else:
+           return ""
+
+    def _achievement_formatter(view, context, model, name):
+        if model.achievement_file:
+           markupstring = f"<a href='{url_for('static', filename='docs/achievement/' + model.achievement_file)}'>{model.achievement_file}</a>"
+           return Markup(markupstring)
+        else:
+           return ""
+
+    column_formatters = {
+        'experience_file': _experience_formatter,
+        'achievement_file': _achievement_formatter,
+        'qualification_file': _qualification_formatter 
+    }
+
 
 class UserView(CustomView):
     column_exclude_list = ['hash_password',] 
@@ -200,13 +241,15 @@ class LogoutMenuLink(MenuLink):
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
 admin.add_view(UserView(User, db.session))
-admin.add_view(CustomView(Student, db.session))
-admin.add_view(CustomView(Tutor, db.session))
+admin.add_view(RoleView(Student, db.session))
+admin.add_view(RoleView(Tutor, db.session))
+
 admin.add_view(CustomView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
-admin.add_view(CustomView(Experience, db.session))
-admin.add_view(CustomView(Achievement, db.session))
-admin.add_view(CustomView(Qualification, db.session))
+
+admin.add_view(ShowLinkView(Experience, db.session))
+admin.add_view(ShowLinkView(Achievement, db.session))
+admin.add_view(ShowLinkView(Qualification, db.session))
 
 path = op.join(op.dirname(__file__), 'static/docs/')
 admin.add_view(FileAdmin(path, '/static/docs/', name='Documents'))
