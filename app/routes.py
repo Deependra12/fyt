@@ -447,7 +447,8 @@ def tutor_educational_profile():
     
     if user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, form=form)
+        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor,
+            form_experience=form_experience, form_qualification=form_qualification, form_achievement=form_achievement)
     elif user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
 

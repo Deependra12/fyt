@@ -198,7 +198,7 @@
             <div class="form-group col-lg-4">
                 {{ form.profile_pic.label(class='form-control-label' ) }}
                 {% if form.profile_pic.errors %}
-                    {{ form.profile_pic(class="form-control is-invalid") }}
+                    {{ form.profile_pic(class="form-control-file is-invalid") }}
                     <div class="invalid-feedback">
                     {% for error in form.profile_pic.errors %}
                         <span>
@@ -207,7 +207,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{ form.profile_pic(class="form-control") }}
+                    {{ form.profile_pic(class="form-control-file") }}
                 {% endif %}
             </div>
         </div>
@@ -215,6 +215,9 @@
         <div class="form-row">
             <div class="form-group col-lg-8">
                 {{ form.self_description.label(class='form-control-label') }}
+                <small class="form-text text-muted">
+                    Text should be less than 1000 words.
+                </small>
                 {% if form.self_description.errors %}
                     {{ form.self_description(class="form-control is-invalid self-description") }}
                     <div class="invalid-feedback">

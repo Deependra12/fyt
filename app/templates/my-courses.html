@@ -12,7 +12,7 @@
 <div class="container">
     <legend class="border-bottom mb-4">My Courses</legend>
     
-    <form action="{{ user.role }}/mycourse/save-course" class="form inline" method="POST" id='add-course-form' style="display: none;">
+    <!-- <form action="{{ user.role }}/mycourse/save-course" class="form inline" method="POST" id='add-course-form' style="display: none;">
         {{ form.hidden_tag() }}
 
         <div class="form-row">
@@ -37,17 +37,17 @@
                 {{ form.save(class='btn btn-success form-control') }}
             </div>        
         </div>
-    </form>
+    </form> -->
 
     <div class='table-responsive'>
         <table class='table table-hover' id='my-courses-table'>
            <thead>
                <tr>
                     <th scope="col" >
-                        <button type="button" class="btn btn-secondary btn-sm" id='add-new-course'>
+                        <a href="{{ url_for('courses') }}" class="btn btn-secondary btn-sm" id='add-new-course'>
                             <i class="fas fa-plus"></i>
                             <span></span>
-                        </button>
+                        </a>
                     </th>
                     <th scope="col">Education Level</th>
                     <th scope="col">Course</th>
@@ -60,14 +60,14 @@
             {% for value in values %}
                 <tr>
                     <th scope="row">
-                        <button type="button" class="btn btn-link btn-sm">
+                        <a class="btn btn-link btn-sm" href="#">
                             <i class="fas fa-trash"></i>
                             <span></span>
-                        </button>
-                        <button type="button" class="btn btn-link btn-sm">
+                        </a>
+                        <a class="btn btn-link btn-sm" href="#">
                             <i class="fas fa-edit"></i>
                             <span></span>
-                        </button>
+                        </a>
                     </th>
                     <td> {{ value[0] }} </td>
                     <td> {{ value[1] }} </td>
@@ -83,7 +83,7 @@
 {% endblock %}
 
 {% block document_javascript %}
-function addCourseForm(){
+<!-- function addCourseForm(){
     var formEl = document.getElementById('add-course-form');
     if (isHidden(formEl)){
         formEl.style.display = "block";
@@ -103,5 +103,5 @@ function isHidden(el){
 }
 
 var addBtn = document.getElementById('add-new-course');
-addBtn.addEventListener('click', addCourseForm, false);
+addBtn.addEventListener('click', addCourseForm, false); -->
 {% endblock %}

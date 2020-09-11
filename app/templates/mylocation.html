@@ -35,28 +35,26 @@
              <div class="form-row">
                 <div class="form-group col-lg-6">
                     {{ form.latitude.label(class='form-control-label')}}
-                    {{ form.latitude(class='form-control', id='latitude-field', value=location.latitude or '') }}
+                    {{ form.latitude(class='form-control-plaintext', id='latitude-field', value=location.latitude or '') }}
                 </div>
 
                 <div class="form-group col-lg-6">
                     {{ form.longitude.label(class='form-control-label')}}
-                    {{ form.longitude(class='form-control', id='longitude-field', value=location.longitude or '') }}
+                    {{ form.longitude(class='form-control-plaintext', id='longitude-field', value=location.longitude or '') }}
                 </div>
 
                  <div class="form-group col-lg-6">
                     {{ form.place.label(class='form-control-label')}}
-                    {{ form.place(class='form-control', id='place-field', value=location.place_details or '') }}
+                    {{ form.place(class='form-control-plaintext', id='place-field', value=location.place_details or '') }}
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-lg-6">
                     {{ form.submit(class='btn btn-success') }}
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-lg-12">
-                    {{ form.geolocation_misguide_info(class='form-control-label') }}
-                </div>
+                <small class="form-text text-muted">
+                    Location here is shown using your device location, which probably may be misguided. Please surf and click on your actual location below.
+                </small>
             </div>
 
 
