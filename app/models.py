@@ -17,7 +17,7 @@ class User(UserMixin, db.Model):
     hash_password = db.Column(db.String(120))
     role = db.Column(db.String(7), index=True)
     student = db.relationship('Student', backref='base', uselist=False, cascade="all, delete")
-    teacher = db.relationship('Tutor', backref='base', uselist=False, cascade="all, delete")
+    tutor = db.relationship('Tutor', backref='base', uselist=False, cascade="all, delete")
     location = db.relationship('Location', backref='User', uselist=False, cascade="all, delete")
     mycourse = db.relationship('Mycourse', backref='User', cascade="all, delete")
     
@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):
 
     def update_tutor(self, **kwargs):
         for column,value in kwargs.items():
-            tutor = self.teacher
+            tutor = self.tutor
             setattr(tutor,column,value)
         db.session.commit()
 

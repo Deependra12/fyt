@@ -60,21 +60,30 @@
                         </button>
                     </th>
                     <th scope="col">Experience &nbsp &nbsp </th>
+                    <th scope="col">Certificate &nbsp &nbsp </th>
                </tr>
            </thead>
            <tbody>
                {% for experience in experiences %}
-                    <th scope="row">
-                        <a class="btn btn-link btn-sm" href="#">
-                            <i class="fas fa-trash"></i>
-                            <span></span>
-                        </a>
-                        <a class="btn btn-link btn-sm" href="#">
-                            <i class="fas fa-edit"></i>
-                            <span></span>
-                        </a>
-                    </th>
-                    <td> {{ experience.experience }} </td>
+                    <tr>
+                        <td scope="row">
+                            <a class="btn btn-link btn-sm" href="#">
+                                <i class="fas fa-trash"></i>
+                                <span></span>
+                            </a>
+                            <a class="btn btn-link btn-sm" href="#">
+                                <i class="fas fa-edit"></i>
+                                <span></span>
+                            </a>
+                        </td>
+                        <td> {{ experience.experience }} </td>
+                        <td> 
+                            <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm"> 
+                                <i class="fas fa-external-link-alt "></i>
+                                Open file
+                            </a>
+                        </td>
+                    </tr>
                {% endfor %}
            </tbody>
         </table>

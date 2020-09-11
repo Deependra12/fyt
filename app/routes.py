@@ -145,6 +145,16 @@ def hello(token):
         return '<h1>The token has expired!<h1>'
     return '<h1>The token is valid!<h1>'
 
+@app.route('/profiles/<username>')
+@login_required
+def profile(username):
+    user = User.query.filter_by(username=current_user.username).first()
+    if is_tutor(user):
+        user_obj = Tutor.query.filter_by(user_id=user.id).first()
+    else:
+        user_obj = Student.query.filter_by(user_id=user.id).first()
+    view_user = User.query.filter_by(username=username).first_or_404()
+    return render_template('public-profile.html', user=user, view_user=view_user, profilepic= fetch_profile_pic(user_obj))
 
 @app.route("/logout")
 def logout():
@@ -206,11 +216,6 @@ def fetch_profile_pic(user_obj):
 
 # Student Routes
 
-
-@app.route('/student/profiles/<username>')
-@login_required
-def student_profile(username):
-   return f"{username}'s profile'"
 
 
 @app.route('/student/home')
@@ -333,11 +338,6 @@ def student_followed_tutors():
 # Tutor Routes
 
 
-@app.route('/tutor/profiles/<username>')
-@login_required
-def tutor_profile(username):
-    user = User.query.filter_by(username=current_user.username).first()
-    return render_template('public-profile.html', user=user)
 
 @app.route('/tutor/home')
 @login_required

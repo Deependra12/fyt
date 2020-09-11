@@ -1,0 +1,55 @@
+{% if user.role=='student' %}
+    {% extends 'student.html' %}
+{% else %}
+    {% extends 'tutor.html' %}
+{% endif %}
+
+{% block active %}
+    activateMenu('my-courses')
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class ="row">
+        <div class="col-md-2"></div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12" style="margin-bottom:15px;">
+                        <h3> Personal Details </h3> 
+                        <hr>
+                        <p>
+                            Name: {{ view_user[view_user.role].full_name or 'n/a'}}<br>
+                            Email: {{ view_user.email or 'n/a' }} <br>
+                            Phone: {{ view_user[view_user.role].phone or 'n/a' }} <br>
+                            Date Of Birth: {{ view_user[view_user.role].date_of_birth or 'n/a' }}                            
+                            
+                        </p>
+                    </div>               
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Permanent Address</h4>
+                        <hr>
+                        <p> 
+                            State: {{ view_user[view_user.role].state.title() or 'n/a' }}<br>
+                            District: {{ view_user[view_user.role].district.title() or 'n/a'}}<br>
+                            Municipality: {{ view_user[view_user.role].municipality.title() or 'n/a'}}<br>
+                            Ward No: {{ view_user[view_user.role].ward_no or 'n/a' }} 
+                        </p> 
+                    </div>
+                </div>
+            </div>
+        <div class="col-md-4">
+            <div class="row" >
+                <img class="image-responsive shadow rounded-circle img-size no-select mx-auto"
+                style="width:200px;height:200px; " src="{{ url_for('static', filename='profile_pics/' + view_user[view_user.role].profile_pic )}}"/>
+            </div>
+            <div class="row">
+                <p style="margin-top:10px;"> 
+                {{ view_user[view_user.role].description }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
