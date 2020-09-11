@@ -336,8 +336,8 @@ def student_followed_tutors():
 @app.route('/tutor/profiles/<username>')
 @login_required
 def tutor_profile(username):
-    return f"{username}'s profile"
-
+    user = User.query.filter_by(username=current_user.username).first()
+    return render_template('public-profile.html', user=user)
 
 @app.route('/tutor/home')
 @login_required
