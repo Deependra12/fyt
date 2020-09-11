@@ -10,9 +10,9 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class ="row">
+    <div class="row flex-column-reverse flex-md-row">
         <div class="col-md-2"></div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
                 <div class="row">
                     <div class="col-md-12" style="margin-bottom:15px;">
                         <h3> Personal Details </h3> 
@@ -39,13 +39,13 @@
                     </div>
                 </div>
             </div>
-        <div class="col-md-4">
+        <div class="col-md-4 ">
             <div class="row" >
                 <img class="image-responsive shadow rounded-circle img-size no-select mx-auto"
                 style="width:200px;height:200px; " src="{{ url_for('static', filename='profile_pics/' + view_user[view_user.role].profile_pic )}}"/>
             </div>
             <div class="row">
-                <p style="margin-top:10px;"> 
+                <p style="margin-top:10px;margin-left:10%;margin-right:10% "> 
                 {{ view_user[view_user.role].description }}
                 </p>
             </div>
