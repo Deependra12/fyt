@@ -38,7 +38,7 @@ from .forms import (
     MyAchievementForm,
     MyQualificationForm
 )
-from .models import User, Student, Tutor, Location, Course
+from .models import User, Student, Tutor, Location, Course, Experience, Achievement, Qualification, Mycourse
 
 
 def redirect_user(user):
@@ -164,6 +164,15 @@ def save_picture(form_picture):
     output_size = (125,125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
+    i.save(picture_path)
+    return picture_fn
+
+def save_docs(form_picture, directory):
+    random_hex = secrets.token_hex(8)
+    f_name, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/docs/' ,directory, picture_fn)
+    i = Image.open(form_picture)
     i.save(picture_path)
     return picture_fn
 
@@ -424,17 +433,13 @@ def tutor_account_info():
 def tutor_courses():
     form = MyCourseForm()
     form.create_cost_choices()
-    form.education_level.choices=[('Basic Education(Grade 1-8)','Basic Education(Grade 1-8)'),('Secondary','Secondary'),('Bachelor','Bachelor')]
-    form.course.choices=[('Physics','Physics'),('Computer','Computer'),('Health','Health')]
-    mock_courses = [('Basic Education(Grade 1-8)','Science','19:00','Rs. 1000 - Rs. 1500'),('Bachelor','Physics','20:00','Rs. 4000 - Rs. 4500')]
-    
     user = User.query.filter_by(username=current_user.username).first()
-    
+    my_courses = Mycourse.query.filter_by(user_id=current_user.id)
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form, values=mock_courses)
+        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form, my_courses=my_courses)
 
 
 @app.route('/tutor/my-profile', methods=['POST','GET'])
@@ -444,10 +449,25 @@ def tutor_educational_profile():
     form_qualification = MyQualificationForm()
     form_achievement = MyAchievementForm()
     user = User.query.filter_by(username=current_user.username).first()
-    
+    tutor=Tutor.query.filter_by(user_id=user.id).first()
+    if form_experience.validate_on_submit():
+        experience = Experience(experience=form_experience.experience.data, experience_file=save_docs(form_experience.experience_certificate.data, "experience"), Tutor=tutor)
+        db.session.add(experience)
+        db.session.commit()
+    if form_achievement.validate_on_submit():
+        achievement = Achievement(achievement=form_achievement.achievement.data, achievement_file=save_docs(form_achievement.achievement_certificate.data, "achievement"), Tutor=tutor)
+        db.session.add(achievement)
+        db.session.commit()
+    if form_qualification.validate_on_submit():
+        qualification = Qualification(qualification=form_qualification.qualification.data, qualification_file=save_docs(form_qualification.qualification_certificate.data, "qualification"), Tutor=tutor)
+        db.session.add(qualification)
+        db.session.commit()
+    qualification = Qualification.query.filter_by(tutor_id=user.id)
+    achievement = Achievement.query.filter_by(tutor_id=user.id)
+    experience = Experience.query.filter_by(tutor_id=user.id)
     if user.username == current_user.username and is_tutor(user):
-        tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor,
+        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, 
+            qualifications=qualification, achievements=achievement, experiences=experience,
             form_experience=form_experience, form_qualification=form_qualification, form_achievement=form_achievement)
     elif user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
@@ -476,8 +496,20 @@ def courses():
     courses = Course.query.all()
     return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses,user=user)
     
+@app.route('/my-courses/add/<int:id>', methods=['GET','POST'])
+@login_required
+def add_course(id):
+    form = MyCourseForm()
+    if form.validate.validate_on_submit():
+        course= Course.query.filter_by(id=id).first_or_404()
+        mycourse = Mycourse(Course=course, User=current_user)
+        db.session.add(mycourse)
+        db.session.commit()
+    render
+
 
 @app.route('/courses/<int:id>')
+@login_required
 def courses_by_id(id):
     course = Course.query.filter_by(id=id).first_or_404()
     return course.course_title

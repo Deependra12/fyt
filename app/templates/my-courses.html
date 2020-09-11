@@ -57,7 +57,7 @@
                </tr>
            </thead>
            <tbody>
-            {% for value in values %}
+            {% for my_course in my_courses %}
                 <tr>
                     <th scope="row">
                         <a class="btn btn-link btn-sm" href="#">
@@ -69,10 +69,10 @@
                             <span></span>
                         </a>
                     </th>
-                    <td> {{ value[0] }} </td>
-                    <td> {{ value[1] }} </td>
-                    <td> {{ value[2] }} </td>
-                    <td> {{ value[3] }} </td>
+                    <td> {{ my_course.Course.course_level or ''}} </td>
+                    <td> {{ my_course.Course.course_title or '' }} </td>
+                    <td> {{ my_course.time or '' }} </td>
+                    <td> {{ my_course.cost or ''}} </td>
                 </tr>
             {% endfor %}
            </tbody>    

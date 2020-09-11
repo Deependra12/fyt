@@ -118,11 +118,10 @@ class AccountInfoForm(FlaskForm):
 
 
 class MyCourseForm(FlaskForm):
-    education_level = SelectField("Education Level", validators=[DataRequired()])
-    course = SelectField("Course", validators=[DataRequired()])
+    education_level = StringField("Education Level", validators=[DataRequired()])
+    course = StringField("Course", validators=[DataRequired()])
     cost = SelectField('Cost', validators=[DataRequired()])
     time = TimeField('Time', validators=[DataRequired()])
-    add = SubmitField("Add New Course")
     save = SubmitField('Save')
     
     def create_cost_choices(self):
@@ -133,8 +132,8 @@ class MyCourseForm(FlaskForm):
         self.cost.choices = cost_choice
 
 class MyExperienceForm(FlaskForm):
-    experience = StringField (label="Experience", validators=[DataRequired()])
-    experience_certificate = FileField("Certification for your experience", [DataRequired()])
+    experience = StringField("Experience", validators=[DataRequired()])
+    experience_certificate = FileField("Certification for your experience", validators=[DataRequired()])
     save_experience = SubmitField("Save")
 
 class MyQualificationForm(FlaskForm):

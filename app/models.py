@@ -72,6 +72,10 @@ class Student(db.Model):
     profile_pic = db.Column(db.String(255))
     description = db.Column(db.String(1000))
 
+    def __repr__(self):
+        student = User.query.filter_by(id = self.user_id ).first()
+        return '<Email {}>'.format(student.email)
+
 
 class Tutor(db.Model):
     phone = db.Column(db.Integer)
@@ -87,6 +91,10 @@ class Tutor(db.Model):
     experience = db.relationship('Experience', backref='Tutor', uselist=True ,cascade="all, delete")
     qualification = db.relationship('Qualification', backref='Tutor', uselist=True ,cascade="all, delete")
     achievement = db.relationship('Achievement', backref='Tutor', uselist=True ,cascade="all, delete")
+
+    def __repr__(self):
+        tutor = User.query.filter_by(id = self.user_id ).first()
+        return '<Email {}>'.format(tutor.email)
 
 
 class Experience(db.Model):
@@ -130,8 +138,8 @@ class Mycourse(db.Model):
     id = db.Column(db.Integer, primary_key=True)  
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    time = db.Column(db.Time, nullable=False)
-    cost = db.Column(db.String(64), nullable=False)
+    time = db.Column(db.Time)
+    cost = db.Column(db.String(64))
 
 
 @login_manager.user_loader
@@ -196,8 +204,11 @@ admin.add_view(CustomView(Student, db.session))
 admin.add_view(CustomView(Tutor, db.session))
 admin.add_view(CustomView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
+admin.add_view(CustomView(Experience, db.session))
+admin.add_view(CustomView(Achievement, db.session))
+admin.add_view(CustomView(Qualification, db.session))
 
-path = op.join(op.dirname(__file__), 'static/profile_pics')
-admin.add_view(FileAdmin(path, '/static/profile_pics/', name='Profile Pics'))
+path = op.join(op.dirname(__file__), 'static/docs/')
+admin.add_view(FileAdmin(path, '/static/docs/', name='Documents'))
 
 admin.add_link(LogoutMenuLink(name='Logout', category='', url="/logout"))

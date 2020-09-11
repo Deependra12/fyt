@@ -43,7 +43,7 @@
                                 <a href="{{url_for('courses_by_id', id=course.id)}}">
                                     {{ course.course_title }}
                                 </a>
-                                <a class="btn btn-secondary btn-sm " href="#" style="float:right;"> 
+                                <a class="btn btn-secondary btn-sm " href="{{url_for('add_course',id=course.id)}}" style="float:right;"> 
                                     <i class="fas fa-plus"></i>
                                     <span></span>
                                 </a>
