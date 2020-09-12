@@ -203,7 +203,42 @@ def fetch_profile_pic(user_obj):
     except:
         return fetch_default_profile_pic(user_obj)
 
+@app.route('/follow/<username>')
+@login_required
+def follow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username), 'danger')
+        if is_tutor(current_user):
+            return redirect(url_for('tutor'))
+        else:
+            return redirect(url_for('student'))
+    if user == current_user:
+        flash('You cannot follow yourself!', 'info')
+        return redirect(url_for('profile', username=username))
+    current_user.follow(user)
+    db.session.commit()
+    flash('You are following {}!'.format(username))
+    return redirect(url_for('profile', username=username))
 
+ 
+@app.route('/unfollow/<username>')
+@login_required
+def unfollow(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        flash('User {} not found.'.format(username))
+        if is_tutor(current_user):
+            return redirect(url_for('tutor'))
+        else:
+            return redirect(url_for('student'))
+    if user == current_user:
+        flash('You cannot unfollow yourself!')
+        return redirect(url_for('profile', username=username))
+    current_user.unfollow(user)
+    db.session.commit()
+    flash('You are not following {}.'.format(username))
+    return redirect(url_for('profile', username=username))
 # Public Profile
 
 

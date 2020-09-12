@@ -14,7 +14,7 @@
         <div class="col-md-2"></div>
             <div class="col-md-6 ">
                 <div class="row">
-                    <div class="col-md-12" style="margin-bottom:15px;">
+                    <div class="col-md-6" style="margin-bottom:15px;">
                         <h3> Personal Details </h3> 
                         <hr>
                         <p>
@@ -24,7 +24,10 @@
                             Date Of Birth: {{ view_user[view_user.role].date_of_birth or 'n/a' }}                            
                             
                         </p>
-                    </div>               
+                    </div> 
+                    <div class="col-md-6" style="margin-bottom:15px;">
+                       <p>{{view_user.followers.count()}} followers, {{view_user.followed.count()}} followed</p>
+                    </div>              
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -54,6 +57,19 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        {% if view_user == user %}
+            {% if user.role == 'tutor'%}
+                <p><a href="{{ url_for('tutor_personal_info') }}">Edit your profile</a></p>
+            {% elif user.role == 'student'%}
+                <p><a href="{{ url_for('student_personal_info') }}">Edit your profile</a></p>
+            {% endif %}
+        {% elif not user.is_following(view_user) %}
+            <p><a href="{{ url_for('follow', username=view_user.username) }}">Follow</a></p>
+        {% else %}
+            <p><a href="{{ url_for('unfollow', username=view_user.username) }}">Unfollow</a></p>
+        {% endif %}
+    </div>  
     <div id="map" class="row"></div>
 </div>
 
