@@ -176,6 +176,175 @@
     </div>
 </div>
 
+<div class = "modal fade" id="edit-experience-form">
+    <div class = "modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Experience</h4>
+                <button type="button" class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class='modal-body'>
+                <form action="#" method="POST" class="form inline"  enctype="multipart/form-data">
+                    {{ form_experience.hidden_tag() }}
+                    <div class="form-row align-items-center">
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_experience.experience.label(class='form-control-label') }}
+                            {% if form_experience.experience.errors %}
+                                {{ form_experience.experience(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_experience.experience.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_experience.experience(class='form-control')}}
+                            {% endif %}
+            
+                        </div>
+            
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_experience.experience_certificate.label(class='form-control-label') }}
+                            {% if form_experience.experience_certificate.errors %}
+                                {{ form_experience.experience_certificate(class='form-control-file is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_experience.experience_certificate.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_experience.experience_certificate(class='form-control-file')}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_experience.save_experience(class='form-control btn btn-success') }}
+                        </div>   
+                    </div>
+                </form>                
+            </div>
+        </div>   
+    </div>
+</div>
+
+<div class = "modal fade" id="edit-qualification-form">
+    <div class = "modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Qualification</h4>
+                <button type="button" class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class='modal-body'>
+                <form action="" method="POST" class="form inline" enctype="multipart/form-data">
+                    {{ form_qualification.hidden_tag() }}
+                    <div class="form-row align-items-center">
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_qualification.qualification.label(class='form-control-label') }}
+                            {% if form_qualification.qualification.errors %}
+                                {{ form_qualification.qualification(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_qualification.qualification.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_qualification.qualification(class='form-control')}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_qualification.qualification_certificate.label(class='form-control-label') }}
+                            {% if form_qualification.qualification_certificate.errors %}
+                                {{ form_qualification.qualification_certificate(class='form-control-file is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_qualification.qualification_certificate.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_qualification.qualification_certificate(class='form-control-file')}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label class="form-control-label"></label>
+                            {{ form_qualification.save_qualification(class='form-control btn btn-success') }}
+                        </div>
+                    </div>
+                </form>
+            
+            </div>
+        </div>   
+    </div>
+</div>
+
+<div class = "modal fade" id="edit-achievement-form">
+    <div class = "modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Achievement</h4>
+                <button type="button" class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class='modal-body'>
+                <form action="" method="POST" class="form inline" enctype="multipart/form-data">
+                    {{ form_achievement.hidden_tag() }}
+                    <div class="form-row align-items-center">
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_achievement.achievement.label(class='form-control-label') }}
+                            {% if form_achievement.achievement.errors %}
+                                {{ form_achievement.achievement(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_achievement.achievement.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_achievement.achievement(class='form-control')}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_achievement.achievement_certificate.label(class='form-control-label') }}
+                            {% if form_achievement.achievement_certificate.errors %}
+                                {{ form_achievement.achievement_certificate(class='form-control-file is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_achievement.achievement_certificate.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_achievement.achievement_certificate(class='form-control-file')}}
+                            {% endif %}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label class="form-control-label"></label>
+                            {{ form_achievement.save_achievement(class='form-control btn btn-success') }}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>   
+    </div>
+</div>
 
 <div class="container">
     <legend class="border-bottom mb-4">My Educational Profile</legend>
@@ -183,8 +352,8 @@
     <div class = "table-responsive">
         <table class="table table-hover" id="my-experience-table">
             <thead>
-               <tr>
-                    <th scope="col" class="col-xs-2">
+               <tr class="d-flex">
+                    <th scope="col" class="col-2">
                         <button type="button" class="btn btn-secondary btn-sm"
                             data-toggle="modal"
                             data-target="#experience-form">
@@ -192,25 +361,27 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-xs-8">Experience</th>
-                    <th scope="col" class="col-xs-2">Certificate</th>
+                    <th scope="col" class="col-8">Experience</th>
+                    <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
            <tbody>
                {% for experience in experiences %}
-                    <tr>
-                        <td scope="row">
+                    <tr class="d-flex">
+                        <td scope="row" class="col-2">
                             <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_experience', id=experience.id)}}">
                                 <i class="fas fa-trash"></i>
                                 <span></span>
                             </a>
-                            <a class="btn btn-link btn-sm" href="#">
+                            <button type="button" class="btn btn-link btn-sm"
+                                data-toggle="modal"
+                                data-target="#edit-experience-form">
                                 <i class="fas fa-edit"></i>
                                 <span></span>
-                            </a>
+                            </button>
                         </td>
-                        <td> {{ experience.experience }} </td>
-                        <td> 
+                        <td class="col-8"> {{ experience.experience }} </td>
+                        <td class='col-2'> 
                             <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm"> 
                                 <i class="fas fa-external-link-alt "></i>
                                 Open file
@@ -225,8 +396,9 @@
     <div class = "table-responsive">
         <table class="table table-hover" id="my-qualification-table">
             <thead>
-               <tr>
-                    <th scope="col" class="col-xs-2">
+               <tr class="d-flex">
+                   
+                    <th scope="col" class="col-2">
                         <button type="button" class="btn btn-secondary btn-sm"
                             data-toggle="modal"
                             data-target="#qualification-form">
@@ -234,25 +406,27 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-xs-8">Qualification</th>
-                    <th scope="col" class="col-xs-2">Certificate</th>
+                    <th scope="col" class="col-8">Qualification</th>
+                    <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
            <tbody>
             {% for qualification in qualifications %}
-                <tr>
-                    <td scope="row">
+                <tr class="d-flex">
+                    <td scope="row" class='col-2'>
                         <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_qualification', id=qualification.id)}}">
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <a class="btn btn-link btn-sm" href="#">
+                        <button type="button" class="btn btn-link btn-sm"
+                            data-toggle="modal"
+                            data-target="#edit-qualification-form">
                             <i class="fas fa-edit"></i>
                             <span></span>
-                        </a>
-                    </td>
-                    <td> {{ qualification.qualification }} </td>
-                    <td> 
+                        </button>
+                    </td >
+                    <td class='col-8'> {{ qualification.qualification }} </td>
+                    <td class='col-2'> 
                         <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm"> 
                             <i class="fas fa-external-link-alt "></i>
                             Open file
@@ -267,8 +441,8 @@
     <div class = "table-responsive">
         <table class="table table-hover" id="my-achievement-table">
             <thead>
-               <tr>
-                    <th scope="col" class="col-xs-2" >
+               <tr class="d-flex">
+                    <th scope="col" class="col-2" >
                         <button type="button" class="btn btn-secondary btn-sm"
                             data-toggle="modal"
                             data-target="#achievement-form">
@@ -276,25 +450,27 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-xs-8">Achievement</th>
-                    <th scope="col" class="col-xs-2">Certificate</th>
+                    <th scope="col" class="col-8">Achievement</th>
+                    <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
            <tbody>
             {% for achievement in achievements %}
-                <tr>
-                    <td scope="row">
+                <tr class="d-flex">
+                    <td scope="row" class="col-2">
                         <a class="btn btn-link btn-sm" href="{{url_for('delete_tutor_achievement', id=achievement.id)}}">
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <a class="btn btn-link btn-sm" href="#">
+                        <button type="button" class="btn btn-link btn-sm"
+                            data-toggle="modal"
+                            data-target="#edit-achievement-form">
                             <i class="fas fa-edit"></i>
                             <span></span>
-                        </a>
+                        </button>
                     </td>
-                    <td> {{ achievement.achievement }} </td>
-                    <td> 
+                    <td class="col-8"> {{ achievement.achievement }} </td>
+                    <td class="col-2"> 
                         <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm"> 
                             <i class="fas fa-external-link-alt "></i>
                             Open file
@@ -307,4 +483,5 @@
     </div>
 
 </div>
+
 {% endblock %}

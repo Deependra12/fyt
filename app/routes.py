@@ -226,7 +226,7 @@ def profile(username):
 @login_required
 def student():
     if current_user.is_authenticated and current_user.role == 'admin':
-        return redirect('/admin')
+        return redirect('/asdmin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
@@ -453,6 +453,19 @@ def delete_tutor_courses(id):
         return redirect(url_for('tutor_courses'))   
 
 
+@app.route('/tutor/edit/mycourse/<int:id>', methods=['POST', 'GET'])
+def edit_tutor_courses(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    # if user.username == current_user.username and not is_tutor(user):
+    #     return redirect(url_for('student'))
+    # elif user.username == current_user.username and is_tutor(user):
+    #     mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
+    #     db.session.delete(mycourse_to_be_deleted)
+    #     db.session.commit()
+    #     return redirect(url_for('tutor_courses'))
+
+
 @app.route('/tutor/my-profile', methods=['POST','GET'])
 @login_required
 def tutor_educational_profile():
@@ -529,15 +542,7 @@ def delete_tutor_achievement(id):
 @app.route('/edit/experience/<int:id>')
 @login_required
 def edit_tutor_experience(id):
-        user = User.query.filter_by(username=current_user.username).first()
-    if user.username == current_user.username and not is_tutor(user):
-        return redirect(url_for('student'))
-    elif user.username == current_user.username and is_tutor(user):
-        experience_to_be_deleted = Experience.query.filter_by(id=id).first_or_404()
-        db.session.delete(experience_to_be_deleted)
-        db.session.commit()
-        return redirect(url_for('tutor_educational_profile'))
-
+    pass
 
 
 @app.route('/edit/qualification/<int:id>')
