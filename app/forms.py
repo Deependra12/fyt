@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import (StringField, PasswordField, IntegerField, SubmitField, SelectField, DateField,
                     FileField, Label, TimeField, MultipleFileField, TextAreaField)
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Length
+from flask_wtf.file import FileRequired, FileAllowed
 from .models import User
 
 # Activate captcha later on using
@@ -79,7 +80,7 @@ class PersonalInfoForm(FlaskForm):
     municipality = StringField('Municipality', validators=[DataRequired()])
     ward_no = StringField('Ward Number', validators=[DataRequired()])
     self_description = TextAreaField ("Describe yourself!", validators=[Length(max=250)])
-    profile_pic = FileField('Profile Picture')    
+    profile_pic = FileField('Profile Picture', validators=[FileAllowed(['jpeg','png','jpg'], 'Images Only!')])    
     submit = SubmitField('Save')
     
 
@@ -133,15 +134,15 @@ class MyCourseForm(FlaskForm):
 
 class MyExperienceForm(FlaskForm):
     experience = StringField("Experience", validators=[DataRequired()])
-    experience_certificate = FileField("Certification for your experience", validators=[DataRequired()])
+    experience_certificate = FileField("Certification for your experience", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_experience = SubmitField("Save")
 
 class MyQualificationForm(FlaskForm):
     qualification = StringField ("Qualification", [DataRequired()])
-    qualification_certificate = FileField("Certification for your qualification", [DataRequired()])
+    qualification_certificate = FileField("Certification for your qualification", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_qualification = SubmitField("Save")
 
 class MyAchievementForm(FlaskForm):
     achievement = StringField ("Achievement", [DataRequired()])
-    achievement_certificate = FileField("Certification for your achievement", [DataRequired()])
+    achievement_certificate = FileField("Certification for your achievement", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_achievement = SubmitField("Save")

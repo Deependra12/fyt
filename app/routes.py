@@ -160,29 +160,29 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     f_name, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
-    output_size = (125,125)
+    picture_path = os.path.join(app.root_path, 'static/profile_pics/', picture_fn)
+    output_size = (200,200)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
     return picture_fn
 
-def save_docs(form_picture, directory):
+def save_docs(docs, directory):
     random_hex = secrets.token_hex(8)
-    f_name, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/docs/' ,directory, picture_fn)
-    i = Image.open(form_picture)
-    i.save(picture_path)
-    return picture_fn
+    f_name, f_ext = os.path.splitext(docs.filename)
+    docs_fn = random_hex + f_ext
+    docs_path = os.path.join(app.root_path, 'static/docs/' ,directory, docs_fn)
+    docs.save(docs_path)
+    return docs_fn
 
 
 def delete_picture(user_picture):
-    f_name, f_ext = os.path.splitext(user_picture)
-    location = "/static/profile_pics"
-    picture_fn = f_name + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(app.root_path, 'static','profile_pics', user_picture)
     os.remove(picture_path)
+
+def delete_docs(docs,directory):
+    docs_path = os.path.join(app.root_path,'static','docs', directory, docs)
+    os.remove(docs_path)
 
 
 def fetch_default_profile_pic(user_obj):
@@ -210,13 +210,14 @@ def fetch_profile_pic(user_obj):
 @app.route('/profiles/<username>')
 @login_required
 def profile(username):
+    google_api = app.config.get('GOOGLE_MAP_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
     if is_tutor(user):
         user_obj = Tutor.query.filter_by(user_id=user.id).first()
     else:
         user_obj = Student.query.filter_by(user_id=user.id).first()
     view_user = User.query.filter_by(username=username).first_or_404()
-    return render_template('public-profile.html', user=user, view_user=view_user, profilepic= fetch_profile_pic(user_obj))
+    return render_template('public-profile.html', user=user, view_user=view_user, profilepic= fetch_profile_pic(user_obj), google_api_key=google_api)
 
 
 # Student Routes
@@ -466,7 +467,7 @@ def edit_tutor_courses(id):
     #     return redirect(url_for('tutor_courses'))
 
 
-@app.route('/tutor/my-profile', methods=['POST','GET'])
+@app.route('/tutor/my-educational-profile', methods=['POST','GET'])
 @login_required
 def tutor_educational_profile():
     form_experience = MyExperienceForm()
@@ -490,7 +491,7 @@ def tutor_educational_profile():
     achievements = Achievement.query.filter_by(tutor_id=user.id)
     experiences = Experience.query.filter_by(tutor_id=user.id)
     if user.username == current_user.username and is_tutor(user):
-        return render_template('my-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, 
+        return render_template('my-educational-profile.html', profilepic=fetch_profile_pic(tutor), user=user, tutor=tutor, 
             qualifications=qualifications, achievements=achievements, experiences=experiences,
             form_experience=form_experience, form_qualification=form_qualification, form_achievement=form_achievement)
     elif user.username == current_user.username and not is_tutor(user):
@@ -506,6 +507,7 @@ def delete_tutor_experience(id):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         experience_to_be_deleted = Experience.query.filter_by(id=id).first_or_404()
+        delete_docs(experience_to_be_deleted.experience_file,'experience')
         db.session.delete(experience_to_be_deleted)
         db.session.commit()
         return redirect(url_for('tutor_educational_profile'))   
@@ -520,6 +522,7 @@ def delete_tutor_qualification(id):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         qualification_to_be_deleted = Qualification.query.filter_by(id=id).first_or_404()
+        delete_docs(qualification_to_be_deleted.qualification_file,'qualification')
         db.session.delete(qualification_to_be_deleted)
         db.session.commit()
         return redirect(url_for('tutor_educational_profile'))  
@@ -534,9 +537,10 @@ def delete_tutor_achievement(id):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         achievement_to_be_deleted = Achievement.query.filter_by(id=id).first_or_404()
+        delete_docs(achievement_to_be_deleted.achievement_file,'achievement')
         db.session.delete(achievement_to_be_deleted)
         db.session.commit()
-        return redirect(url_for('tutor_educational_profile'))      
+        return redirect(url_for('tutor_educational_profile')) 
 
 
 @app.route('/edit/experience/<int:id>')

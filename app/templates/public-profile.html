@@ -54,11 +54,22 @@
             </div>
         </div>
     </div>
+    <div id="map" class="row"></div>
 </div>
+
+
 
 {% endblock %}
 
 {% block additional_style %}
+
+#map {
+    height:500px; 
+    width:85%; 
+    margin: auto;
+    background-color: grey;
+  }
+
 .thought {
     display:flex;
     background-color:rgb(179, 180, 196);
@@ -68,6 +79,7 @@
     max-width:220px;
     min-height:40px;
     margin-top:20px;
+    margin-bottom:30px;
     position:relative;
     align-items:center;
     justify-content:center;
@@ -102,3 +114,56 @@
   }
 {% endblock %}
 
+{% block document_javascript %}
+function initMap() {
+
+
+    var viewUserLocation = { lat: parseFloat({{ view_user.location.latitude }}),
+        lng: parseFloat({{ view_user.location.longitude }}) };
+    
+    var userLocation = {
+        lat: parseFloat({{ user.location.latitude }}),
+        lng: parseFloat({{ user.location.longitude }})
+    };
+    
+
+    var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 10,
+        center: viewUserLocation
+      });
+
+    var viewUserDetails = "{{ view_user[view_user.role].full_name }}" + "\n" +
+        "{{ view_user.role.title() }}" + "\n" + "{{ view_user[view_user.role].phone }}"
+
+    var userDetails = "{{ user[user.role].full_name }}" + "\n" +
+        "{{ user.role.title() }}" + "\n" + "{{ user[user.role].phone }}"
+
+
+    var viewUserMarker = new google.maps.Marker({
+      position: viewUserLocation,
+      map:map,
+      title: viewUserDetails
+    });
+
+    var userMarker = new google.maps.Marker({
+        position: userLocation,
+        map:map,
+        title: userDetails
+    });
+
+    var markers = [viewUserMarker, userMarker]
+    var bounds = new google.maps.LatLngBounds();
+    for (var i = 0; i < markers.length; i++) {
+        bounds.extend(markers[i]);
+    }
+  
+    map.fitBounds(bounds);
+    
+  }
+{% endblock %}
+
+{% block additional_script%}
+     <script defer
+        src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
+{%endblock%}

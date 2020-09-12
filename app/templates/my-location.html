@@ -98,7 +98,7 @@ else{
                     document.getElementById('longitude-field').value=event.latLng.lng();
                     setPlace(event.latLng.lat(),event.latLng.lng());
             });
-        }
+    }
 
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
