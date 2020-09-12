@@ -328,6 +328,32 @@ def student_courses():
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor'))
 
+    
+@app.route('/student/delete/mycourse/<int:id>', methods=['POST', 'GET'])
+def delete_student_courses(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    if user.username == current_user.username and not is_tutor(user):
+        mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
+        db.session.delete(mycourse_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('student_courses'))  
+    elif user.username == current_user.username and is_tutor(user):
+        return redirect(url_for('student'))
+
+
+@app.route('/student/edit/mycourse/<int:id>', methods=['POST', 'GET'])
+def edit_student_courses(id):
+    user = User.query.filter_by(username=current_user.username).first()
+
+    # if user.username == current_user.username and not is_tutor(user):
+    #     return redirect(url_for('student'))
+    # elif user.username == current_user.username and is_tutor(user):
+    #     mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
+    #     db.session.delete(mycourse_to_be_deleted)
+    #     db.session.commit()
+    #     return redirect(url_for('tutor_courses'))
+
 
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
 @login_required
@@ -342,6 +368,7 @@ def student_followed_tutors():
         
 
 # Tutor Routes
+
 
 @app.route('/tutor')
 @app.route('/tutor/home')
