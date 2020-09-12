@@ -8,30 +8,29 @@
     activateMenu('my-courses')
 {% endblock %}
 
+{% block additional_style %}
+    .container{
+        padding: 3%;
+    }
+
+    .card{
+        margin-bottom: 6%;
+        background-color: #049BBA; 
+        
+    }
+
+    .card-body{
+        color:white;
+    }
+
+    .card-text{
+        height: 150px ;
+        color:white;
+        
+    }
+{% endblock %}
 
 {% block content %}
-    <style>
-        .container{
-            padding: 3%;
-        }
-
-        .card{
-            margin-bottom: 6%;
-            background-color: #049BBA; 
-               
-        }
-
-        .card-body{
-            color:white;
-        }
-
-        .card-text{
-            height: 150px ;
-            color:white;
-            
-        }
-        
-    </style>
     <div class="container-fluid">
         
         <div class='row'>
@@ -41,14 +40,20 @@
                 </legend>
             </div>
             <div class="col-md-6">
-                <form action='' method="GET" style="float:right;" class="form-inline">
-                    <select class="custom-select custom-select" name="educational_level">
-                        <option value='Basic Education(Grade 1-8)'>Basic Education (Grade 1-8)</option>
-                        <option value="Secondary Education(Grade 9-12)">Secondary Education (Grade 9-12)</option>
-                        <option value="Bachelor Level">Bachelor Level</option>
-                        <option value="Master Level">Master Level</option>
-                    </select>
-                    <button type="submit" class= "btn btn-primary" value="" ><i class="fas fa-search" ></i></button>     
+                <form action='' method="GET" style="float:right;">
+                    <div class='input-group'>
+                        <select class="custom-select" name="educational_level">
+                            <option value='Basic Education(Grade 1-8)'>Basic Education (Grade 1-8)</option>
+                            <option value="Secondary Education(Grade 9-12)">Secondary Education (Grade 9-12)</option>
+                            <option value="Bachelor Level">Bachelor Level</option>
+                            <option value="Master Level">Master Level</option>
+                        </select>
+                        <span>
+                            <button type="submit" class= "btn btn-primary" value="" >
+                                <i class="fas fa-search" ></i>
+                            </button>
+                        </span>
+                    </div>    
                 </form>
             </div>
         </div>

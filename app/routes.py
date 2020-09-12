@@ -234,7 +234,7 @@ def student():
     abort(404)
 
 
-@app.route('/student/mylocation', methods=['POST','GET'])
+@app.route('/student/my-location', methods=['POST','GET'])
 @login_required
 def student_location():
     form = MyLocationForm()
@@ -253,7 +253,7 @@ def student_location():
     
     if user.username == current_user.username and not is_tutor(user):
         student=Student.query.filter_by(user_id=user.id).first()
-        return render_template("mylocation.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, google_api_key=google_api,
+        return render_template("my-location.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form, google_api_key=google_api,
             opencage_api_key=opencage_api, location=location)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_location'))
@@ -353,7 +353,7 @@ def tutor():
     abort(404)
 
 
-@app.route('/tutor/mylocation', methods=['POST','GET'])
+@app.route('/tutor/my-location', methods=['POST','GET'])
 @login_required
 def tutor_location():
     form = MyLocationForm()
@@ -374,7 +374,7 @@ def tutor_location():
         return redirect(url_for('student_location'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template("mylocation.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor), form=form, google_api_key=google_api,
+        return render_template("my-location.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor), form=form, google_api_key=google_api,
             opencage_api_key=opencage_api, location=location)
 
 
@@ -524,6 +524,32 @@ def delete_tutor_achievement(id):
         db.session.delete(achievement_to_be_deleted)
         db.session.commit()
         return redirect(url_for('tutor_educational_profile'))      
+
+
+@app.route('/edit/experience/<int:id>')
+@login_required
+def edit_tutor_experience(id):
+        user = User.query.filter_by(username=current_user.username).first()
+    if user.username == current_user.username and not is_tutor(user):
+        return redirect(url_for('student'))
+    elif user.username == current_user.username and is_tutor(user):
+        experience_to_be_deleted = Experience.query.filter_by(id=id).first_or_404()
+        db.session.delete(experience_to_be_deleted)
+        db.session.commit()
+        return redirect(url_for('tutor_educational_profile'))
+
+
+
+@app.route('/edit/qualification/<int:id>')
+@login_required
+def edit_tutor_qualification(id):
+    pass
+
+
+@app.route('/edit/achievement/<int:id>')
+@login_required
+def edit_tutor_achievement(id):
+    pass
 
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])

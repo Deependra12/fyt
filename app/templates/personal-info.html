@@ -57,7 +57,7 @@
                 {{ form.state.label(class='form-control-label') }}
                 {% set z = form.state.process_data(user_obj.state) %}
                 {% if form.state.errors %}
-                    {{form.state(class="form-control is-invalid")}}
+                    {{form.state(class="form-control custom-select is-invalid")}}
                     <div class="invalid-feedback">
                     {% for error in form.state.errors %}
                         <span>
@@ -66,7 +66,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.state(class="form-control")}}
+                    {{form.state(class="form-control custom-select")}}
                 {% endif %}
             </div>
            
@@ -75,7 +75,7 @@
                 {{ form.district.label(class='form-control-label') }}
                 {% set z = form.district.process_data(user_obj.district) %}
                 {% if form.district.errors %}
-                    {{form.district(class="form-control is-invalid")}}
+                    {{form.district(class="form-control custom-select is-invalid")}}
                     <div class="invalid-feedback">
                     {% for error in form.district.errors %}
                         <span>
@@ -84,7 +84,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{form.district(class="form-control")}}
+                    {{form.district(class="form-control custom-select")}}
                 {% endif %}
             </div> 
 
