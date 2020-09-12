@@ -9,6 +9,52 @@
 {% endblock %}
 
 {% block content %}
+<div class = "modal fade" id="edit-mycourse-form">
+    <div class = "modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="modal-header-title" class="modal-title">Edit My Course</h4>
+                <button type="button" class="close"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class='modal-body'>
+                <form action="" class="form inline" method="POST" id='add-course-form'>
+                    {{ form.hidden_tag() }}
+            
+                    <div class="form-row">
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form.education_level.label(class='form-control-label') }}
+                            {{ form.education_level(class='form-control') }}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form.course.label(class='form-control-label') }}
+                            {{ form.course(class='form-control') }}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form.time.label(class='form-control-label') }}
+                            {{ form.time(class='form-control', type='time') }}
+                        </div>
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form.cost.label(class='form-control-label') }}
+                            {{ form.cost(class='form-control') }}
+                        </div> 
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form.save(class='btn btn-success form-control') }}
+                        </div>     
+                        <div class="form-group mx-sm-3 mb-2">
+                            <button class="btn btn-secondary" data-dismiss="modal"
+                            aria-label="Close">Cancel</button>   
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>   
+    </div>
+</div>
+
 <div class="container">
     <legend class="border-bottom mb-4">My Courses</legend>
 
@@ -16,7 +62,7 @@
         <table class='table table-hover' id='my-courses-table'>
            <thead>
                <tr>
-                    <th scope="col" >
+                    <th scope="col">
                         <a href="{{ url_for('courses') }}" class="btn btn-secondary btn-sm" id='add-new-course'>
                             <i class="fas fa-plus"></i>
                             <span></span>
@@ -37,10 +83,13 @@
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <a class="btn btn-link btn-sm" href="#">
+                        <button class="btn btn-link btn-sm edit-btn" 
+                            data-toggle="modal"
+                            data-target="#edit-mycourse-form"
+                            data-id="{{ my_course.id }}"> 
                             <i class="fas fa-edit"></i>
                             <span></span>
-                        </a>
+                        </button>
                     </th>
                     <td> {{ my_course.Course.course_level or ''}} </td>
                     <td> {{ my_course.Course.course_title or '' }} </td>
@@ -53,4 +102,15 @@
     </div>
 
 </div> 
+
+
+<script>
+    const modalHeaderTitle = document.querySelector('#modal-header-title');
+    const editBtn = document.querySelector('.edit-btn');
+
+    editBtn.addEventListener('click',(e) => {
+       console.log(e.target.classList);
+    });
+    
+</script>
 {% endblock %}

@@ -222,12 +222,12 @@ def profile(username):
 
 # Student Routes
 
-
+@app.route('/student')
 @app.route('/student/home')
 @login_required
 def student():
     if current_user.is_authenticated and current_user.role == 'admin':
-        return redirect('/asdmin')
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
@@ -284,7 +284,7 @@ def student_personal_info():
                 municipality = form.municipality.data,
                 ward_no = form.ward_no.data,
                 phone = form.phone.data ,
-                description = form.self_description.data,
+                description = form.self_description.data.strip(),
                 guardian_name = form.guardian_name.data,
                 guardian_address = form.guardian_address.data,
                 guardian_phone = form.guardian_phone.data
@@ -319,10 +319,12 @@ def student_account_info():
 def student_courses():
     user = User.query.filter_by(username=current_user.username).first()
     my_courses = Mycourse.query.filter_by(user_id=current_user.id)
-    
+    form = MyCourseForm()
+    form.create_cost_choices()
     if user.username == current_user.username and not is_tutor(user):
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template("my-courses.html", user=user, student=student, profilepic= fetch_profile_pic(student), my_courses=my_courses)
+        return render_template("my-courses.html", user=user, student=student, 
+        profilepic= fetch_profile_pic(student), my_courses=my_courses, form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor'))
 
@@ -341,7 +343,7 @@ def student_followed_tutors():
 
 # Tutor Routes
 
-
+@app.route('/tutor')
 @app.route('/tutor/home')
 @login_required
 def tutor():
@@ -434,11 +436,14 @@ def tutor_account_info():
 def tutor_courses():
     user = User.query.filter_by(username=current_user.username).first()
     my_courses = Mycourse.query.filter_by(user_id=current_user.id)
+    form = MyCourseForm()
+    form.create_cost_choices()
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template("my-courses.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), my_courses=my_courses)
+        return render_template("my-courses.html", user=user, tutor=tutor,
+         profilepic=fetch_profile_pic(tutor), my_courses=my_courses ,form=form)
 
 
 @app.route('/tutor/delete/mycourse/<int:id>', methods=['POST', 'GET'])

@@ -231,9 +231,7 @@
                     {{ form.self_description(class="form-control self-description") }}
                 {% endif %}
             </div>
-            <div id="bio-count" class="form-group col-lg-8 text-danger">
-                
-            </div>
+            <div id="bio-count" class="form-group col-lg-8 text-success"></div>
         </div>
 
         
@@ -256,11 +254,21 @@
 
     function showLength() {
         var numberRemaining = 250 - experienceTextArea.value.length;
-        if (numberRemaining <= 5) {
-            bioCount.innerHTML = numberRemaining + " " + "words remaining";
+        bioCount.innerHTML = numberRemaining + " " + "characters remaining!";
+        if (numberRemaining < 10) {
+            bioCount.classList.add('text-danger');
+            bioCount.classList.remove('text-success');
+            bioCount.classList.remove('text-warning');
         }
+        else if (numberRemaining >= 10 && numberRemaining <= 25) {
+            bioCount.classList.add('text-warning');
+            bioCount.classList.remove('text-success');
+            bioCount.classList.remove('text-danger');
+        } 
         else {
-            bioCount.innerHTML = "";
+            bioCount.classList.add('text-success');
+            bioCount.classList.remove('text-warning');
+            bioCount.classList.remove('text-danger');
         }
     }
 </script>

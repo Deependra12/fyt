@@ -33,9 +33,11 @@
                     {{ form.cost(class='form-control') }}
                 </div> 
                 <div class="form-group mx-sm-3 mb-2">
-                    <label class="form-control-label"></label>
                     {{ form.save(class='btn btn-success form-control') }}
-                </div>        
+                </div>     
+                <div class="form-group mx-sm-3 mb-2">
+                    <a class="btn btn-secondary" href="{{ url_for('courses') }}">Cancel</a>   
+                </div>
             </div>
         </form>
     </div>

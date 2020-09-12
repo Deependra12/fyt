@@ -17,7 +17,8 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
     <h1>Student {{user.username}}</h1>
+    <a href="{{url_for('profile', username=user.username)}}" style="float:right;" class="btn btn-success">View Profile</a>
 </div>
 {% endblock %}
