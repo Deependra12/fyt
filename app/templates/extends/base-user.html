@@ -290,14 +290,14 @@
                                     My Educational Profile</a>
                             </li>
                         {% endif %}
-                        <li>
+                        <li id="account-activities">
                             {% if current_user.role == "student" %}
-                            <a href="{{url_for('student_account_info')}}"><i class="fas fa-user-circle"></i>
-                                Account Information
+                            <a href="{{url_for('student_account_activities')}}"><i class="fas fa-user-circle"></i>
+                                Account Activities
                             </a>
                             {% else %}
-                            <a href="{{url_for('tutor_account_info')}}"><i class="fas fa-user-circle"></i>
-                                Account Information
+                            <a href="{{url_for('tutor_account_activities')}}"><i class="fas fa-user-circle"></i>
+                                Account Activities
                             </a>
                             {% endif %}                      
                         </li>
@@ -336,10 +336,21 @@
                         <i class="fa fa-bars"></i>
                         <span></span>
                     </button>
+
                     <a class="navbar-brand" href="{{url_for('home')}}">
                         <img class="image-responsive" style="width:120.5px;height:62px;"
                           src="{{url_for('static', filename='images/logo.png')}}" />
                     </a>
+
+                    {% if current_user.role == 'tutor' %}
+                    <a class="btn btn-info" href="{{url_for('tutor_account_activities')}}">
+                    {% else %}
+                    <a class="btn btn-info" href="{{url_for('student_account_activities')}}">
+                    {% endif %}
+                        <i class="fas fa-cog"></i>
+                        <span></span>
+                    </a>
+
                 </div>
             </nav> 
 

@@ -152,6 +152,23 @@ def logout():
     flash('You are now logged out. Log in to continue!', 'success')
     return redirect(url_for('login'))
 
+@app.route("/user/delete/<username>")
+@login_required
+def delete_user_account(username):
+    user_to_be_deleted = User.query.filter_by(username=username).first()
+    if current_user == user_to_be_deleted:
+        profile_pic = getattr(current_user, current_user.role).profile_pic
+        if profile_pic:
+            delete_picture(profile_pic)
+        db.session.delete(user_to_be_deleted)
+        db.session.commit()
+        flash('Successfully deleted account! But we\'re sad to see you go!', 'success')
+        return redirect(url_for('user_register'))
+    flash('You are not allowed to delete anyone else\'s account! Have you gone nuts?', 'danger')
+    if is_tutor(current_user):
+        return redirect(url_for('tutor')) 
+    else:   
+        return redirect(url_for('student'))
 
 # Utility functions
 
@@ -189,7 +206,7 @@ def fetch_default_profile_pic(user_obj):
     if isinstance(user_obj, Tutor):
         return url_for('static', filename='profile_pics/tutor.jpg')
     else:
-        return url_for('static', filename='profile_pics/student.jpeg')
+        return url_for('static', filename='profile_pics/student.jpg')
 
 
 def fetch_profile_pic(user_obj):
@@ -328,9 +345,9 @@ def student_personal_info():
         return render_template("personal-info.html", user=user, user_obj=student, profilepic= fetch_profile_pic(student), form=form)
 
 
-@app.route('/student/account-info', methods=['POST','GET'])
+@app.route('/student/account-activities', methods=['POST','GET'])
 @login_required
-def student_account_info():
+def student_account_activities():
     form = AccountInfoForm()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
@@ -344,7 +361,7 @@ def student_account_info():
                 db.session.commit()
                 flash("Successfully changed password!", "success")
                 return redirect(url_for('student'))
-        return render_template("account-info.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form)
+        return render_template("account-activities.html", user=user, student=student, profilepic= fetch_profile_pic(student), form=form)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_account_info'))
 
@@ -459,15 +476,15 @@ def tutor_personal_info():
         return redirect(url_for('student_personal_info'))
 
 
-@app.route('/tutor/account-info', methods=['POST','GET'])
+@app.route('/tutor/account-activities', methods=['POST','GET'])
 @login_required
-def tutor_account_info():
+def tutor_account_activities():
     form = AccountInfoForm()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_account_info'))
     elif user.username == current_user.username and is_tutor(user):
-        tutor=Tutor.query.filter_by(user_id=user.id).first()
+        tutor = Tutor.query.filter_by(user_id=user.id).first()
         if form.validate_on_submit():
             if not user.check_password(form.old_password.data):
                 flash("Wrong password!","danger")
@@ -477,7 +494,7 @@ def tutor_account_info():
                 db.session.commit()
                 flash("Successfully changed password!", "success")
                 return redirect(url_for('tutor'))
-        return render_template("account-info.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form)
+        return render_template("account-activities.html", user=user, tutor=tutor, profilepic=fetch_profile_pic(tutor), form=form)
 
 
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
@@ -626,11 +643,7 @@ def courses():
     else:
         courses = Course.query.all()
     user = User.query.filter_by(username=current_user.username).first()
-    if is_tutor(user):
-        user_obj = Tutor.query.filter_by(user_id=user.id).first()
-    else:
-        user_obj = Student.query.filter_by(user_id=user.id).first()
-    return render_template('courses.html',profilepic=fetch_profile_pic(user_obj), courses=courses, user=user)
+    return render_template('courses.html',profilepic=fetch_profile_pic(getattr(user, user.role)), courses=courses, user=user)
     
 
 @app.route('/courses/<int:id>')
@@ -638,11 +651,7 @@ def courses():
 def courses_by_id(id):
     course = Course.query.filter_by(id=id).first_or_404()
     user = User.query.filter_by(username=current_user.username).first()
-    if is_tutor(user):
-        user_obj = Tutor.query.filter_by(user_id=user.id).first()
-    else:
-        user_obj = Student.query.filter_by(user_id=user.id).first()
-    return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(user_obj), user=user)
+    return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(getattr(user, user.role)), user=user)
 
 
 # MyCourse
@@ -652,10 +661,6 @@ def courses_by_id(id):
 @login_required
 def add_course(id):
     user = User.query.filter_by(username=current_user.username).first()
-    if is_tutor(user):
-        user_obj = Tutor.query.filter_by(user_id=user.id).first()
-    else:
-        user_obj = Student.query.filter_by(user_id=user.id).first()
     form = MyCourseForm()
     form.create_cost_choices()
     course= Course.query.filter_by(id=id).first_or_404()
@@ -667,7 +672,7 @@ def add_course(id):
             return redirect(url_for('tutor_courses'))
         else:
             return redirect(url_for('student_courses'))
-    return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(user_obj), user=user, course=course)
+    return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(getattr(user, user.role)), user=user, course=course)
 
 
 @app.route('/edit/my-course/<int:id>', methods=['GET','POST'])
@@ -685,7 +690,7 @@ def edit_mycourse(id):
             return redirect(url_for('tutor_courses'))
         else:
             return redirect(url_for('student_courses'))
-    return render_template('edit-my-courses.html', form=form, profilepic=fetch_profile_pic(getattr(user,user.role)), user=user, course=my_course)
+    return render_template('edit-my-courses.html', form=form, profilepic=fetch_profile_pic(getattr(user, user.role)), user=user, course=my_course)
 
 
 # Error Handlers

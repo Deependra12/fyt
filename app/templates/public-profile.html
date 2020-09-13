@@ -26,7 +26,7 @@
                     </p>
                 </div> 
                 <div class="col-md-6" style="margin-bottom:15px;">
-                    <p>{{view_user.followers.count()}} followers, {{view_user.followed.count()}} followed</p>
+                    <p>{{ view_user.followers.count() }} followers, {{ view_user.followed.count() }} followed</p>
                 </div>              
             </div>
             <div class="row">
@@ -40,14 +40,12 @@
                         Ward No: {{ view_user[view_user.role].ward_no or 'n/a' }} 
                     </p> 
                 </div>
-                <div class="col-md-6"></div>
-            </div>
-            <div class="row">
-                <p style="margin-top:10px;margin-left:15%;margin-right:15% ">
+                <div class="col-md-6">
+                    <p style="margin-top:10px;">
                     <div class="thought">
                         {{ view_user[view_user.role].description }}
                     </div>
-
+                </div>
             </div>
         </div>
         <div class="col-md-5 ">
@@ -57,27 +55,43 @@
                     {{ url_for('static', filename='profile_pics/' + view_user[view_user.role].profile_pic )}} {% else %}
                     {{url_for('static', filename='profile_pics/' + view_user.role + '.jpg') }} {% endif %}"/>
             </div>
-            
             <div class="row">
-                {% if view_user == user %}
-                    {% if user.role == 'tutor'%}
-                        <button class="btn btn-info"><a href="{{ url_for('tutor_personal_info') }}">Edit your profile</a></button>
-                    {% elif user.role == 'student'%}
-                        <button class="btn btn-info"><a href="{{ url_for('student_personal_info') }}">Edit your profile</a></button>
-                    {% endif %}
-                {% elif not user.is_following(view_user) %}
-                    <button class="btn btn-primary"><a href="{{ url_for('follow', username=view_user.username) }}">Follow</a></button>
-                {% else %}
-                    <button class="btn btn-danger"><a href="{{ url_for('unfollow', username=view_user.username) }}">Unfollow</a></button>
-                {% endif %}            
+                <div class="buttons-container">
+                        {% if view_user == user %}
+                            {% if user.role == 'tutor'%}
+                                <div class="row button">
+                                    <button class="btn btn-info"><a href="{{ url_for('tutor_personal_info') }}">Edit your profile</a></button>
+                                </div>
+                                <div class="row button">
+                                    <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
+                                </div>
+                            {% elif user.role == 'student'%}
+                                <div class="row button">
+                                    <button class="btn btn-info"><a href="{{ url_for('student_personal_info') }}">Edit your profile</a></button>
+                                </div>
+                                <div class="row button">
+                                    <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
+                                </div>
+                            {% endif %}
+                        {% elif not user.is_following(view_user) %}
+                            <button class="btn btn-primary"><a href="{{ url_for('follow', username=view_user.username) }}">Follow</a></button>
+                        {% else %}
+                            <button class="btn btn-danger"><a href="{{ url_for('unfollow', username=view_user.username) }}">Unfollow</a></button>
+                        {% endif %}   
+                </div>         
             </div>
         </div>
+
     </div>
     {% if view_user.role=='tutor'%}
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10">
+            {% if view_user == user %}
+            <h4 style="margin-bottom: 10px;">Your Courses</h4>
+            {%  else %}
             <h4 style="margin-bottom: 10px;">{{view_user.username}}'s Courses</h4>
+            {% endif %}
             <div class='table-responsive'>
                 <table class='table table-hover' id='my-courses-table'>
                     <thead>
@@ -178,6 +192,17 @@
                -24px 17px 0 -6px  rgb(179, 180, 196),
                -5px 25px 0 -10px rgb(179, 180, 196);
     
+  }
+
+  .buttons-container {
+      margin-top: 10px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+  }
+
+  .button{
+      margin: 10px;
   }
 {% endblock %}
 

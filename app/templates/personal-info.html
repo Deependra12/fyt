@@ -250,11 +250,11 @@
     const experienceTextArea = document.querySelector('.self-description');
     const bioCount = document.getElementById('bio-count');
     experienceTextArea.value = "{{ user_obj.description }}" != "None" ? "{{ user_obj.description }}" : "";
-    experienceTextArea.addEventListener('keyup', showLength, false);
+    experienceTextArea.addEventListener('input', showLength, false);
 
     function showLength() {
         var numberRemaining = 250 - experienceTextArea.value.length;
-        bioCount.innerHTML = numberRemaining + " " + "characters remaining!";
+        bioCount.innerHTML = numberRemaining + " " + "more characters allowed!";
         if (numberRemaining < 10) {
             bioCount.classList.add('text-danger');
             bioCount.classList.remove('text-success');

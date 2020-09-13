@@ -382,7 +382,7 @@
                         </td>
                         <td class="col-8"> {{ experience.experience }} </td>
                         <td class='col-2'> 
-                            <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm"> 
+                            <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                                 <i class="fas fa-external-link-alt "></i>
                                 Open file
                             </a>
@@ -427,7 +427,7 @@
                     </td >
                     <td class='col-8'> {{ qualification.qualification }} </td>
                     <td class='col-2'> 
-                        <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm"> 
+                        <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                             <i class="fas fa-external-link-alt "></i>
                             Open file
                         </a>
@@ -471,7 +471,7 @@
                     </td>
                     <td class="col-8"> {{ achievement.achievement }} </td>
                     <td class="col-2"> 
-                        <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm"> 
+                        <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                             <i class="fas fa-external-link-alt "></i>
                             Open file
                         </a>

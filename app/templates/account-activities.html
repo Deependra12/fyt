@@ -6,15 +6,40 @@
 
 
 {% block active %}
-    activateMenu('account-info')
+    activateMenu('account-activities')
 {% endblock %}
 
 
 {% block content %}
+
+
+<div class = "modal fade" id="delete-confirmation-dialog">
+  <div class = "modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h4 class="modal-title">Delete Account</h4>
+          </div>
+          <div class='modal-body'>
+              <div class="modal-info">
+              Are you sure you want to delete your account? 
+              </div>
+              <div class="button-wrappers" style="margin-top: 10px;">
+                <a href="{{ url_for('delete_user_account', username=user.username) }}" id="delete-account-btn" class="btn btn-danger">Delete account</a>
+                <button type="button" class="btn btn-secondary"
+                    data-dismiss="modal"
+                    aria-label="Close">
+                  <span aria-hidden="true">Cancel</span>
+                </button>
+              </div>
+          </div>
+      </div>   
+  </div>
+</div>
+
 <div class="container">
    <form action="" class="form my-2" method="POST">
 
-      <legend class="border-bottom mb-4">Account Information</legend>
+      <legend class="border-bottom mb-4">Account Activities</legend>
       {{ form.hidden_tag() }}
 
           <div class="form-row">
@@ -74,5 +99,10 @@
         <input class="btn btn-success" type="submit" value="Change Password">
 
     </form>
+    <div style="margin-top: 20px;">
+      <legend class="border-bottom mb-4">Delete Account</legend>
+      <button type="button" id="delete-account-btn" class="btn btn-danger"
+      data-toggle="modal" data-target="#delete-confirmation-dialog">Delete account</button>
+    </div>
 </div>
 {% endblock %}
