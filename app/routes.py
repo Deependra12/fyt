@@ -96,6 +96,15 @@ def login():
     return render_template('login.html', form=form)
 
 
+@app.route('/check/username/<username>')
+def check_username_availability(username):
+    user = User.query.filter_by(username=username).first()
+    if user:
+        return jsonify({"message": "Username not available", "availability": False})
+    else:
+        return jsonify({"message": "Username available", "availability": True})
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     if current_user.is_authenticated:

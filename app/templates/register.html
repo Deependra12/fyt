@@ -11,7 +11,6 @@
   <form action="{{url_for('user_register')}}" class="form my-2" method="POST">
     <legend class="border-bottom mb-4">Join Us</legend>
     {{form.hidden_tag()}}
-
     <div class="form-row">
 
       <div class="form-group col-lg-6">
@@ -28,6 +27,7 @@
         {%else%}
           {{form.username(class="form-control")}}
         {% endif %}
+        <div id="username-availability"></div>
       </div>
 
       <div class="form-group col-lg-6">
@@ -119,5 +119,43 @@
     </small>
   </div>
 </div>
+
+<script>
+  const usernameField = document.querySelector("#username");
+  const usernameAvailability = document.querySelector("#username-availability");
+  usernameField.addEventListener('input', function (e) {
+    checkUsername(e.target.value);
+  })
+
+  
+
+  function checkUsername(str) {
+    var xhttp;
+    if (str == "") {
+      usernameAvailability.innerHTML = "";
+      return;
+    }
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var responseText = JSON.parse(this.responseText); 
+        if (responseText.availability){
+          usernameAvailability.classList.add('text-success');
+          usernameAvailability.classList.remove('text-danger');
+          usernameField.classList.remove('is-invalid');
+          usernameAvailability.innerHTML = "<i class='fas fa-check' style='color:green;'></i> " + responseText.message;
+        }
+        else{
+          usernameAvailability.classList.add('text-danger');
+          usernameAvailability.classList.remove('text-success');
+          usernameField.classList.add('is-invalid');
+          usernameAvailability.innerHTML = "<i class='fas fa-times' style='color:red;'></i> " + responseText.message;
+        }        
+      }
+    };
+    xhttp.open("GET", "/check/username/"+str, true);
+    xhttp.send();
+  }
+</script>
 
 {%endblock%}
