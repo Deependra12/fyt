@@ -127,10 +127,9 @@ class MyCourseForm(FlaskForm):
     
     def create_cost_choices(self):
         cost = []
-        for d in range(500, 5500, 500):
-            cost.append('Rs. ' + str(d - 500) + ' - ' + 'Rs. ' + str(d))
-        cost_choice = create_choices_from_list(cost)
-        self.cost.choices = cost_choice
+        for d in range(1000, 10000, 1000):
+            cost.append((d,'Rs. ' + str(d)))
+        self.cost.choices = cost
 
 class MyExperienceForm(FlaskForm):
     experience = StringField("Experience", validators=[DataRequired()])

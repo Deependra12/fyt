@@ -39,15 +39,16 @@
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <button class="btn btn-link btn-sm edit-btn"> 
+                        <a href="{{url_for('edit_mycourse', id=my_course.id)}} "
+                         class="btn btn-link btn-sm edit-btn"> 
                             <i class="fas fa-edit"></i>
                             <span></span>
-                        </button>
+                        </a>
                     </th>
                     <td> {{ my_course.Course.course_level or ''}} </td>
                     <td> {{ my_course.Course.course_title or '' }} </td>
                     <td> {{ my_course.time or '' }} </td>
-                    <td> {{ my_course.cost or ''}} </td>
+                    <td> Rs. {{ my_course.cost or ''}} </td>
                 </tr>
             {% endfor %}
            </tbody>    

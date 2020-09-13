@@ -377,19 +377,6 @@ def delete_student_courses(id):
         return redirect(url_for('student'))
 
 
-@app.route('/student/edit/mycourse/<int:id>', methods=['POST', 'GET'])
-def edit_student_courses(id):
-    user = User.query.filter_by(username=current_user.username).first()
-
-    # if user.username == current_user.username and not is_tutor(user):
-    #     return redirect(url_for('student'))
-    # elif user.username == current_user.username and is_tutor(user):
-    #     mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
-    #     db.session.delete(mycourse_to_be_deleted)
-    #     db.session.commit()
-    #     return redirect(url_for('tutor_courses'))
-
-
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
 @login_required
 def student_followed_tutors():
@@ -519,19 +506,6 @@ def delete_tutor_courses(id):
         db.session.delete(mycourse_to_be_deleted)
         db.session.commit()
         return redirect(url_for('tutor_courses'))   
-
-
-@app.route('/tutor/edit/mycourse/<int:id>', methods=['POST', 'GET'])
-def edit_tutor_courses(id):
-    user = User.query.filter_by(username=current_user.username).first()
-
-    # if user.username == current_user.username and not is_tutor(user):
-    #     return redirect(url_for('student'))
-    # elif user.username == current_user.username and is_tutor(user):
-    #     mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
-    #     db.session.delete(mycourse_to_be_deleted)
-    #     db.session.commit()
-    #     return redirect(url_for('tutor_courses'))
 
 
 @app.route('/tutor/my-educational-profile', methods=['POST','GET'])
@@ -694,6 +668,24 @@ def add_course(id):
         else:
             return redirect(url_for('student_courses'))
     return render_template('add-my-courses.html', form=form, profilepic=fetch_profile_pic(user_obj), user=user, course=course)
+
+
+@app.route('/edit/my-course/<int:id>', methods=['GET','POST'])
+@login_required
+def edit_mycourse(id):
+    user = User.query.filter_by(username=current_user.username).first()
+    form = MyCourseForm()
+    form.create_cost_choices()
+    my_course = Mycourse.query.filter_by(id=id,User=user).first_or_404()
+    if form.validate_on_submit():
+        my_course.time=form.time.data
+        my_course.cost=form.cost.data
+        db.session.commit()
+        if is_tutor(user):
+            return redirect(url_for('tutor_courses'))
+        else:
+            return redirect(url_for('student_courses'))
+    return render_template('edit-my-courses.html', form=form, profilepic=fetch_profile_pic(getattr(user,user.role)), user=user, course=my_course)
 
 
 # Error Handlers

@@ -78,6 +78,7 @@ class User(UserMixin, db.Model):
     def is_following(self, user):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+            
 
 class Student(db.Model):
     phone = db.Column(db.Integer)
@@ -161,7 +162,7 @@ class Mycourse(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     time = db.Column(db.Time)
-    cost = db.Column(db.String(64))
+    cost = db.Column(db.Integer)
 
 
 @login_manager.user_loader
