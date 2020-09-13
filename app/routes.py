@@ -218,7 +218,7 @@ def follow(username):
         return redirect(url_for('profile', username=username))
     current_user.follow(user)
     db.session.commit()
-    flash('You are following {}!'.format(username))
+    flash('You followed {}!'.format(username), 'success')
     return redirect(url_for('profile', username=username))
 
  
@@ -227,17 +227,17 @@ def follow(username):
 def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
-        flash('User {} not found.'.format(username))
+        flash('User {} not found.'.format(username),'danger')
         if is_tutor(current_user):
             return redirect(url_for('tutor'))
         else:
             return redirect(url_for('student'))
     if user == current_user:
-        flash('You cannot unfollow yourself!')
+        flash('You cannot unfollow yourself!','info')
         return redirect(url_for('profile', username=username))
     current_user.unfollow(user)
     db.session.commit()
-    flash('You are not following {}.'.format(username))
+    flash('You unfollowed {}.'.format(username),'danger')
     return redirect(url_for('profile', username=username))
 # Public Profile
 
