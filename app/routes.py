@@ -145,28 +145,33 @@ def reset_request():
     form = ResetLinkForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+        if not user:
+            flash('Sorry, no user with that email registered!', 'danger')
+            return redirect(url_for('reset_request'))
         em.send_reset_mail(user)
         flash('An email has been sent with instruction to reset your password','info')
         return redirect(url_for('login'))
 
     return render_template('resetlink.html',form=form)
 
+
 @app.route('/password-reset/<token>', methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    user=User.verify_reset_token(token)
+    user = User.verify_reset_token(token)
     if user is None:
-        flash('that is invalid token','warning')
+        flash('That is invalid token!', 'warning')
         return redirect(url_for('reset_request'))
-    form=ResetForm()
+    form = ResetForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been updated','info')
+        flash('Your password has been updated!','info')
         return redirect(url_for('login'))
-    
-    return render_template('reset.html',form=form)
+    else: 
+        print('blabla')
+    return render_template('reset.html', form=form)
 
 
 @app.route("/logout")
