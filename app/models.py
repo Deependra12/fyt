@@ -275,8 +275,6 @@ class CourseView(ModelView):
     form_edit_rules = ('course_title', 'course_level', 'course_description')
 
 
-
-
 class LogoutMenuLink(MenuLink):
     def is_accessible(self):
         return current_user.is_authenticated    
