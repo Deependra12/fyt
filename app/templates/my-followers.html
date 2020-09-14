@@ -7,5 +7,9 @@
 {% block content %}
 <div class="container">
     <legend class="border-bottom mb-4">My Followers</legend>
+    {% for my_follower in my_followers %}
+        <a href="{{url_for('profile', username=my_follower.username)}}">{{ my_follower.username }}</a>
+        <br>
+    {% endfor %}
 </div>  
 {% endblock %}

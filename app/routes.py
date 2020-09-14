@@ -429,10 +429,10 @@ def delete_student_courses(id):
 @login_required
 def student_followed_tutors():
     user = User.query.filter_by(username=current_user.username).first()
-
+    followed_tutors=user.followed.all()
     if user.username == current_user.username and not is_tutor(user):
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('my-tutors.html', profilepic= fetch_profile_pic(student), user=user)
+        return render_template('my-tutors.html', profilepic= fetch_profile_pic(student), user=user, followed_tutors=followed_tutors)
     elif user.username == current_user.username and is_tutor(user):
         return redirect(url_for('tutor_followers'))
         
@@ -672,12 +672,12 @@ def edit_tutor_achievement(id):
 @login_required
 def tutor_followers():
     user = User.query.filter_by(username=current_user.username).first()
-    
+    my_followers = user.followers.all()
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_followed_tutors'))
     elif user.username == current_user.username and is_tutor(user):
         tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template('my-followers.html', profilepic=fetch_profile_pic(tutor), tutor=tutor, user=user)
+        return render_template('my-followers.html', profilepic=fetch_profile_pic(tutor), tutor=tutor, user=user, my_followers=my_followers)
 
 
 #Courses
