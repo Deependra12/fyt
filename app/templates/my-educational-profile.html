@@ -22,9 +22,41 @@
                     {{ form_experience.hidden_tag() }}
                     <div class="form-row align-items-center">
                         <div class="form-group mx-sm-3 mb-2">
+                            {{ form_experience.title.label(class='form-control-label') }}
+                            {% if form_experience.title.errors %}
+                                {{ form_experience.title(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_experience.title.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_experience.title(class='form-control')}}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_experience.institution.label(class='form-control-label') }}
+                            {% if form_experience.institution.errors %}
+                                {{ form_experience.institution(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_experience.institution.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_experience.institution(class='form-control')}}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mx-sm-3 mb-2">
                             {{ form_experience.experience.label(class='form-control-label') }}
                             {% if form_experience.experience.errors %}
-                                {{ form_experience.experience(class='form-control is-invalid')}}
+                                {{ form_experience.experience(class='form-control is-invalid', type='year')}}
                                 <div class="invalid-feedback">
                                 {% for error in form_experience.experience.errors %}
                                     <span>
@@ -33,9 +65,8 @@
                                 {% endfor %}
                                 </div>
                             {%else%}
-                                {{ form_experience.experience(class='form-control')}}
+                                {{ form_experience.experience(class='form-control', type='year')}}
                             {% endif %}
-            
                         </div>
             
                         <div class="form-group mx-sm-3 mb-2">
@@ -93,6 +124,39 @@
                                 {{ form_qualification.qualification(class='form-control')}}
                             {% endif %}
                         </div>
+
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_qualification.institution.label(class='form-control-label') }}
+                            {% if form_qualification.institution.errors %}
+                                {{ form_qualification.institution(class='form-control is-invalid')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_qualification.institution.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_qualification.institution(class='form-control')}}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mx-sm-3 mb-2">
+                            {{ form_qualification.qualification_date.label(class='form-control-label') }}
+                            {% if form_qualification.qualification_date.errors %}
+                                {{ form_qualification.qualification_date(class='form-control is-invalid', type='year')}}
+                                <div class="invalid-feedback">
+                                {% for error in form_qualification.qualification_date.errors %}
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            {%else%}
+                                {{ form_qualification.qualification_date(class='form-control', type='year')}}
+                            {% endif %}
+                        </div>
+
                         <div class="form-group mx-sm-3 mb-2">
                             {{ form_qualification.qualification_certificate.label(class='form-control-label') }}
                             {% if form_qualification.qualification_certificate.errors %}
@@ -150,176 +214,39 @@
                                 {{ form_achievement.achievement(class='form-control')}}
                             {% endif %}
                         </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            {{ form_achievement.achievement_certificate.label(class='form-control-label') }}
-                            {% if form_achievement.achievement_certificate.errors %}
-                                {{ form_achievement.achievement_certificate(class='form-control-file is-invalid')}}
-                                <div class="invalid-feedback">
-                                {% for error in form_achievement.achievement_certificate.errors %}
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                {% endfor %}
-                                </div>
-                            {%else%}
-                                {{ form_achievement.achievement_certificate(class='form-control-file')}}
-                            {% endif %}
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label class="form-control-label"></label>
-                            {{ form_achievement.save_achievement(class='form-control btn btn-success') }}
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>   
-    </div>
-</div>
 
-<div class = "modal fade" id="edit-experience-form">
-    <div class = "modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Edit Experience</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class='modal-body'>
-                <form action="#" method="POST" class="form inline"  enctype="multipart/form-data">
-                    {{ form_experience.hidden_tag() }}
-                    <div class="form-row align-items-center">
                         <div class="form-group mx-sm-3 mb-2">
-                            {{ form_experience.experience.label(class='form-control-label') }}
-                            {% if form_experience.experience.errors %}
-                                {{ form_experience.experience(class='form-control is-invalid')}}
+                            {{ form_achievement.awarded_by.label(class='form-control-label') }}
+                            {% if form_achievement.awarded_by.errors %}
+                                {{ form_achievement.awarded_by(class='form-control is-invalid')}}
                                 <div class="invalid-feedback">
-                                {% for error in form_experience.experience.errors %}
+                                {% for error in form_achievement.awarded_by.errors %}
                                     <span>
                                         {{ error }}
                                     </span>
                                 {% endfor %}
                                 </div>
                             {%else%}
-                                {{ form_experience.experience(class='form-control')}}
-                            {% endif %}
-            
-                        </div>
-            
-                        <div class="form-group mx-sm-3 mb-2">
-                            {{ form_experience.experience_certificate.label(class='form-control-label') }}
-                            {% if form_experience.experience_certificate.errors %}
-                                {{ form_experience.experience_certificate(class='form-control-file is-invalid')}}
-                                <div class="invalid-feedback">
-                                {% for error in form_experience.experience_certificate.errors %}
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                {% endfor %}
-                                </div>
-                            {%else%}
-                                {{ form_experience.experience_certificate(class='form-control-file')}}
+                                {{ form_achievement.awarded_by(class='form-control')}}
                             {% endif %}
                         </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            {{ form_experience.save_experience(class='form-control btn btn-success') }}
-                        </div>   
-                    </div>
-                </form>                
-            </div>
-        </div>   
-    </div>
-</div>
 
-<div class = "modal fade" id="edit-qualification-form">
-    <div class = "modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Edit Qualification</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class='modal-body'>
-                <form action="" method="POST" class="form inline" enctype="multipart/form-data">
-                    {{ form_qualification.hidden_tag() }}
-                    <div class="form-row align-items-center">
                         <div class="form-group mx-sm-3 mb-2">
-                            {{ form_qualification.qualification.label(class='form-control-label') }}
-                            {% if form_qualification.qualification.errors %}
-                                {{ form_qualification.qualification(class='form-control is-invalid')}}
+                            {{ form_achievement.awarded_date.label(class='form-control-label') }}
+                            {% if form_achievement.awarded_date.errors %}
+                                {{ form_achievement.awarded_date(class='form-control is-invalid',type='year')}}
                                 <div class="invalid-feedback">
-                                {% for error in form_qualification.qualification.errors %}
+                                {% for error in form_achievement.awarded_date.errors %}
                                     <span>
                                         {{ error }}
                                     </span>
                                 {% endfor %}
                                 </div>
                             {%else%}
-                                {{ form_qualification.qualification(class='form-control')}}
+                                {{ form_achievement.awarded_date(class='form-control',type='year')}}
                             {% endif %}
                         </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            {{ form_qualification.qualification_certificate.label(class='form-control-label') }}
-                            {% if form_qualification.qualification_certificate.errors %}
-                                {{ form_qualification.qualification_certificate(class='form-control-file is-invalid')}}
-                                <div class="invalid-feedback">
-                                {% for error in form_qualification.qualification_certificate.errors %}
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                {% endfor %}
-                                </div>
-                            {%else%}
-                                {{ form_qualification.qualification_certificate(class='form-control-file')}}
-                            {% endif %}
-                        </div>
-                        <div class="form-group mx-sm-3 mb-2">
-                            <label class="form-control-label"></label>
-                            {{ form_qualification.save_qualification(class='form-control btn btn-success') }}
-                        </div>
-                    </div>
-                </form>
-            
-            </div>
-        </div>   
-    </div>
-</div>
 
-<div class = "modal fade" id="edit-achievement-form">
-    <div class = "modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Edit Achievement</h4>
-                <button type="button" class="close"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class='modal-body'>
-                <form action="" method="POST" class="form inline" enctype="multipart/form-data">
-                    {{ form_achievement.hidden_tag() }}
-                    <div class="form-row align-items-center">
-                        <div class="form-group mx-sm-3 mb-2">
-                            {{ form_achievement.achievement.label(class='form-control-label') }}
-                            {% if form_achievement.achievement.errors %}
-                                {{ form_achievement.achievement(class='form-control is-invalid')}}
-                                <div class="invalid-feedback">
-                                {% for error in form_achievement.achievement.errors %}
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                {% endfor %}
-                                </div>
-                            {%else%}
-                                {{ form_achievement.achievement(class='form-control')}}
-                            {% endif %}
-                        </div>
                         <div class="form-group mx-sm-3 mb-2">
                             {{ form_achievement.achievement_certificate.label(class='form-control-label') }}
                             {% if form_achievement.achievement_certificate.errors %}
@@ -348,8 +275,9 @@
 
 <div class="container">
     <legend class="border-bottom mb-4">My Educational Profile</legend>
-
+    
     <div class = "table-responsive">
+        <legend class="border-bottom mb-4 sm">My Experiences</legend>
         <table class="table table-hover" id="my-experience-table">
             <thead>
                <tr class="d-flex">
@@ -361,7 +289,9 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-8">Experience</th>
+                    <th scope='col' class='col-3'>Title</th>
+                    <th scope='col' class='col-3'>Institution</th>
+                    <th scope="col" class="col-2">Experience</th>
                     <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
@@ -380,7 +310,9 @@
                                 <span></span>
                             </button>
                         </td>
-                        <td class="col-8"> {{ experience.experience }} </td>
+                        <td class="col-3">{{ experience.title }}</td>
+                        <td class='col-3'>{{ experience.institution }}</td>
+                        <td class="col-2"> {{ experience.experience }}&nbsp;years</td>
                         <td class='col-2'> 
                             <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                                 <i class="fas fa-external-link-alt "></i>
@@ -394,6 +326,7 @@
     </div>
 
     <div class = "table-responsive">
+        <legend class="border-bottom mb-4 sm">My Qualifications</legend>
         <table class="table table-hover" id="my-qualification-table">
             <thead>
                <tr class="d-flex">
@@ -406,7 +339,9 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-8">Qualification</th>
+                    <th scope="col" class="col-3">Qualification</th>
+                    <th scope='col' class='col-3'>Institution</th>
+                    <th scope='col' class='col-2'>Date</th>
                     <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
@@ -425,7 +360,9 @@
                             <span></span>
                         </button>
                     </td >
-                    <td class='col-8'> {{ qualification.qualification }} </td>
+                    <td class='col-3'> {{ qualification.qualification }} </td>
+                    <td class='col-3'> {{ qualification.institution }} </td>
+                    <td class='col-2'> {{ qualification.qualification_date }} </td>
                     <td class='col-2'> 
                         <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                             <i class="fas fa-external-link-alt "></i>
@@ -439,6 +376,7 @@
     </div>
 
     <div class = "table-responsive">
+        <legend class="border-bottom mb-4 sm">My Achievements</legend>
         <table class="table table-hover" id="my-achievement-table">
             <thead>
                <tr class="d-flex">
@@ -450,7 +388,9 @@
                             <span></span>
                         </button>
                     </th>
-                    <th scope="col" class="col-8">Achievement</th>
+                    <th scope="col" class="col-3">Achievement</th>
+                    <th scope="col" class="col-3">Awarded By</th>
+                    <th scope="col" class="col-2">Awarded Date</th>
                     <th scope="col" class="col-2">Certificate</th>
                </tr>
            </thead>
@@ -469,7 +409,9 @@
                             <span></span>
                         </button>
                     </td>
-                    <td class="col-8"> {{ achievement.achievement }} </td>
+                    <td class="col-3"> {{ achievement.achievement }} </td>
+                    <td class="col-3"> {{ achievement.awarded_by }} </td>
+                    <td class="col-2"> {{ achievement.awarded_date }} </td>
                     <td class="col-2"> 
                         <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                             <i class="fas fa-external-link-alt "></i>

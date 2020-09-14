@@ -543,15 +543,32 @@ def tutor_educational_profile():
     user = User.query.filter_by(username=current_user.username).first()
     tutor=Tutor.query.filter_by(user_id=user.id).first()
     if form_experience.validate_on_submit():
-        experience = Experience(experience=form_experience.experience.data, experience_file=save_docs(form_experience.experience_certificate.data, "experience"), Tutor=tutor)
+        experience = Experience(
+            title=form_experience.title.data,
+            institution=form_experience.institution.data,
+            experience=form_experience.experience.data, 
+            experience_file=save_docs(form_experience.experience_certificate.data, "experience"), 
+            Tutor=tutor
+        )
         db.session.add(experience)
         db.session.commit()
     if form_achievement.validate_on_submit():
-        achievement = Achievement(achievement=form_achievement.achievement.data, achievement_file=save_docs(form_achievement.achievement_certificate.data, "achievement"), Tutor=tutor)
+        achievement = Achievement(
+            achievement=form_achievement.achievement.data, 
+            awarded_by= form.achievement.awarded_by.data,
+            awarded_date=form.achievement.awarded_date.data,
+            achievement_file=save_docs(form_achievement.achievement_certificate.data, "achievement"), 
+            Tutor=tutor
+        )
         db.session.add(achievement)
         db.session.commit()
     if form_qualification.validate_on_submit():
-        qualification = Qualification(qualification=form_qualification.qualification.data, qualification_file=save_docs(form_qualification.qualification_certificate.data, "qualification"), Tutor=tutor)
+        qualification = Qualification(
+            qualification=form_qualification.qualification.data,
+            institution=form_qualification.institution.data,
+            qualification_date=form.qualification.awarded_date.data,
+            qualification_file=save_docs(form_qualification.qualification_certificate.data, "qualification"),
+            Tutor=tutor)
         db.session.add(qualification)
         db.session.commit()
     qualifications = Qualification.query.filter_by(tutor_id=user.id)

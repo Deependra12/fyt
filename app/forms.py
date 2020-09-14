@@ -132,16 +132,22 @@ class MyCourseForm(FlaskForm):
         self.cost.choices = cost
 
 class MyExperienceForm(FlaskForm):
-    experience = StringField("Experience", validators=[DataRequired()])
+    title = StringField("Title", validators=[DataRequired()])
+    institution = StringField("Institution", validators=[DataRequired()])
+    experience = DateField("Experience", validators=[DataRequired()])
     experience_certificate = FileField("Certification for your experience", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_experience = SubmitField("Save")
 
 class MyQualificationForm(FlaskForm):
-    qualification = StringField ("Qualification", [DataRequired()])
+    qalification = StringField("Qualification", validators=[DataRequired()])
+    institution = StringField ("Institution", [DataRequired()])
+    qualification_date = DateField("Qualification Date", [DataRequired()])
     qualification_certificate = FileField("Certification for your qualification", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_qualification = SubmitField("Save")
 
 class MyAchievementForm(FlaskForm):
     achievement = StringField ("Achievement", [DataRequired()])
+    awarded_by = StringField("Awarded By",[DataRequired()])
+    awarded_date = DateField("Awarded Date", [DataRequired()])
     achievement_certificate = FileField("Certification for your achievement", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_achievement = SubmitField("Save")

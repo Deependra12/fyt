@@ -123,6 +123,8 @@ class Tutor(db.Model):
 class Experience(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
+    title = db.Column(db.String(255))
+    institution = db.Column(db.String(255))
     experience = db.Column(db.String(255))
     experience_file = db.Column(db.String(255))
 
@@ -131,6 +133,8 @@ class Qualification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
     qualification = db.Column(db.String(255))
+    institution = db.Column(db.String(255))
+    qualification_date = db.Column(db.String(6))
     qualification_file = db.Column(db.String(255))
 
 
@@ -138,6 +142,8 @@ class Achievement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.user_id'))
     achievement = db.Column(db.String(255))
+    awarded_by = db.Column(db.String(255))
+    awarded_date = db.Column(db.String(255))
     achievement_file = db.Column(db.String(255))
 
 
