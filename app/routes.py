@@ -139,29 +139,34 @@ def user_register():
 
 
 @app.route('/password-reset', methods=['GET', 'POST'])
-def passwordresetlink():
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = ResetLinkForm()
-    email = form.email.data
     if form.validate_on_submit():
-        em.send_reset_mail(email)
+        user = User.query.filter_by(email=form.email.data).first()
+        em.send_reset_mail(user)
+        flash('An email has been sent with instruction to reset your password','info')
         return redirect(url_for('login'))
-    return render_template('resetlink.html', form=form)
 
+    return render_template('resetlink.html',form=form)
 
-@app.route('/reset', methods=['GET', 'POST'])
-def passwordreset():
-    form = ResetForm()
-    unhashed_password = form.password.data
-    return render_template('reset.html', form=form)
-
-
-@app.route('/hello/<token>')
-def hello(token):
-    try:
-        email = ser.loads(token, salt='email-confirm', max_age=36)
-    except :
-        return '<h1>The token has expired!<h1>'
-    return '<h1>The token is valid!<h1>'
+@app.route('/password-reset/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user=User.verify_reset_token(token)
+    if user is None:
+        flash('that is invalid token','warning')
+        return redirect(url_for('reset_request'))
+    form=ResetForm()
+    if form.validate_on_submit():
+        user.set_password(form.password.data)
+        db.session.commit()
+        flash('Your password has been updated','info')
+        return redirect(url_for('login'))
+    
+    return render_template('reset.html',form=form)
 
 
 @app.route("/logout")

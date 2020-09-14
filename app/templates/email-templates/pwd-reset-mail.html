@@ -1,4 +1,6 @@
-<div class="container-fluid">
-    <h3> Your password reset link is: </h3>
-    <a class="btn btn-primary" href="http://127.0.0.1:5000/reset">{{link}}</a>
-</div>
+<p>
+    To reset your password
+    <a href="{{ url_for('reset_token', user=user, token=token, _external=True) }}">
+        click here
+    </a>.
+</p>
