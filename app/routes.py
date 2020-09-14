@@ -296,13 +296,13 @@ def profile(username):
 @login_required
 def student():
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
-    
+    all_tutor=tutor.query.all()
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('student.html', user=user, student=student, profilepic= fetch_profile_pic(student), google_api_key=google_api)
+        return render_template('student.html', user=user, student=student, all_tutor=all_tutor, profilepic= fetch_profile_pic(student), google_api_key=google_api)
     abort(404)
 
 

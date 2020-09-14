@@ -14,6 +14,7 @@ def create_choices_from_list(lists):
         choices.append((L, L))
     return choices
 
+
 class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
@@ -75,7 +76,6 @@ class PersonalInfoForm(FlaskForm):
     profile_pic = FileField('Profile Picture', validators=[FileAllowed(['jpeg','png','jpg'], 'Images Only!')])    
     submit = SubmitField('Save')
     
-
     def create_state_choices(self):
         states = ['Province 1', 'Province 2', 'Bagmati', 'Gandaki', 'Province 5', 'Karnali', 'Sudurpaschim']
         state_choice = create_choices_from_list(states)
@@ -123,6 +123,7 @@ class MyCourseForm(FlaskForm):
             cost.append((d,'Rs. ' + str(d)))
         self.cost.choices = cost
 
+
 class MyExperienceForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     institution = StringField("Institution", validators=[DataRequired()])
@@ -130,12 +131,14 @@ class MyExperienceForm(FlaskForm):
     experience_certificate = FileField("Certification for your experience", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_experience = SubmitField("Save")
 
+
 class MyQualificationForm(FlaskForm):
     qualification = StringField("Qualification", validators=[DataRequired()])
     institution = StringField ("Institution", [DataRequired()])
     qualification_date = DateField("Qualification Date", [DataRequired()])
     qualification_certificate = FileField("Certification for your qualification", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_qualification = SubmitField("Save")
+
 
 class MyAchievementForm(FlaskForm):
     achievement = StringField ("Achievement", [DataRequired()])
