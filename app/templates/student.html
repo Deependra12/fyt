@@ -18,7 +18,49 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1>Student {{user.username}}</h1>
     <a href="{{url_for('profile', username=user.username)}}" style="float:right;" class="btn btn-success">View Profile</a>
+    <div id="map"></div>
 </div>
 {% endblock %}
+
+{% block additional_style %}
+    #map {
+        height:500px; 
+        width:100%; 
+        margin: auto;
+        background-color: grey;
+        margin-top:20px;
+    }
+
+    .map-container{
+        margin-top:20px;
+    }
+{% endblock %}
+
+{% block document_javascript %}
+    function initMap() {
+        
+        var userLocation = {
+            lat: parseFloat({{ user.location.latitude }}),
+            lng: parseFloat({{ user.location.longitude }})
+        };
+        
+        var map = new google.maps.Map(document.getElementById("map"), {
+            zoom: 14,
+            center: userLocation,
+            gestureHandling: 'none',
+          zoomControl: false
+        });
+
+        var userMarker = new google.maps.Marker({
+            position: userLocation,
+            map:map,
+        });
+    }
+{% endblock %}
+
+{% block additional_script%}
+     <script defer
+        src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+    </script>
+{%endblock%}

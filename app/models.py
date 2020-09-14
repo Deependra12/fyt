@@ -148,7 +148,6 @@ class Achievement(db.Model):
 
 
 class Location(db.Model):
-    travel_distance = db.Column(db.String(64))
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     place_details = db.Column(db.String(255))

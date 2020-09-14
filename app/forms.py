@@ -58,19 +58,11 @@ class MyLocationForm(FlaskForm):
     latitude = StringField('Latitude', validators=[DataRequired()], render_kw={'readonly':True})
     longitude = StringField('Longitude', validators=[DataRequired()], render_kw={'readonly':True})
     place = StringField('Place Details', validators=[DataRequired()], render_kw={'readonly':True})
-    travel_distance = SelectField('Distance Willing To Travel (in kms)', validators=[DataRequired()])
     geolocation_misguide_info = Label("geolocation-misguide-info","Location here is shown using your device location, which probably may be misleading. Please mark your actual location below.")
     submit = SubmitField('Save')
     update = SubmitField('Edit')
 
-    def create_travel_distance_choice(self):
-        distances = ['O km (home)']
-        for d in range(5, 55, 5):
-            distances.append(str(d - 5) + '-' + str(d) + ' km')
-        distance_choice = create_choices_from_list(distances)
-        self.travel_distance.choices = distance_choice
-
-
+   
 class PersonalInfoForm(FlaskForm):
     name = StringField('Full Name', validators=[DataRequired()])
     date_of_birth = StringField('Date of Birth', validators=[DataRequired()])
@@ -134,12 +126,12 @@ class MyCourseForm(FlaskForm):
 class MyExperienceForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
     institution = StringField("Institution", validators=[DataRequired()])
-    experience = DateField("Experience", validators=[DataRequired()])
+    experience = StringField("Experience", validators=[DataRequired()])
     experience_certificate = FileField("Certification for your experience", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])
     save_experience = SubmitField("Save")
 
 class MyQualificationForm(FlaskForm):
-    qalification = StringField("Qualification", validators=[DataRequired()])
+    qualification = StringField("Qualification", validators=[DataRequired()])
     institution = StringField ("Institution", [DataRequired()])
     qualification_date = DateField("Qualification Date", [DataRequired()])
     qualification_certificate = FileField("Certification for your qualification", validators=[FileRequired(), FileAllowed(['pdf','docx','doc','png','jpeg','jpg'], 'File format must be .pdf, .docx, .doc, .png, .jpeg or .jpg!')])

@@ -24,14 +24,6 @@
             <legend class="border-bottom mb-4">My Location</legend>
             {{form.hidden_tag()}}
 
-            <div class="form-row">
-                <div class="form-group col-lg-6">
-                    {{ form.travel_distance.label(class='form-control-label') }}
-                    {% set z = form.travel_distance.process_data(location.travel_distance) %}
-                    {{ form.travel_distance(class='form-control custom-select') }}
-                </div>
-            </div>
-
              <div class="form-row">
                 <div class="form-group col-lg-6">
                     {{ form.latitude.label(class='form-control-label')}}

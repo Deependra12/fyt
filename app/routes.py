@@ -239,10 +239,14 @@ def follow(username):
             return redirect(url_for('tutor'))
         else:
             return redirect(url_for('student'))
+    if is_tutor(user) and not is_tutor(current_user):
+        current_user.follow(user)       
+    else:
+        flash('This action is not allowed!', 'danger')
+        return redirect(url_for('profile', username=username))
     if user == current_user:
         flash('You cannot follow yourself!', 'info')
         return redirect(url_for('profile', username=username))
-    current_user.follow(user)
     db.session.commit()
     flash('You followed {}!'.format(username), 'success')
     return redirect(url_for('profile', username=username))
@@ -258,10 +262,14 @@ def unfollow(username):
             return redirect(url_for('tutor'))
         else:
             return redirect(url_for('student'))
+    if is_tutor(user) and not is_tutor(current_user):
+        current_user.unfollow(user)       
+    else:
+        flash('This action is not allowed!', 'danger')
+        return redirect(url_for('profile', username=username))
     if user == current_user:
         flash('You cannot unfollow yourself!','info')
         return redirect(url_for('profile', username=username))
-    current_user.unfollow(user)
     db.session.commit()
     flash('You unfollowed {}.'.format(username),'danger')
     return redirect(url_for('profile', username=username))
@@ -287,12 +295,14 @@ def profile(username):
 @app.route('/student/home')
 @login_required
 def student():
+    google_api = app.config.get('GOOGLE_MAP_API_KEY')
+    
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('student.html', user=user, student=student, profilepic= fetch_profile_pic(student))
+        return render_template('student.html', user=user, student=student, profilepic= fetch_profile_pic(student), google_api_key=google_api)
     abort(404)
 
 
@@ -300,13 +310,11 @@ def student():
 @login_required
 def student_location():
     form = MyLocationForm()
-    form.create_travel_distance_choice()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
     if form.validate_on_submit():
         user.update_location(
-            travel_distance=form.travel_distance.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
             place_details=form.place.data
@@ -435,13 +443,11 @@ def tutor():
 @login_required
 def tutor_location():
     form = MyLocationForm()
-    form.create_travel_distance_choice()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
     if form.validate_on_submit():
         user.update_location(
-            travel_distance=form.travel_distance.data,
             latitude=form.latitude.data,
             longitude=form.longitude.data,
             place_details=form.place.data
@@ -552,25 +558,28 @@ def tutor_educational_profile():
         )
         db.session.add(experience)
         db.session.commit()
-    if form_achievement.validate_on_submit():
+        return redirect(url_for('tutor_educational_profile'))
+    elif form_achievement.validate_on_submit():
         achievement = Achievement(
             achievement=form_achievement.achievement.data, 
-            awarded_by= form.achievement.awarded_by.data,
-            awarded_date=form.achievement.awarded_date.data,
+            awarded_by= form_achievement.awarded_by.data,
+            awarded_date=form_achievement.awarded_date.data,
             achievement_file=save_docs(form_achievement.achievement_certificate.data, "achievement"), 
             Tutor=tutor
         )
         db.session.add(achievement)
         db.session.commit()
-    if form_qualification.validate_on_submit():
+        return redirect(url_for('tutor_educational_profile'))
+    elif form_qualification.validate_on_submit():
         qualification = Qualification(
             qualification=form_qualification.qualification.data,
             institution=form_qualification.institution.data,
-            qualification_date=form.qualification.awarded_date.data,
+            qualification_date=form_qualification.qualification_date.data,
             qualification_file=save_docs(form_qualification.qualification_certificate.data, "qualification"),
             Tutor=tutor)
         db.session.add(qualification)
         db.session.commit()
+        return redirect(url_for('tutor_educational_profile'))
     qualifications = Qualification.query.filter_by(tutor_id=user.id)
     achievements = Achievement.query.filter_by(tutor_id=user.id)
     experiences = Experience.query.filter_by(tutor_id=user.id)
@@ -649,7 +658,7 @@ def edit_tutor_achievement(id):
 @login_required
 def tutor_followers():
     user = User.query.filter_by(username=current_user.username).first()
-
+    
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student_followed_tutors'))
     elif user.username == current_user.username and is_tutor(user):
