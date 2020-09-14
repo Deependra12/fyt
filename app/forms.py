@@ -46,7 +46,7 @@ class LoginForm(FlaskForm):
 class ResetForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('continue')
+    submit = SubmitField('Change Password')
 
 
 class ResetLinkForm(FlaskForm):
