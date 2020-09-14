@@ -105,6 +105,15 @@ def check_username_availability(username):
         return jsonify({"message": "Username available", "availability": True})
 
 
+@app.route('/check/email/<email>')
+def check_email_availability(email):
+    user = User.query.filter_by(email=email).first()
+    if user:
+        return jsonify({"message": "Email already registered", "availability": False})
+    else:
+        return jsonify({"message": "Email available", "availability": True})
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     if current_user.is_authenticated:
@@ -296,13 +305,13 @@ def profile(username):
 @login_required
 def student():
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
-    all_tutor=tutor.query.all()
+    tutor_list = User.query.filter_by(role="tutor")
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('student.html', user=user, student=student, all_tutor=all_tutor, profilepic= fetch_profile_pic(student), google_api_key=google_api)
+        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api)
     abort(404)
 
 

@@ -36,6 +36,11 @@
 {% endblock %}
 
 {% block document_javascript %}
+    const icons = {
+        tutor: "{{ url_for('static', filename='images/tutor-marker.png') }}",
+        student: "{{ url_for('static', filename='images/student-marker.png') }}"
+    };
+
     function initMap() {
         
         var userLocation = {
@@ -47,13 +52,43 @@
             zoom: 15,
             center: userLocation,
             gestureHandling: 'none',
-          zoomControl: false
+            zoomControl: false
         });
 
-        var userMarker = new google.maps.Marker({
+        var studentMarker = new google.maps.Marker({
             position: userLocation,
-            map:map,
+            map: map,
+            icon: icons.student,
+            title: "{{ user.student.full_name }}"
         });
+
+        google.maps.event.addListener(studentMarker, 'click', ()=> {
+            window.open(
+                    "{{ url_for('profile', username=user.username) }}",
+                    '_blank' 
+            );
+        })
+
+        {% for tutor in tutor_list %}
+            var tutorLocation = {
+                lat: parseFloat({{ tutor.location.latitude }}),
+                lng: parseFloat({{ tutor.location.longitude }})
+            };
+            
+            var tutorMarker = new google.maps.Marker({
+                position: tutorLocation,
+                map: map,
+                icon: icons.tutor,
+                title: "{{ tutor.tutor.full_name }}"
+            });
+
+            google.maps.event.addListener(tutorMarker, 'click', ()=> {
+                window.open(
+                    "{{ url_for('profile', username=tutor.username) }}",
+                    '_blank' 
+                );
+            })
+        {% endfor %}
     }
 {% endblock %}
 
