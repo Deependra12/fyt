@@ -18,23 +18,37 @@
 
 {% block content %}
 <div class="container-fluid">
-    <legend>
-    <a href="{{url_for('profile', username=user.username)}}" style="float:right;" class="btn btn-success">View Profile</a>
-    {% if user.location.latitude and user.location.longitude %}  
-        <div id="map"></div>
-    {% else %}
-        
-    <div class="button">
-        <h3>Please set your location!</h3>
-        <div>
-        {% if user.role=="tutor" %}
-            <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Set Your Location</a></button>
-        {% else %}
-            <button class="btn btn-info"><a href="{{ url_for('student_location') }}">Set Your Location</a></button>
-        {% endif %}
-        </div>
+    <div id="view-profile-link">
+        <a href="{{url_for('profile', username=user.username)}}" style="float:right;" class="btn btn-success">View Profile</a>
     </div>
-    {% endif %}
+    <div id="recommendation">
+        <legend class="border-bottom mb-4"> Tutors for you </legend>
+        {% if all_tutor_course %}
+            <div id="course-recommendation">
+                <h6> Based on course </h6>
+                {% for tutor in all_tutor_course %}
+                    <a href="{{ url_for('profile', username=tutor.User.username)}}">{{ tutor.User.username }}</a><br/>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <div='map-division'>
+        {% if user.location.latitude and user.location.longitude %}  
+            <div id="map"></div>
+        {% else %}
+            <div class="button">
+                <h3>Please set your location!</h3>
+                <div>
+                {% if user.role=="tutor" %}
+                    <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Set Your Location</a></button>
+                {% else %}
+                    <button class="btn btn-info"><a href="{{ url_for('student_location') }}">Set Your Location</a></button>
+                {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
 

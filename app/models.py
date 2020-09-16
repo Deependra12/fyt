@@ -183,6 +183,7 @@ class Mycourse(db.Model):
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     time = db.Column(db.Time)
     cost = db.Column(db.Integer)
+    
 
 
 @login_manager.user_loader

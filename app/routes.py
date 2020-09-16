@@ -331,11 +331,11 @@ def student():
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
-    mycourse = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).all()
-    all_tutor_course = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').all()   
+    mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
+    all_tutor_course = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).all()   
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api)
+        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, all_tutor_course=all_tutor_course)
     abort(404)
 
 

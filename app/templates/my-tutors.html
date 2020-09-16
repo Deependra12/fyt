@@ -3,13 +3,57 @@
 {% block active %}
     activateMenu('my-tutors')
 {% endblock %}
+{% block additional_style %}
+    .container{
+        padding: 3%;
+    }
+
+    .card{
+        margin-bottom: 6%;
+        background-color: #049BBA; 
+        
+    }
+
+    .card-body{
+        color:white;
+    }
+
+    .card-text{
+        height: 150px ;
+        color:white;
+        
+    }
+{% endblock %}
 
 {% block content %}
 <div class="container">
     <legend class="border-bottom mb-4">My Tutors</legend>
-    {% for followed_tutor in followed_tutors %}
-        <a href="{{url_for('profile', username=followed_tutor.username)}}">{{ followed_tutor.username }}</a>
-        <br>
-    {% endfor %}
+    <div class="row">
+        {% for followed_tutor in followed_tutors %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title" >
+                                    <a href="{{url_for('profile', username=followed_tutor.username)}}">
+                                        {{ followed_tutor.tutor.full_name }}
+                                    </a>   
+                                </h5>
+                                <p class="card-text">
+                                    Phone: {{ followed_tutor.tutor.phone }}
+                                    <br>
+                                    Email: {{ followed_tutor.email }}                               
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin:auto">
+                            <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>  
 {% endblock %}

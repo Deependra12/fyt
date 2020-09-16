@@ -238,7 +238,9 @@
 
             <!-- Sidebar Header -->
             <div class='sidebar-header'>
-                {% block profilepic %} {% endblock %}    
+                <a href="{{url_for('profile', username=user.username)}}">
+                    {% block profilepic %} {% endblock %}  
+                </a>  
             </h3>
             </div>
 
