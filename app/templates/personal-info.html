@@ -10,9 +10,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    
+<style>
+    #profile-pic-thumbnail{
+        height:200px; 
+        width: 200px; 
+        display: none;
+        margin-top: 10px;
+    }   
+</style>
 
+
+<div class="container">
     <form  action="{% if user.role =='tutor' %} {{url_for('tutor_personal_info')}} {% else %} {{url_for('student_personal_info')}} {% endif %}" id="personalInfoForm" class="form my-2" method="POST" enctype="multipart/form-data">
 
         <legend class="border-bottom mb-4">Personal Information</legend>
@@ -209,6 +217,7 @@
                 {%else%}
                     {{ form.profile_pic(class="form-control-file") }}
                 {% endif %}
+                <img id="profile-pic-thumbnail" class="feature-img rounded-circle shadow no-select"/>
             </div>
         </div>
 
@@ -249,6 +258,7 @@
 <script>
     const experienceTextArea = document.querySelector('.self-description');
     const bioCount = document.getElementById('bio-count');
+
     experienceTextArea.value = "{{ user_obj.description }}" != "None" ? "{{ user_obj.description }}" : "";
     experienceTextArea.addEventListener('input', showLength, false);
 
@@ -271,6 +281,18 @@
             bioCount.classList.remove('text-danger');
         }
     }
+
+
+    document.getElementById("profile_pic").onchange = function () {
+        var reader = new FileReader();
+    
+        reader.onload = function (e) {
+            document.getElementById("profile-pic-thumbnail").style.display = "block";
+            document.getElementById("profile-pic-thumbnail").src = e.target.result;
+        };
+    
+        reader.readAsDataURL(this.files[0]);
+    };
 </script>
 
 {% endblock %}
