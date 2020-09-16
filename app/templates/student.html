@@ -29,39 +29,48 @@
                 <div class="row">
                     {% for tutor in matching_tutor %}
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="card">
-                                <div class="row">
-                                    <div class="col-md-6">
+                                <div class="row ">
+                                    <div class="col-md-5" id="first">
                                         <div class="card-body">
-                                            <h5 class="card-title" >
-                                                <a href="{{ url_for('profile', username=tutor.User.username)}}">
-                                                    {{ tutor.User.tutor.full_name }}
-                                                </a>   
-                                            </h5>
+                                            <h2>Pesronal Details</h2><hr>
                                             <p class="card-text">
+                                                <a href="{{ url_for('profile', username=tutor.User.username)}}">
+                                                 Name:   {{ tutor.User.tutor.full_name }}
+                                                </a>   <br>
                                                 Phone: {{ tutor.User.tutor.phone }}
                                                 <br>
                                                 Email: {{ tutor.User.email }}   
-                                                <br>                                                
+                                                <br> 
+                                            </div>
+                                    </div>
+                                                <div class="col-md-4" id="second"> 
+                                                    <div class="card-body"> 
+                                                    <h2>Course Details</h2><hr> 
+                                                    <div class="card-text">                                           
                                                 Course:
                                                 <br>
                                                 {% for tutor_courses in course_by_tutor %}
                                                     {% if tutor.User.id == tutor_courses.User.id%}
                                                         {%for course in tutor.User.mycourse%}
                                                             {% if tutor_courses.Course.course_title==course.Course.course_title %}
-                                                                <a href="{{url_for('courses_by_id',id=tutor_courses.Course.id)}}">{{ tutor_courses.Course.course_title}}</a> {{tutor_courses.Mycourse.cost}} {{tutor_courses.Mycourse.time}}
+                                                                <a href="{{url_for('courses_by_id',id=tutor_courses.Course.id)}}">
+                                                                   {{ tutor_courses.Course.course_title}}</a><br>
+                                                                   Cost:  {{tutor_courses.Mycourse.cost}}<br>
+                                                                      Time: {{tutor_courses.Mycourse.time}}
                                                                 <br>
                                                             {%endif%}
                                                         {%endfor%}
                                                     {%endif%}
                                                 {%endfor%}
-
-                                            </p>
+                                                    </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="margin:auto">
+                                    <div class="col-md-3" id="third" style="margin:auto;text-align:center">
+                                        <a href="{{ url_for('profile', username=tutor.User.username)}}"data-toggle="tooltip" title="click me for detail information">
                                         <img src="{{url_for('static',filename='profile_pics/'+tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -71,10 +80,11 @@
             </div>
         {% endif %}
     </div>
+
     
-    <div='map-division'>
+    <div class="map-division map-responsive">
         {% if user.location.latitude and user.location.longitude %}  
-            <div id="map"></div>
+            <div id="map" class="map-container" ></div>
         {% else %}
             <div class="button">
                 <h3>Please set your location!</h3>
@@ -89,24 +99,38 @@
         {% endif %}
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+      });
+    
+</script>
+
 {% endblock %}
 
 {% block additional_style %}
-     #map {
-        height: 800px; 
-        width: 800px; 
-        margin: auto;
-        background-color: grey;
-        margin-top:20px;
-        border-radius: 50%;
-        
-    }
-    .container{
+        .map-container{
+            position: relative;
+            width: 90%;
+            padding-bottom: 56.25%;
+            border-radius:50%;
+            margin:auto;
+            height:auto;
+            background-color: grey;
+        }
+        .map-container > *{
+            display: block;
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+
+        .container{
         padding: 3%;
     }
 
     .card{
-        margin-bottom: 6%;
+        margin-bottom: 2%;
         background-color: #049BBA; 
         
     }
@@ -120,8 +144,34 @@
         color:white;
         
     }
+    .col-md-3 img{
+
+        margin-top:4%;
+        margin-bottom:3%;
+        height:80%;
+        width:80%;
+        user-select:none;
+        box-shadow: 0 0 10px 2px #333;
+        padding:10px;
+      }
+      @media only screen and (max-width: 768px) {
+        #first {
+            order: 2;
+        }
+        #second {
+            order: 3;
+        }
+        #third {
+            order: 1;
+        }
+        
+    }
+    
+
 {% endblock %}
 
+
+    
 {% block document_javascript %}
     const icons = {
         tutor: "{{ url_for('static', filename='images/tutor-marker.png') }}",
@@ -182,5 +232,6 @@
 {% block additional_script%}
      <script defer
         src="https://maps.googleapis.com/maps/api/js?key={{ google_api_key }}&callback=initMap">
+        
     </script>
 {%endblock%}
