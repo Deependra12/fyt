@@ -23,12 +23,51 @@
     </div>
     <div id="recommendation">
         <legend class="border-bottom mb-4"> Tutors for you </legend>
-        {% if all_tutor_course %}
+        {% if matching_tutor %}
             <div id="course-recommendation">
                 <h6> Based on course </h6>
-                {% for tutor in all_tutor_course %}
-                    <a href="{{ url_for('profile', username=tutor.User.username)}}">{{ tutor.User.username }}</a><br/>
-                {% endfor %}
+                <div class="row">
+                    {% for tutor in matching_tutor %}
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h5 class="card-title" >
+                                                <a href="{{ url_for('profile', username=tutor.User.username)}}">
+                                                    {{ tutor.User.tutor.full_name }}
+                                                </a>   
+                                            </h5>
+                                            <p class="card-text">
+                                                Phone: {{ tutor.User.tutor.phone }}
+                                                <br>
+                                                Email: {{ tutor.User.email }}   
+                                                <br>                                                
+                                                Course:
+                                                <br>
+                                                {% for tutor_courses in course_by_tutor %}
+                                                    {% if tutor.User.id == tutor_courses.User.id%}
+                                                        {%for course in tutor.User.mycourse%}
+                                                            {% if tutor_courses.Course.course_title==course.Course.course_title %}
+                                                                <a href="{{url_for('courses_by_id',id=tutor_courses.Course.id)}}">{{ tutor_courses.Course.course_title}}</a> {{tutor_courses.Mycourse.cost}} {{tutor_courses.Mycourse.time}}
+                                                                <br>
+                                                            {%endif%}
+                                                        {%endfor%}
+                                                    {%endif%}
+                                                {%endfor%}
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin:auto">
+                                        <img src="{{url_for('static',filename='profile_pics/'+tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     </div>

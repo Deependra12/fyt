@@ -332,10 +332,11 @@ def student():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
-    all_tutor_course = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).all()   
+    matching_tutor = db.session.query(User,Tutor).select_from(User).join(Mycourse).join(Course).join(Tutor).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).distinct()
+    course_by_tutor = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).all()
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
-        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, all_tutor_course=all_tutor_course)
+        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, course_by_tutor=course_by_tutor)
     abort(404)
 
 

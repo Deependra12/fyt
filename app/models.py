@@ -288,6 +288,7 @@ admin.add_view(RoleView(Tutor, db.session))
 
 admin.add_view(CustomView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
+admin.add_view(CustomView(Mycourse, db.session))
 
 admin.add_view(ShowLinkView(Experience, db.session))
 admin.add_view(ShowLinkView(Achievement, db.session))
