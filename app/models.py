@@ -215,7 +215,12 @@ class CustomView(ModelView):
     def inaccessible_callback(self, name, **kwargs):
         abort(401)
 
-class RoleView(CustomView):
+
+class CannotDeleteView(CustomView):
+    can_delete = False
+
+
+class RoleView(CannotDeleteView):
     def _user_formatter(view, context, model, name):
         if model.profile_pic:
            markupstring = f"<a href='{url_for('static', filename='profile_pics/' + model.profile_pic)}'>{model.profile_pic}</a>"
@@ -286,7 +291,7 @@ admin.add_view(UserView(User, db.session))
 admin.add_view(RoleView(Student, db.session))
 admin.add_view(RoleView(Tutor, db.session))
 
-admin.add_view(CustomView(Location, db.session)) 
+admin.add_view(CannotDeleteView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
 admin.add_view(CustomView(Mycourse, db.session))
 

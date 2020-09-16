@@ -114,6 +114,12 @@ def check_email_availability(email):
         return jsonify({"message": "Email available", "availability": True})
 
 
+@app.route('/check/password/current-user/<password>')
+@login_required
+def check_user_password(password):
+    return jsonify(current_user.check_password(password))
+    
+
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
     lower_letter=False

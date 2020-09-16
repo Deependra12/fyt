@@ -11,98 +11,139 @@
 
 
 {% block content %}
-
-
-<div class = "modal fade" id="delete-confirmation-dialog">
-  <div class = "modal-dialog">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h4 class="modal-title">Delete Account</h4>
-          </div>
-          <div class='modal-body'>
-              <div class="modal-info">
-              Are you sure you want to delete your account? 
-              </div>
-              <div class="button-wrappers" style="margin-top: 10px;">
-                <a href="{{ url_for('delete_user_account', username=user.username) }}" id="delete-account-btn" class="btn btn-danger">Delete account</a>
-                <button type="button" class="btn btn-secondary"
-                    data-dismiss="modal"
-                    aria-label="Close">
-                  <span aria-hidden="true">Cancel</span>
-                </button>
-              </div>
-          </div>
-      </div>   
-  </div>
-</div>
-
-<div class="container">
-   <form action="" class="form my-2" method="POST">
-
-      <legend class="border-bottom mb-4">Account Activities</legend>
-      {{ form.hidden_tag() }}
-
-          <div class="form-row">
-            <div class="form-group col-lg-6">
-              {{ form.old_password.label(class='form-control-label') }}
-              {% if form.old_password.errors %}
-                {{ form.old_password(class="form-control is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.old_password.errors %}
-                        <span>
-                            {{ error }}
-                        </span>
-                    {% endfor %}
-                </div>
-              {% else %}
-                {{ form.old_password(class="form-control") }}
-              {% endif %}
+  <div class = "modal fade" id="delete-confirmation-dialog">
+    <div class = "modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Account</h4>
             </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-lg-6">
-              {{ form.new_password.label(class='form-control-label') }}
-              {% if form.new_password.errors %}
-                {{ form.password(class="form-control is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.new_password.errors %}
-                        <span>
-                            {{ error }}
-                        </span>
-                    {% endfor %}
+            <div class='modal-body'>
+                <div class="modal-info">
+                  Are you sure you want to delete your account? 
+                  <p>
+                    <small>
+                      If so please enter your password to continue.
+                    </small>
+                  </p>
+                  <input id="password-field" type="password" />
                 </div>
-              {% else %}
-                {{ form.new_password(class="form-control") }}
-              {% endif %}
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-lg-6">
-              {{ form.confirm_password.label(class='form-control-label') }}
-              {% if form.confirm_password.errors %}
-                {{ form.confirm_password(class="form-control is-invalid") }}
-                <div class="invalid-feedback">
-                    {% for error in form.confirm_password.errors %}
-                        <span>
-                            {{ error }}
-                        </span>
-                    {% endfor %}
+                <div class="button-wrappers" style="margin-top: 10px;">
+                  <a href="{{ url_for('delete_user_account', username=user.username) }}" id="delete-account-btn" class="btn btn-danger disabled">Delete account</a>
+                  <button type="button" class="btn btn-secondary"
+                      data-dismiss="modal"
+                      aria-label="Close" id="modal-cancel-btn">
+                    <span aria-hidden="true">Cancel</span>
+                  </button>
                 </div>
-              {% else %}
-                {{ form.confirm_password(class="form-control") }}
-              {% endif %}
             </div>
-          </div>
-
-        <input class="btn btn-success" type="submit" value="Change Password">
-
-    </form>
-    <div style="margin-top: 20px;">
-      <legend class="border-bottom mb-4">Delete Account</legend>
-      <button type="button" id="delete-account-btn" class="btn btn-danger"
-      data-toggle="modal" data-target="#delete-confirmation-dialog">Delete account</button>
+        </div>   
     </div>
-</div>
+  </div>
+
+  <div class="container">
+    <form action="" class="form my-2" method="POST">
+
+        <legend class="border-bottom mb-4">Account Activities</legend>
+        {{ form.hidden_tag() }}
+
+            <div class="form-row">
+              <div class="form-group col-lg-6">
+                {{ form.old_password.label(class='form-control-label') }}
+                {% if form.old_password.errors %}
+                  {{ form.old_password(class="form-control is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.old_password.errors %}
+                          <span>
+                              {{ error }}
+                          </span>
+                      {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.old_password(class="form-control") }}
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-lg-6">
+                {{ form.new_password.label(class='form-control-label') }}
+                {% if form.new_password.errors %}
+                  {{ form.password(class="form-control is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.new_password.errors %}
+                          <span>
+                              {{ error }}
+                          </span>
+                      {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.new_password(class="form-control") }}
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-lg-6">
+                {{ form.confirm_password.label(class='form-control-label') }}
+                {% if form.confirm_password.errors %}
+                  {{ form.confirm_password(class="form-control is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.confirm_password.errors %}
+                          <span>
+                              {{ error }}
+                          </span>
+                      {% endfor %}
+                  </div>
+                {% else %}
+                  {{ form.confirm_password(class="form-control") }}
+                {% endif %}
+              </div>
+            </div>
+
+          <input class="btn btn-success" type="submit" value="Change Password">
+
+      </form>
+      <div style="margin-top: 20px;">
+        <legend class="border-bottom mb-4">Delete Account</legend>
+        <button type="button" id="delete-account-btn" class="btn btn-danger"
+        data-toggle="modal" data-target="#delete-confirmation-dialog">Delete account</button>
+      </div>
+  </div>
+
+  <script>
+    const passwordField = document.getElementById('password-field');
+    const deleteAccountButton = document.getElementById('delete-account-btn');
+    const modalCancelButton = document.getElementById('modal-cancel-btn');
+
+    modalCancelButton.addEventListener('click', ()=>{
+      passwordField.value = "";
+    });
+
+    passwordField.addEventListener('input',(e)=>{
+      var input_password = e.target.value;
+      checkPassword(input_password);
+    });
+
+    function checkPassword(str) {
+      var xhttp;
+      if (str == "") {
+        deleteAccountButton.classList.add('disabled');
+        return;
+      }
+      xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+         correct_password  = JSON.parse(this.responseText);
+         if (correct_password) {
+          deleteAccountButton.classList.remove('disabled');
+         } else{
+          deleteAccountButton.classList.add('disabled');
+         }
+        }
+      };
+      xhttp.open("GET", "/check/password/current-user/"+str, true);
+      xhttp.send();
+    }
+  </script>
 {% endblock %}
+
