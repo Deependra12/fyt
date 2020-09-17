@@ -5,14 +5,15 @@
 {% endblock %}
 
 {% block additional_style %}
+
     .container{
         padding: 3%;
     }
 
     .card{
-        margin-bottom: 6%;
+    
         background-color: #049BBA; 
-        
+        margin-bottom:3%;    
     }
 
     .card-body{
@@ -20,21 +21,35 @@
     }
 
     .card-text{
-        height: 150px ;
+        
         color:white;
         
     }
+
+    .col-sm-5 img{
+
+        margin-top:5%;
+        height:80%;
+        width:80%;
+        user-select:none;
+        box-shadow: 0 0 10px 2px #333;
+      }
+
+      .mb-3 {
+        margin-bottom: ($spacer-x * .15) !important;
+      }
+        
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
     <legend class="border-bottom mb-4">My Tutors</legend>
-    <div class="row">
+    <div class="row equal">
         {% for followed_tutor in followed_tutors %}
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-md-6">
+            <div class="col-sm-6 mb-3 ">
+                <div class="card  h-100" >
+                    <div class="row flex-column-reverse flex-sm-row">
+                        <div class="col-sm-7">
                             <div class="card-body">
                                 <h5 class="card-title" >
                                     <a href="{{ url_for('profile', username=followed_tutor.username) }}">
@@ -44,17 +59,18 @@
                                 <p class="card-text">
                                     Phone: {{ followed_tutor.tutor.phone }}
                                     <br>
-                                    Email: {{ followed_tutor.email }}                               
+                                    Email: 
+                                    {{ followed_tutor.email }}                               
                                 </p>
                             </div>
                         </div>
-                        <div class="col-md-6" style="margin:auto">
-                            <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle">
+                        <div class="col-sm-5" style="text-align:center;margin:auto" >
+                            <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive  rounded-circle" >
                         </div>
-                    </div>
-                </div>
+                    </div>   
+                </div>   
             </div>
         {% endfor %}
-    </div>
+    </div> 
 </div>  
 {% endblock %}
