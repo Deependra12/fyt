@@ -3,6 +3,7 @@
 {% block active %}
     activateMenu('my-tutors')
 {% endblock %}
+
 {% block additional_style %}
     .container{
         padding: 3%;
@@ -36,7 +37,7 @@
                         <div class="col-md-6">
                             <div class="card-body">
                                 <h5 class="card-title" >
-                                    <a href="{{url_for('profile', username=followed_tutor.username)}}">
+                                    <a href="{{ url_for('profile', username=followed_tutor.username) }}">
                                         {{ followed_tutor.tutor.full_name }}
                                     </a>   
                                 </h5>

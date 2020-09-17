@@ -4,12 +4,57 @@
     activateMenu('my-followers')
 {% endblock %}
 
+{% block additional_style %}
+    .container{
+        padding: 3%;
+    }
+
+    .card{
+        margin-bottom: 6%;
+        background-color: #049BBA; 
+        
+    }
+
+    .card-body{
+        color:white;
+    }
+
+    .card-text{
+        height: 150px ;
+        color:white;
+        
+    }
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <legend class="border-bottom mb-4">My Followers</legend>
-    {% for my_follower in my_followers %}
-        <a href="{{url_for('profile', username=my_follower.username)}}">{{ my_follower.username }}</a>
-        <br>
-    {% endfor %}
+    <div class="row">
+        {% for my_follower in my_followers %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card-body">
+                                <h5 class="card-title" >
+                                    <a href="{{ url_for('profile', username=my_follower.username) }}">
+                                        {{ my_follower.student.full_name }}
+                                    </a>   
+                                </h5>
+                                <p class="card-text">
+                                    Phone: {{ my_follower.student.phone }}
+                                    <br>
+                                    Email: {{ my_follower.email }}                               
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="margin:auto">
+                            <img src="{{ url_for('static',filename='profile_pics/'+my_follower.student.profile_pic) }}" class="img-responsive rounded-circle">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 </div>  
 {% endblock %}
