@@ -126,6 +126,7 @@ class Tutor(db.Model):
     date_of_birth = db.Column(db.String(64))
     profile_pic = db.Column(db.String(255))
     description = db.Column(db.String(250))
+    account_verification_status = db.Column(db.Boolean, default=False)
     experience = db.relationship('Experience', backref='Tutor', uselist=True ,cascade="all, delete")
     qualification = db.relationship('Qualification', backref='Tutor', uselist=True ,cascade="all, delete")
     achievement = db.relationship('Achievement', backref='Tutor', uselist=True ,cascade="all, delete")
@@ -220,7 +221,7 @@ class CannotDeleteView(CustomView):
     can_delete = False
 
 
-class RoleView(CannotDeleteView):
+class StudentView(CannotDeleteView):
     def _user_formatter(view, context, model, name):
         if model.profile_pic:
            markupstring = f"<a href='{url_for('static', filename='profile_pics/' + model.profile_pic)}'>{model.profile_pic}</a>"
@@ -231,6 +232,11 @@ class RoleView(CannotDeleteView):
     column_formatters = {
         'profile_pic': _user_formatter
     }
+
+
+class TutorView(StudentView):
+    can_edit = True
+    form_edit_rules = ['account_verification_status']
 
 
 class ShowLinkView(CustomView):
@@ -288,8 +294,8 @@ class LogoutMenuLink(MenuLink):
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
 admin.add_view(UserView(User, db.session))
-admin.add_view(RoleView(Student, db.session))
-admin.add_view(RoleView(Tutor, db.session))
+admin.add_view(StudentView(Student, db.session))
+admin.add_view(TutorView(Tutor, db.session))
 
 admin.add_view(CannotDeleteView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))

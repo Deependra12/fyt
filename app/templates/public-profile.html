@@ -58,24 +58,30 @@
             </div>
             <div class="row">
                 <div class="buttons-container">
-                        <div class="follow-data">
-                        {% if view_user.role=="tutor"  %}
-                            {% if view_user==user %}
-                                <a href="{{url_for('tutor_followers') }}">
+                        <div class="user-data">
+                            <p>
+                                @{{ view_user.username }}
+                                {% if view_user.role=="tutor" and view_user.tutor.account_verification_status %}
+                                    <i class="fas fa-check-circle"></i>
+                                {% endif %}
+                            </p>
+                            {% if view_user.role=="tutor"  %}
+                                {% if view_user==user %}
+                                    <a href="{{url_for('tutor_followers') }}">
+                                        <p>{{ view_user.followers.count() }} followers</p>
+                                    </a>
+                                {% else %}
                                     <p>{{ view_user.followers.count() }} followers</p>
-                                </a>
+                                {% endif %}
                             {% else %}
-                                <p>{{ view_user.followers.count() }} followers</p>
-                            {% endif %}
-                        {% else %}
-                            {% if view_user==user %}
-                                <a href="{{url_for('student_followed_tutors')}}">
+                                {% if view_user==user %}
+                                    <a href="{{url_for('student_followed_tutors')}}">
+                                        <p>{{ view_user.followed.count() }} following</p>
+                                    </a>
+                                {% else %}  
                                     <p>{{ view_user.followed.count() }} following</p>
-                                </a>
-                            {% else %}  
-                                <p>{{ view_user.followed.count() }} following</p>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
                         </div>
                         {% if view_user == user %}
                             {% if user.role == 'tutor'%}
@@ -234,7 +240,11 @@
       transform: translateX(-50%);
   }
 
-  .follow-data {
+  .user-data {
+    text-align: center;
+  }
+
+  .username-container{
     text-align: center;
   }
 {% endblock %}

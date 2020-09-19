@@ -247,7 +247,11 @@
             <!-- Sidebar Menu -->
 
             <ul class='list-unstyled components'>
-                <p>Hello, {{ user.username }}!</p>
+                <p>Hello, {{ user.username }}!
+                    {% if current_user.role=="tutor" and current_user.tutor.account_verification_status %}
+                        <i class="fas fa-check-circle"></i>
+                    {% endif %}
+                </p>
                 <li id = 'home'>
                     {% if user.role == 'student' %}
                         <a href="{{ url_for('student') }}">
