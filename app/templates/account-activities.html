@@ -68,7 +68,7 @@
               <div class="form-group col-lg-6">
                 {{ form.new_password.label(class='form-control-label') }}
                 {% if form.new_password.errors %}
-                  {{ form.password(class="form-control is-invalid") }}
+                  {{ form.new_password(class="form-control is-invalid") }}
                   <div class="invalid-feedback">
                       {% for error in form.new_password.errors %}
                           <span>

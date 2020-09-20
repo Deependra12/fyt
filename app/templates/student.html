@@ -34,7 +34,7 @@
                                 <div class="row ">
                                     <div class="col-md-5" id="first">
                                         <div class="card-body">
-                                            <h2>Pesronal Details</h2><hr>
+                                            <h2>Personal Details</h2><hr>
                                             <p class="card-text">
                                                 <a href="{{ url_for('profile', username=tutor.User.username)}}">
                                                  Name:   {{ tutor.User.tutor.full_name }}
@@ -83,11 +83,12 @@
 
     
     <div class="map-division map-responsive">
+        <h6> Based on location </h6>
         {% if user.location.latitude and user.location.longitude %}  
             <div id="map" class="map-container" ></div>
         {% else %}
             <div class="button">
-                <h3>Please set your location!</h3>
+                <h7>Please set your location!</h7>
                 <div>
                 {% if user.role=="tutor" %}
                     <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Set Your Location</a></button>
@@ -110,8 +111,8 @@
 
 {% block additional_style %}
     #map {
-    height:800px;
-    width:800px;
+    height:700px;
+    width:700px;
     margin: auto;
     background-color: grey;
     margin-top:10px;
@@ -146,7 +147,6 @@
         width:80%;
         user-select:none;
         box-shadow: 0 0 10px 2px #333;
-        padding:10px;
       }
       @media only screen and (max-width: 768px) {
         #first {
