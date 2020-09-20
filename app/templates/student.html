@@ -84,8 +84,10 @@
     
     <div class="map-division map-responsive">
         <h6> Based on location </h6>
-        {% if user.location.latitude and user.location.longitude %}  
-            <div id="map" class="map-container" ></div>
+        {% if user.location.latitude and user.location.longitude %} 
+            <div class="row">
+                <div id="map" class="map-container" ></div>
+            </div>
         {% else %}
             <div class="button">
                 <h7>Please set your location!</h7>
