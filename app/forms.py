@@ -19,7 +19,7 @@ class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     phone = IntegerField('Phone', validators=[DataRequired()])
     role = SelectField('Role', choices=[('tutor', 'Tutor'), ('student', 'Student')], validators=[DataRequired()])
@@ -44,7 +44,7 @@ class LoginForm(FlaskForm):
 
 
 class ResetForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Change Password')
 
@@ -105,7 +105,7 @@ class StudentPersonalInfoForm(PersonalInfoForm):
 
 class AccountInfoForm(FlaskForm):
     old_password = PasswordField('Give Your Old Password', validators=[DataRequired()])
-    new_password = PasswordField('New Password', validators=[DataRequired()])
+    new_password = PasswordField('New Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
     submit = SubmitField('Update')
 

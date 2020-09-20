@@ -122,37 +122,25 @@ def check_user_password(password):
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
-    lower_letter=False
-    Upper_letter=False
-    Number=False
     if current_user.is_authenticated:
         return redirect_user(current_user)
     form = RegistrationForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data, role=form.role.data)
         user.set_password(form.password.data)
-        lower_letter=any(c.islower() for c in form.password.data)
-        Upper_letter=any(c.isupper() for c in form.password.data)
-        Number=any(c.isnumeric() for c in form.password.data)
-        digit=len(form.password.data)
-        print(digit)
-        result=lower_letter and Upper_letter and Number and digit > 8
-        if result:
-            db.session.add(user)
-            if is_tutor(user):
-                user.set_tutor()
-                user.update_tutor(phone=form.phone.data)
-            else:
-                user.set_student()
-                user.update_student(phone=form.phone.data)
-            user.set_location()
-            db.session.commit()
-            #message = "Welcome to Find Your Tutor"
-            #em.send_mail(username, role, message, email)
-            flash('Your account was created.\nYou can now Login!', 'success')
-            return redirect(url_for('login'))
+        db.session.add(user)
+        if is_tutor(user):
+            user.set_tutor()
+            user.update_tutor(phone=form.phone.data)
         else:
-            flash('password should contain least one uppercase,lowercase alphabet,number and more than 8 digits','danger')
+            user.set_student()
+            user.update_student(phone=form.phone.data)
+        user.set_location()
+        db.session.commit()
+        #message = "Welcome to Find Your Tutor"
+        #em.send_mail(username, role, message, email)
+        flash('Your account was created.\nYou can now Login!', 'success')
+        return redirect(url_for('login'))        
     return render_template('register.html', form=form)
 
 
