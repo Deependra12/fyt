@@ -32,6 +32,12 @@
         color:darkblue;
     }
 
+    .password{
+        float:left;
+        margin-left: 14px;
+    }
+
+
     .ic i{
         margin-left:12px;
         margin-top: 15px;
@@ -131,12 +137,14 @@
 
     {% if not admin %}
     <div class="border-top pt-3 ext-box">
-        <span class="label-link">
-            Forgot <a href="/password-reset" class="ml-1">Password?</a>
+        <div class="row" style="margin-left: 0;">
+        <span class="label-link" >
+            Forgot <a href="/password-reset" >Password?</a>
         </small>
-        <span class="label ml-3">
+        <span class="label " style="margin-right:0;">
             Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
         </span>
+        </div>
     </div>
     {% endif %}
 </div>

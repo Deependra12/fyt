@@ -40,28 +40,25 @@
         color: white;
     }
 
-    .col-sm-5 img {
-        margin-top: 5%;
-        height: 80%;
-        width: 80%;
+    .col-md-4 img {
+        margin-top:5%;
+        height: 90%;
+        width: 90%;
         user-select: none;
-        box-shadow: 0 0 10px 2px #333;
+        border-radius:50%;
     }
-
-    .mb-3 {
-        margin-bottom: ($spacer-x * .15) !important;
-    }
+    
 {% endblock %}
 
 {% block content %}
     <div class="container-fluid">
-        <legend class="border-bottom mb-4">My Followers</legend>
+        <legend class="border-bottom mb-4">My Tutors</legend>
         <div class="row equal">
             {% for my_follower in my_followers %}
-                <div class="col-sm-6 mb-3 ">
-                    <div class="card  h-100" >
+                <div class="col-md-6 mb-3 ">
+                    <div class="card h-100" >
                         <div class="row flex-column-reverse flex-sm-row">
-                            <div class="col-sm-7">
+                            <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title" >
                                         <a href="{{ url_for('profile', username=my_follower.username) }}">
@@ -76,7 +73,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-sm-5" style="text-align:center;margin:auto" >
+                            <div class="col-md-4 img-responsive" style="text-align:center;" >
                                 <img src="{{url_for('static',filename='profile_pics/'+my_follower.student.profile_pic)}}" class="img-responsive rounded-circle" >
                             </div>
                         </div>   
@@ -84,5 +81,6 @@
                 </div>
             {% endfor %}
         </div> 
-    </div>
+    </div>  
 {% endblock %}
+

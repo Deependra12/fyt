@@ -40,17 +40,14 @@
         color: white;
     }
 
-    .col-sm-5 img {
-        margin-top: 5%;
-        height: 80%;
-        width: 80%;
+    .col-md-4 img {
+        margin-top:5%;
+        height: 90%;
+        width: 90%;
         user-select: none;
-        box-shadow: 0 0 10px 2px #333;
+        border-radius:50%;
     }
-
-    .mb-3 {
-        margin-bottom: ($spacer-x * .15) !important;
-    }
+    
 {% endblock %}
 
 {% block content %}
@@ -58,10 +55,10 @@
         <legend class="border-bottom mb-4">My Tutors</legend>
         <div class="row equal">
             {% for followed_tutor in followed_tutors %}
-                <div class="col-sm-6 mb-3 ">
+                <div class="col-md-6 mb-3 ">
                     <div class="card h-100" >
                         <div class="row flex-column-reverse flex-sm-row">
-                            <div class="col-sm-7">
+                            <div class="col-md-8">
                                 <div class="card-body">
                                     <h5 class="card-title" >
                                         <a href="{{ url_for('profile', username=followed_tutor.username) }}">
@@ -76,8 +73,8 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-sm-5" style="text-align:center;margin:auto" >
-                                <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle" >
+                            <div class="col-md-4 img-responsive" style="text-align:center;" >
+                                <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle" id="tutor_profile_pic" >
                             </div>
                         </div>   
                     </div>   

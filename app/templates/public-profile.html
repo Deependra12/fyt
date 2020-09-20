@@ -57,32 +57,33 @@
 
             </div>
             <div class="row">
-                <div class="buttons-container">
-                        <div class="user-data">
-                            <p>
-                                @{{ view_user.username }}
-                                {% if view_user.role=="tutor" and view_user.tutor.account_verification_status %}
-                                    <i class="fas fa-check-circle"></i>
-                                {% endif %}
-                            </p>
-                            {% if view_user.role=="tutor"  %}
-                                {% if view_user==user %}
-                                    <a href="{{url_for('tutor_followers') }}">
-                                        <p>{{ view_user.followers.count() }} followers</p>
-                                    </a>
-                                {% else %}
-                                    <p>{{ view_user.followers.count() }} followers</p>
-                                {% endif %}
-                            {% else %}
-                                {% if view_user==user %}
-                                    <a href="{{url_for('student_followed_tutors')}}">
-                                        <p>{{ view_user.followed.count() }} following</p>
-                                    </a>
-                                {% else %}  
-                                    <p>{{ view_user.followed.count() }} following</p>
-                                {% endif %}
+                <div class="right-container">
+                    <div class="user-data">
+                        <p>
+                            @{{ view_user.username }}
+                            {% if view_user.role=="tutor" and view_user.tutor.account_verification_status %}
+                                <i class="fas fa-check-circle"></i>
                             {% endif %}
-                        </div>
+                        </p>
+                        {% if view_user.role=="tutor"  %}
+                            {% if view_user==user %}
+                                <a href="{{url_for('tutor_followers') }}">
+                                    <p>{{ view_user.followers.count() }} followers</p>
+                                </a>
+                            {% else %}
+                                <p>{{ view_user.followers.count() }} followers</p>
+                            {% endif %}
+                        {% else %}
+                            {% if view_user==user %}
+                                <a href="{{url_for('student_followed_tutors')}}">
+                                    <p>{{ view_user.followed.count() }} following</p>
+                                </a>
+                            {% else %}  
+                                <p>{{ view_user.followed.count() }} following</p>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="row" style="text-align: center;" id="small">
                         {% if view_user == user %}
                             {% if user.role == 'tutor'%}
                                 <div class="row button">
@@ -99,16 +100,21 @@
                                     <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
                                 </div>
                             {% endif %}
-                           
+                        
                         {% elif not user.is_following(view_user) %}
                                 {% if user.role=="student" and view_user.role=="tutor" %}
-                                    <button class="btn btn-primary"><a href="{{ url_for('follow', username=view_user.username) }}">Follow</a></button>
+                                    <div class=" row button">
+                                        <button class="btn btn-primary"><a href="{{ url_for('follow', username=view_user.username) }}">Follow</a></button>
+                                    </div>
                                 {%endif %}
                         {% else %}
                                 {% if user.role=="student" and view_user.role=="tutor" %}
-                                    <button class="btn btn-danger"><a href="{{ url_for('unfollow', username=view_user.username) }}">Unfollow</a></button>
+                                    <div class="row button">
+                                        <button class="btn btn-danger"><a href="{{ url_for('unfollow', username=view_user.username) }}">Unfollow</a></button>
+                                    </div>
                                 {% endif %}
-                        {% endif %}   
+                        {% endif %}  
+                    </div> 
                 </div>         
             </div>
         </div>
@@ -226,19 +232,20 @@
     
   }
 
-  .buttons-container {
+  .right-container {
       margin-top: 10px;
       position: relative;
       left: 50%;
       transform: translateX(-50%);
   }
 
+  
+
   .button{
-      margin: 10px;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
+      margin:auto;
+    
   }
+
 
   .user-data {
     text-align: center;
@@ -247,6 +254,14 @@
   .username-container{
     text-align: center;
   }
+  @media only screen and (max-width: 768px) {
+    #small{
+        margin-bottom:10px;
+    }
+    
+}
+
+
 {% endblock %}
 
 {% block document_javascript %}
