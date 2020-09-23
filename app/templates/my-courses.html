@@ -25,8 +25,9 @@
                     </th>
                     <th scope="col">Education Level</th>
                     <th scope="col">Course</th>
-                    <th scope="col">Time</th>
-                    <th scope="col">Cost</th>
+                    <th scope="col">Start Time</th>
+                    <th scope="col">End Time</th>
+                    <th scope="col">Monthly Cost per hour</th>
 
                </tr>
            </thead>
@@ -48,6 +49,7 @@
                     <td> {{ my_course.Course.course_level or ''}} </td>
                     <td> {{ my_course.Course.course_title or '' }} </td>
                     <td> {{ my_course.time or '' }} </td>
+                    <td>{{ my_course.endtime or '' }}</td>
                     <td> Rs. {{ my_course.cost or ''}} </td>
                 </tr>
             {% endfor %}

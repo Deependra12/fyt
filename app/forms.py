@@ -113,8 +113,9 @@ class AccountInfoForm(FlaskForm):
 class MyCourseForm(FlaskForm):
     education_level = StringField("Education Level", validators=[DataRequired()])
     course = StringField("Course", validators=[DataRequired()])
-    cost = SelectField('Cost', validators=[DataRequired()])
-    time = TimeField('Time', validators=[DataRequired()])
+    cost = SelectField('Monthly Cost per hour', validators=[DataRequired()])
+    starttime = TimeField('Time', validators=[DataRequired()])
+    endtime = TimeField('Time', validators=[DataRequired()])
     save = SubmitField('Save')
     
     def create_cost_choices(self):
