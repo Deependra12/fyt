@@ -466,8 +466,7 @@ def tutor():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and is_tutor(user):
-        tutor=Tutor.query.filter_by(user_id=user.id).first()
-        return render_template("tutor.html", user=user, tutor=tutor, profilepic= fetch_profile_pic(tutor))
+        return redirect(url_for("profile",username=user.username))
     abort(404)
 
 

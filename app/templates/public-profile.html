@@ -86,16 +86,20 @@
                     <div class="row" style="text-align: center;" id="small">
                         {% if view_user == user %}
                             {% if user.role == 'tutor'%}
+                            <div class ="row">
                                 <div class="row button">
                                     <button class="btn btn-info"><a href="{{ url_for('tutor_personal_info') }}">Edit your profile</a></button>
                                 </div>
+                                
                                 <div class="row button">
                                     <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
                                 </div>
+                            </div>
                             {% elif user.role == 'student'%}
                                 <div class="row button">
                                     <button class="btn btn-info"><a href="{{ url_for('student_personal_info') }}">Edit your profile</a></button>
                                 </div>
+                                
                                 <div class="row button">
                                     <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
                                 </div>
