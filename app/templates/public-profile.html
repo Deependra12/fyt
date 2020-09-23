@@ -86,22 +86,22 @@
                     <div class="row" style="text-align: center;" id="small">
                         {% if view_user == user %}
                             {% if user.role == 'tutor'%}
-                            <div class ="row">
                                 <div class="row button">
-                                    <button class="btn btn-info"><a href="{{ url_for('tutor_personal_info') }}">Edit your profile</a></button>
+                                    <div class="col-md-12" >
+                                        <a href="{{ url_for('tutor_personal_info') }}" class="btn btn-info" style="margin-bottom: 10px;">Edit your profile</a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="{{ url_for('tutor_location') }}" class="btn btn-info">Edit Your Location</a>
+                                    </div>
                                 </div>
-                                
-                                <div class="row button">
-                                    <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
-                                </div>
-                            </div>
                             {% elif user.role == 'student'%}
                                 <div class="row button">
-                                    <button class="btn btn-info"><a href="{{ url_for('student_personal_info') }}">Edit your profile</a></button>
-                                </div>
-                                
-                                <div class="row button">
-                                    <button class="btn btn-info"><a href="{{ url_for('tutor_location') }}">Edit Your Location</a></button>
+                                    <div class="col-md-12">
+                                        <a href="{{ url_for('student_personal_info') }}" class="btn btn-info" style="margin-bottom: 10px;" >Edit your profile</a>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <a href="{{ url_for('tutor_location') }}" class="btn btn-info">Edit Your Location</a>
+                                    </div>
                                 </div>
                             {% endif %}
                         
@@ -139,8 +139,9 @@
                             <tr>
                                 <th scope="col">Education Level</th>
                                 <th scope="col">Course</th>
-                                <th scope="col">Time</th>
-                                <th scope="col">Cost</th>
+                                <th scope="col">Start Time</th>
+                                <th scope="col">End Time</th>
+                                <th scope="col">Monthly Cost per hour</th>
 
                             </tr>
                         </thead>
@@ -149,7 +150,8 @@
                                 <tr>
                                     <td> {{ my_course.Course.course_level or ''}} </td>
                                     <td> {{ my_course.Course.course_title or '' }} </td>
-                                    <td> {{ my_course.time or '' }} </td>
+                                    <td> {{ my_course.time.strftime("%H:%M") or '' }} </td>
+                                    <td> {{ my_course.endtime.strftime("%H:%M") or '' }} </td>
                                     <td> Rs. {{ my_course.cost or ''}} </td>
                                 </tr>
                             {% endfor %}
@@ -184,7 +186,7 @@
                             <tr class="d-flex">
                                 <td class="col-3">{{ experience.title }}</td>
                                 <td class='col-3'>{{ experience.institution }}</td>
-                                <td class="col-3">{{ experience.experience }}&nbsp;years</td>
+                                <td class="col-3">{{ experience.experience }}</td>
                                 <td class='col-3'> 
                                     <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                                         <i class="fas fa-external-link-alt "></i>
