@@ -40,14 +40,18 @@
         color: white;
     }
 
-    .col-md-4 img {
-        margin-top:5%;
-        height: 90%;
-        width: 90%;
-        user-select: none;
-        border-radius:50%;
+    .col-md-4 img{
+        height:30vh;
+        width:30vh;
+        object-fit: cover;
+        position: relative;
+        top: 50%;
+        right:10px;
+        transform: translateY(-50%);
+        
+
     }
-    
+       
 {% endblock %}
 
 {% block content %}
@@ -73,8 +77,8 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-md-4 img-responsive" style="text-align:center;" >
-                                <img src="{{url_for('static',filename='profile_pics/'+my_follower.student.profile_pic)}}" class="img-responsive rounded-circle" >
+                            <div class="col-md-4 img-responsive"  >
+                                <img src="{{url_for('static',filename='profile_pics/'+my_follower.student.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" >
                             </div>
                         </div>   
                     </div>   
