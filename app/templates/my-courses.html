@@ -48,8 +48,8 @@
                     </th>
                     <td> {{ my_course.Course.course_level or ''}} </td>
                     <td> {{ my_course.Course.course_title or '' }} </td>
-                    <td> {{ my_course.time or '' }} </td>
-                    <td>{{ my_course.endtime or '' }}</td>
+                    <td> {{ my_course.time.strftime("%H:%M")  or '' }} </td>
+                    <td>{{ my_course.endtime.strftime("%H:%M")  or '' }}</td>
                     <td> Rs. {{ my_course.cost or ''}} </td>
                 </tr>
             {% endfor %}
