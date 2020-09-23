@@ -23,87 +23,87 @@
     </div>
     <div id="recommendation">
         <legend class="border-bottom mb-4"> Tutors for you </legend>
-        <div class="row">
-            <a href="?rec-category=all" class="btn btn-info">All Tutors</a>
-            <a href="?rec-category=location" class="btn btn-info">Based on location</a>
-            <a href="?rec-category=time" class="btn btn-info">Based on time</a>
-            <a href="?rec-category=cost" class="btn btn-info">Based on cost</a>
-        </div>
         {% if matching_tutor %}
             <div id="course-recommendation">
-                <!-- <form action="#">
-                    <select>
-                        <option value="course cost time location">Based on Course, Cost, Time and Location</option>
-                        <option value="location">Based on Location</option>
-                        <option value="time">Based on Course and Time</option>
-                        <option value="cost">Based on Course and Cost</option>
-                    </select>
-                </form> -->
                 <h6> Based on course </h6>
                 <div class="row">
-                    {% for tutor in matching_tutor %}
-                        {% for student_course in student_courses %}
-                            {% if tutor.Course.id == student_course.Course.id and tutor.Mycourse.cost <= student_course.Mycourse.cost %}
-                                <div class="col-md-12">
-                                    <div class="card">
-                                        <div class="row ">
-                                            <div class="col-md-4" id="first">
-                                                <div class="card-body">
-                                                    <h2>Personal Details</h2><hr>
-                                                    <p class="card-text">
-                                                        <a href="{{ url_for('profile', username=tutor.User.username)}}">
-                                                        Name:   {{ tutor.User.tutor.full_name }}
-                                                        </a>   <br>
-                                                        Phone: {{ tutor.User.tutor.phone }}
-                                                        <br>
-                                                        Email: {{ tutor.User.email }}   
-                                                        <br> 
-                                                    </div>
+                    {% for distinct_tutor in distinct_matching_tutor %}
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="row ">
+                                    <div class="col-md-4" id="first">
+                                        <div class="card-body">
+                                            <h2>Personal Details</h2><hr>
+                                            <p class="card-text">
+                                                <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}">
+                                                Name:   {{ distinct_tutor.User.tutor.full_name }}
+                                                </a>   <br>
+                                                Phone: {{ distinct_tutor.User.tutor.phone }}
+                                                <br>
+                                                Email: {{ distinct_tutor.User.email }}   
+                                                <br> 
                                             </div>
+                                    </div>
 
-                                            <div class="col-md-5" id="second"> 
-                                                <div class="card-body"> 
-                                                    <h2>Course Details</h2><hr> 
-                                                    <div class="card-text">          
-                                                        <div class = "table-responsive">
-                                                            <table class="table table-hover" id="courses-table">
-                                                                <thead>
-                                                                    <tr class="d-flex">
-                                                                            <th scope='col' class='col-3'>Course Title</th>
-                                                                            <th scope='col' class='col-3'>Monthly Cost per hour</th>
-                                                                            <th scope="col" class="col-3">Start Time</th>
-                                                                            <th scope="col" class="col-3">End Time</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr class="d-flex">
-                                                                        <td class="col-3">
-                                                                            <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
-                                                                                {{ tutor.Course.course_title }}
-                                                                            </a>
-                                                                        </td>
-                                                                        <td class='col-3'> {{ tutor.Mycourse.cost }}</td>
-                                                                        <td class="col-3"> {{ tutor.Mycourse.time.strftime("%H:%M") }}</td>
-                                                                        <td class="col-3"> {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-5" id="second"> 
+                                        <div class="card-body"> 
+                                            <h2>Course Details</h2><hr> 
+                                            <div class="card-text">          
+                                                <div class = "table-responsive">
+                                                    <table class="table table-hover" id="courses-table">
+                                                        <thead>
+                                                            <tr class="d-flex">
+                                                                    <th scope='col' class='col-3'>Course Title</th>
+                                                                    <th scope='col' class='col-3'>Monthly Cost per hour</th>
+                                                                    <th scope="col" class="col-3">Start Time</th>
+                                                                    <th scope="col" class="col-3">End Time</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            
+                                                                {% for tutor in matching_tutor%}
+                                                                    {% for student_course in student_courses %}
+                                                                        {% if tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost <= student_course.Mycourse.cost %}
+                                                                            <tr class="d-flex">
+                                                                                <td class="col-3">
+                                                                                    <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                        {{ tutor.Course.course_title }}
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
+                                                                                <td class="col-3"> {{ tutor.Mycourse.time.strftime("%H:%M") }}</td>
+                                                                                <td class="col-3"> {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                            </tr>
+                                                                        {% elif tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost > student_course.Mycourse.cost  %}
+                                                                            <tr class="d-flex">
+                                                                                <td class="col-3">
+                                                                                    <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                        {{ tutor.Course.course_title }}
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class='col-3'> Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                <td class="col-3"> {{ tutor.Mycourse.time.strftime("%H:%M") }}</td>
+                                                                                <td class="col-3"> {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                            </tr>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endfor %}
+                                                        </tbody>
+                                                    </table>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-3" id="third" style="margin:auto;text-align:center">
-                                                <a href="{{ url_for('profile', username=tutor.User.username)}}"data-toggle="tooltip" title="click me for detail information">
-                                                <img src="{{url_for('static',filename='profile_pics/'+tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle">
-                                                </a>
-                                            </div>
-
                                         </div>
                                     </div>
+
+                                    <div class="col-md-3" id="third" style="margin:auto;text-align:center">
+                                        <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}"data-toggle="tooltip" title="click me for detail information">
+                                        <img src="{{url_for('static',filename='profile_pics/'+distinct_tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle">
+                                        </a>
+                                    </div>
+
                                 </div>
-                            {% endif %}
-                        {% endfor %}
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

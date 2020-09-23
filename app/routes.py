@@ -320,7 +320,6 @@ def profile(username):
 @app.route('/student/home')
 @login_required
 def student():
-    rec_category = request.args.get('rec-category', '')
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     tutor_list = User.query.filter_by(role="tutor")
     if current_user.is_authenticated and current_user.role == 'admin':
@@ -329,13 +328,10 @@ def student():
     mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
     student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
     matching_tutor = db.session.query(User,Tutor,Mycourse,Course).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
-    course_by_tutor = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).all()
+    distinct_matching_tutor = db.session.query(User,Tutor).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).distinct()
     if user.username == current_user.username and user.role == 'student':
-        if not rec_category or rec_category == "all":
-            student = Student.query.filter_by(user_id=user.id).first()
-            return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, student_courses=student_courses,course_by_tutor=course_by_tutor)
-        else:
-            return "<h1>Recommendations not found</h1>"
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, distinct_matching_tutor=distinct_matching_tutor,student_courses=student_courses)
     abort(404)
 
 
@@ -750,7 +746,9 @@ def edit_mycourse(id):
     form = MyCourseForm()
     form.create_cost_choices()
     my_course = Mycourse.query.filter_by(id=id,User=user).first_or_404()
+    print(my_course)
     if form.validate_on_submit():
+        print("hello fkjadsfbkaljbfkljasbfjaslbfakjldbsbakj")
         my_course.time=form.starttime.data
         my_course.endtime=form.endtime.data
         my_course.cost=form.cost.data
