@@ -327,12 +327,13 @@ def student():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
-    matching_tutor = db.session.query(User,Tutor).select_from(User).join(Mycourse).join(Course).join(Tutor).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).distinct()
+    student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
+    matching_tutor = db.session.query(User,Tutor,Mycourse,Course).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
     course_by_tutor = db.session.query(User,Mycourse,Course).select_from(User).join(Mycourse).join(Course).filter(User.role=='tutor').filter(Course.id.in_(mycourse)).all()
     if user.username == current_user.username and user.role == 'student':
         if not rec_category or rec_category == "all":
             student = Student.query.filter_by(user_id=user.id).first()
-            return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, course_by_tutor=course_by_tutor)
+            return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, student_courses=student_courses,course_by_tutor=course_by_tutor)
         else:
             return "<h1>Recommendations not found</h1>"
     abort(404)
@@ -732,7 +733,7 @@ def add_course(id):
     form.create_cost_choices()
     course= Course.query.filter_by(id=id).first_or_404()
     if form.validate_on_submit():
-        mycourse = Mycourse(Course=course, User=current_user, time=form.time.data, cost=form.cost.data)
+        mycourse = Mycourse(Course=course, User=current_user, time=form.starttime.data, endtime=form.endtime.data,cost=form.cost.data)
         db.session.add(mycourse)
         db.session.commit()
         if is_tutor(user):
@@ -750,7 +751,8 @@ def edit_mycourse(id):
     form.create_cost_choices()
     my_course = Mycourse.query.filter_by(id=id,User=user).first_or_404()
     if form.validate_on_submit():
-        my_course.time=form.time.data
+        my_course.time=form.starttime.data
+        my_course.endtime=form.endtime.data
         my_course.cost=form.cost.data
         db.session.commit()
         if is_tutor(user):

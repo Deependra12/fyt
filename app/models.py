@@ -183,6 +183,7 @@ class Mycourse(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     time = db.Column(db.Time)
+    endtime = db.Column(db.Time)
     cost = db.Column(db.Integer)
     
 
