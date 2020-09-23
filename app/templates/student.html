@@ -23,16 +23,22 @@
     </div>
     <div id="recommendation">
         <legend class="border-bottom mb-4"> Tutors for you </legend>
+        <div class="row">
+            <a href="?rec-category=all" class="btn btn-info">All Tutors</a>
+            <a href="?rec-category=location" class="btn btn-info">Based on location</a>
+            <a href="?rec-category=time" class="btn btn-info">Based on time</a>
+            <a href="?rec-category=cost" class="btn btn-info">Based on cost</a>
+        </div>
         {% if matching_tutor %}
             <div id="course-recommendation">
-                <form action="#">
+                <!-- <form action="#">
                     <select>
                         <option value="course cost time location">Based on Course, Cost, Time and Location</option>
                         <option value="location">Based on Location</option>
                         <option value="time">Based on Course and Time</option>
                         <option value="cost">Based on Course and Cost</option>
                     </select>
-                </form>
+                </form> -->
                 <h6> Based on course </h6>
                 <div class="row">
                     {% for tutor in matching_tutor %}
