@@ -1,0 +1,21 @@
+{% extends admin_base_template %}
+
+{% block brand %}
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+
+    <a id='logo' href="{{url_for('home')}}">
+        <img class="image-responsive no-select" style="width:100px;height:50px;"
+        src="{{ url_for('static', filename='images/logo.png') }}" />
+    </a>
+{% endblock %}
+
+{% block head_css %}
+    {{ super() }}
+
+    <style>
+        #logo{
+            padding: 10%;
+            margin-right: 30px;
+        }
+    </style>
+{% endblock %}

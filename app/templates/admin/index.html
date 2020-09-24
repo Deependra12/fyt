@@ -1,25 +1,8 @@
 {% extends "admin/master.html" %}
 
-{% block brand %}
-<a id='logo' href="{{url_for('home')}}">
-    <img class="image-responsive no-select" style="width:100px;height:50px;"
-      src="{{ url_for('static', filename='images/logo.png') }}" />
-</a>
-{% endblock %}
-
-{% block head_css %}
-{{ super() }}
-<style>
-#logo{
-    padding: 10%;
-    margin-right: 30px;
-}
-</style>
-{% endblock %}
-
 {% block body %}
-  <!-- <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}"> -->
-  <h1>Welcome to the admin panel!</h1>
+
+    <h1>Welcome to the admin panel!</h1>
 
     <form action="{{ url_for('send_admin_announcements') }}" method="POST" class="form">
       <legend>Make Announcements</legend>
