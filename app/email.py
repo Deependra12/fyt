@@ -17,9 +17,19 @@ def send_mail(username, role, message, email):
 def send_reset_mail(user):
     token=user.get_reset_token(expires_sec=1800)
     msg = Message(
-            'Password Reset Link',
+            '[Find Your Tutor] Password Reset Link',
             sender=app.config.get('MAIL_SENDER'),
             recipients=[user.email]
         )
     msg.html = render_template('email-templates/pwd-reset-mail.html', user=user, token=token)
+    mail.send(msg)
+
+
+def send_announcements_mail(title, message, email_list):
+    msg = Message(
+            f'[Find Your Tutor] {title}',
+            sender=app.config.get('MAIL_SENDER'),
+            recipients=[*email_list]
+        )
+    msg.body = message
     mail.send(msg)

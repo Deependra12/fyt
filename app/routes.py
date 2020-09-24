@@ -80,6 +80,24 @@ def about_us():
     return render_template('about.html')
 
 
+@app.route('/send_announcements', methods=['POST'])
+@login_required
+def send_admin_announcements():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        msg_title = request.form.get('title', '')
+        msg_body = request.form.get('message', '')
+        if msg_title and msg_body:
+            non_admin_users = User.query.filter(User.role != "admin").all()
+            email_list = list(map(lambda x: x.email, non_admin_users))
+            # em.send_announcements_mail(msg_title, msg_body, email_list)
+            flash('Successfully sent mail!', 'success')
+        else:
+            flash('Could not send empty mail!', 'danger')
+        return redirect('/admin')    
+    else:
+        abort(401)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -137,7 +155,7 @@ def user_register():
             user.update_student(phone=form.phone.data)
         user.set_location()
         db.session.commit()
-        #message = "Welcome to Find Your Tutor"
+        #message = "[Find Your Tutor] Welcome to Find Your Tutor"
         #em.send_mail(username, role, message, email)
         flash('Your account was created.\nYou can now Login!', 'success')
         return redirect(url_for('login'))        
