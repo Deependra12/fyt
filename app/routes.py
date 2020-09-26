@@ -766,7 +766,6 @@ def edit_mycourse(id):
     my_course = Mycourse.query.filter_by(id=id,User=user).first_or_404()
     print(my_course)
     if form.validate_on_submit():
-        print("hello fkjadsfbkaljbfkljasbfjaslbfakjldbsbakj")
         my_course.time=form.starttime.data
         my_course.endtime=form.endtime.data
         my_course.cost=form.cost.data
