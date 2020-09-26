@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block profilepic %}
-    <img class="image-responsive shadow rounded-circle img-size no-select"
+    <img class="image-responsive shadow rounded-circle img-size no-select" data-toggle="tooltip" title="View your profile!"
          style="width:200px;height:200px;" src='{{ profilepic }}'/>
 {% endblock %}
 
@@ -18,14 +18,18 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div id="view-profile-link">
-        <a href="{{url_for('profile', username=user.username)}}" style="float:right;" class="btn btn-success">View Profile</a>
-    </div>
     <div id="recommendation">
-        <legend class="border-bottom mb-4"> Tutors for you </legend>
+        <legend class="border-bottom mb-4" style="font-size: 30px; font-weight: 100;"> Tutors for you </legend>
         {% if matching_tutor %}
             <div id="course-recommendation">
-                <h6> Based on course </h6>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4> Based on course </h4>
+                    </div>
+                    <div class="col-md-8">
+                        <p style="float: right;"><sub class='text-danger' style="font-size:30px;">*</sub> indicates the parameters slightly don't match your preferences!</p>
+                    </div>
+                </div>
                 <div class="row">
                     {% for distinct_tutor in distinct_matching_tutor %}
                         <div class="col-md-12">
@@ -33,7 +37,11 @@
                                 <div class="row ">
                                     <div class="col-md-4" id="first">
                                         <div class="card-body">
-                                            <h2>Personal Details</h2><hr>
+                                            <h2>Personal Details 
+                                                {% if distinct_tutor.User.role=="tutor" and distinct_tutor.Tutor.account_verification_status %}
+                                                    <i class="fas fa-check-circle"></i>
+                                                {% endif %}
+                                            </h2><hr>
                                             <p class="card-text">
                                                 <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}">
                                                 Name:   {{ distinct_tutor.User.tutor.full_name }}
@@ -54,37 +62,57 @@
                                                         <thead>
                                                             <tr class="d-flex">
                                                                     <th scope='col' class='col-3'>Course Title</th>
-                                                                    <th scope='col' class='col-3'>Monthly Cost per hour</th>
-                                                                    <th scope="col" class="col-3">Start Time</th>
-                                                                    <th scope="col" class="col-3">End Time</th>
+                                                                    <th scope='col' class='col-3'>Monthly Cost</th>
+                                                                    <th scope="col" class="col-6">Teaching Period</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            
                                                                 {% for tutor in matching_tutor%}
                                                                     {% for student_course in student_courses %}
-                                                                        {% if tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost <= student_course.Mycourse.cost %}
-                                                                            <tr class="d-flex">
-                                                                                <td class="col-3">
-                                                                                    <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
-                                                                                        {{ tutor.Course.course_title }}
-                                                                                    </a>
-                                                                                </td>
-                                                                                <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
-                                                                                <td class="col-3"> {{ tutor.Mycourse.time.strftime("%H:%M") }}</td>
-                                                                                <td class="col-3"> {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
-                                                                            </tr>
+                                                                        {% if tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost <= student_course.Mycourse.cost%}
+                                                                            {% if ((tutor.Mycourse.time).hour - (student_course.Mycourse.time).hour) |abs <= 1 and ((tutor.Mycourse.endtime).hour - (student_course.Mycourse.endtime).hour) |abs <= 1%}
+                                                                                <tr class="d-flex">
+                                                                                    <td class="col-3">
+                                                                                        <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                            {{ tutor.Course.course_title }}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
+                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                                </tr>
+                                                                            {% else %}
+                                                                                <tr class="d-flex">
+                                                                                    <td class="col-3">
+                                                                                        <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                            {{ tutor.Course.course_title }}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
+                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                </tr>
+                                                                            {% endif %}
                                                                         {% elif tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost > student_course.Mycourse.cost  %}
-                                                                            <tr class="d-flex">
-                                                                                <td class="col-3">
-                                                                                    <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
-                                                                                        {{ tutor.Course.course_title }}
-                                                                                    </a>
-                                                                                </td>
-                                                                                <td class='col-3'> Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
-                                                                                <td class="col-3"> {{ tutor.Mycourse.time.strftime("%H:%M") }}</td>
-                                                                                <td class="col-3"> {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
-                                                                            </tr>
+                                                                            {% if ((tutor.Mycourse.time).hour - (student_course.Mycourse.time).hour) |abs <= 1 and ((tutor.Mycourse.endtime).hour - (student_course.Mycourse.endtime).hour) |abs <= 1 %}
+                                                                                <tr class="d-flex">
+                                                                                    <td class="col-3">
+                                                                                        <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                            {{ tutor.Course.course_title }}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td class='col-3'> Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                                </tr>
+                                                                            {% else %}
+                                                                                <tr class="d-flex">
+                                                                                    <td class="col-3">
+                                                                                        <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
+                                                                                            {{ tutor.Course.course_title }}
+                                                                                        </a>
+                                                                                    </td>
+                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                </tr>
+                                                                            {% endif %}
                                                                         {% endif %}
                                                                     {% endfor %}
                                                                 {% endfor %}
@@ -96,9 +124,15 @@
                                     </div>
 
                                     <div class="col-md-3" id="third" style="margin:auto;text-align:center">
-                                        <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}"data-toggle="tooltip" title="click me for detail information">
+                                        <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}" data-toggle="tooltip" title="Click here!">
                                         <img src="{{url_for('static',filename='profile_pics/'+distinct_tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle">
                                         </a>
+                                        <p class="text-light">
+                                            @{{ distinct_tutor.User.username }}
+                                            {% if distinct_tutor.User.role=="tutor" and distinct_tutor.Tutor.account_verification_status %}
+                                                <i class="fas fa-check-circle"></i>
+                                            {% endif %}
+                                        </p>
                                     </div>
 
                                 </div>
@@ -112,7 +146,7 @@
 
     
     <div class="map-division map-responsive">
-        <h6> Based on location </h6>
+        <h4> Based on location </h4>
         {% if user.location.latitude and user.location.longitude %} 
             <div class="row">
                 <div id="map" class="map-container" ></div>
