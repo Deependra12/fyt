@@ -155,9 +155,9 @@ def user_register():
             user.update_student(phone=form.phone.data)
         user.set_location()
         db.session.commit()
-        #message = "[Find Your Tutor] Welcome to Find Your Tutor"
-        #em.send_mail(username, role, message, email)
-        flash('Your account was created.\nYou can now Login!', 'success')
+        # message = "[Find Your Tutor] Welcome to Find Your Tutor"
+        # em.send_mail(user.username, user.role, message, user.email)
+        flash('Your account was created. Mail has been sent to your email for confirmation ', 'success')
         return redirect(url_for('login'))        
     return render_template('register.html', form=form)
 
@@ -193,8 +193,6 @@ def reset_token(token):
         db.session.commit()
         flash('Your password has been updated!','info')
         return redirect(url_for('login'))
-    else: 
-        print('blabla')
     return render_template('reset.html', form=form)
 
 
@@ -347,7 +345,6 @@ def student():
     student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
     matching_tutor = db.session.query(User,Tutor,Mycourse,Course).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).order_by(Mycourse.cost).all()
     distinct_matching_tutor = db.session.query(User,Tutor).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).order_by(Tutor.account_verification_status.desc()).distinct()
-    print(distinct_matching_tutor)
     if user.username == current_user.username and user.role == 'student':
         student = Student.query.filter_by(user_id=user.id).first()
         return render_template('student.html', user=user, student=student, tutor_list=tutor_list, profilepic= fetch_profile_pic(student), google_api_key=google_api, matching_tutor=matching_tutor, distinct_matching_tutor=distinct_matching_tutor,student_courses=student_courses)
@@ -765,7 +762,6 @@ def edit_mycourse(id):
     form = MyCourseForm()
     form.create_cost_choices()
     my_course = Mycourse.query.filter_by(id=id,User=user).first_or_404()
-    print(my_course)
     if form.validate_on_submit():
         my_course.time=form.starttime.data
         my_course.endtime=form.endtime.data
