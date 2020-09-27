@@ -344,16 +344,12 @@
                     </button>
 
                     <a class="navbar-brand" href="{{url_for('home')}}">
-                        <img class="image-responsive" style="width:120.5px;height:62px;"
+                        <img class="image-responsive" style="width:120.5px;height:62px;margin:auto;"
                           src="{{url_for('static', filename='images/logo.png')}}" />
                     </a>
 
-                    {% if current_user.role == 'tutor' %}
-                    <a class="btn btn-info" href="{{url_for('tutor_account_activities')}}">
-                    {% else %}
-                    <a class="btn btn-info" href="{{url_for('student_account_activities')}}">
-                    {% endif %}
-                        <i class="fas fa-cog"></i>
+                    <a class="btn btn-info" href="{{url_for('logout')}}">
+                        <i class="fas fa-sign-out-alt"></i>
                         <span></span>
                     </a>
 

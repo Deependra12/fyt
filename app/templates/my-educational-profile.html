@@ -273,10 +273,10 @@
     </div>
 </div>
 
-<div class="container">
+<div class="container" >
     <legend class="border-bottom mb-4">My Educational Profile</legend>
     
-    <div class = "table-responsive">
+    <div class = "table-responsive" class="scroll">
         <legend class="border-bottom mb-4 sm">My Experiences</legend>
         <table class="table table-hover" id="my-experience-table">
             <thead>
@@ -303,12 +303,6 @@
                                 <i class="fas fa-trash"></i>
                                 <span></span>
                             </a>
-                            <button type="button" class="btn btn-link btn-sm"
-                                data-toggle="modal"
-                                data-target="#edit-experience-form">
-                                <i class="fas fa-edit"></i>
-                                <span></span>
-                            </button>
                         </td>
                         <td class="col-3">{{ experience.title }}</td>
                         <td class='col-3'>{{ experience.institution }}</td>
@@ -353,12 +347,6 @@
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <button type="button" class="btn btn-link btn-sm"
-                            data-toggle="modal"
-                            data-target="#edit-qualification-form">
-                            <i class="fas fa-edit"></i>
-                            <span></span>
-                        </button>
                     </td >
                     <td class='col-3'> {{ qualification.qualification }} </td>
                     <td class='col-3'> {{ qualification.institution }} </td>
@@ -402,12 +390,6 @@
                             <i class="fas fa-trash"></i>
                             <span></span>
                         </a>
-                        <button type="button" class="btn btn-link btn-sm"
-                            data-toggle="modal"
-                            data-target="#edit-achievement-form">
-                            <i class="fas fa-edit"></i>
-                            <span></span>
-                        </button>
                     </td>
                     <td class="col-3"> {{ achievement.achievement }} </td>
                     <td class="col-3"> {{ achievement.awarded_by }} </td>
@@ -425,5 +407,15 @@
     </div>
 
 </div>
+
+{% endblock %}
+
+{% block additional_style %}
+
+    .scroll{
+        overflow:auto;
+        white-space: nowrap;
+        
+    }
 
 {% endblock %}
