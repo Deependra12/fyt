@@ -24,7 +24,7 @@
     }
 
     .container {
-        padding: 3%;
+        
     }
 
     .card {
@@ -44,11 +44,16 @@
         width:30vh;
         object-fit: cover;
         position: relative;
-        top: 50%;
         right:10px;
         transform: translateY(-50%);
-        margin-top:10px;
+        transform:scale(0.8);
+        transition:transform 0.5s;
+        opacity:0.9;
+    }
 
+    .col-md-4 img:hover{
+        opacity:1;
+        transform:scale(1);
     }
        
 {% endblock %}
@@ -61,7 +66,7 @@
                 <div class="col-md-6 mb-3 ">
                     <div class="card h-100" >
                         <div class="row flex-column-reverse flex-sm-row">
-                            <div class="col-md-8">
+                            <div class="col-md-8" ">
                                 <div class="card-body">
                                     <h5 class="card-title" >
                                         <a href="{{ url_for('profile', username=followed_tutor.username) }}">

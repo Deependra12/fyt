@@ -45,25 +45,28 @@
         <div class="carousel-item active">
           <img src="{{url_for('static', filename='images/1.jpeg')}}" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
-            <h3>Find Your Tutor</h3>
-            <p>One small step for student,
-              one giant leap for knowledge...</p>
+            <h2>Qualified Tutors</h2>
+          <p>
+              We provide professional, experienced and reliable tutors for all major subjects.
+          </p>
+
           </div>
         </div>
         <div class="carousel-item">
           <img src="{{url_for('static', filename='images/2.jpeg')}}" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
-            <h3>Find Your Tutor</h3>
-            <p>The roots of education are bitter,
-              but the fruit is sweet - Aristotle</p>
-          </div>
+            <h2>Wide Range Of Courses</h2>
+          <p>
+              We provide wide range of courses for the students. 
+          </p>          </div>
         </div>
         <div class="carousel-item">
           <img src="{{url_for('static', filename='images/3.jpeg')}}" class="d-block w-100" alt="...">
           <div class="carousel-caption d-none d-md-block">
-            <h3>Find Your Tutor</h3>
-            <p>Change is the end result of all 
-              true learning - Leo Buscaglia</p>
+            <h2>Resonable pricing</h2>
+          <p>
+              We provide professional, experienced and reliable tutors at very reasonable prices. 
+          </p>
           </div>
         </div>
       </div>
@@ -80,71 +83,8 @@
 
 {% endblock %}
 
-{% block features %}
-<section class="features" id="feature" >
-    <div class="row">
 
-      <div class="col-lg-4">
 
-        <div class="row feature-dscp">
-          <div class=col-lg-12>
-          <h2>Qualified Tutors</h2>
-          <p>
-              We provide professional, experienced and reliable tutors for all major subjects.
-          </p>
-          <br>
-        </div>
-        </div>
-
-        <div class="row feature-dscp">
-          <div class="col-lg-12">
-          <h2>Wide Range Of Courses</h2>
-          <p>
-              We provide wide range of courses for the students. 
-          </p>
-          </div>
-        </div>
-
-      </div>
-      
-
-      <div class="col-lg-4">
-
-        <div class="row">
-          <div class="col-lg-12">
-            <img class="feature-img rounded-circle shadow no-select" 
-            src="{{url_for('static', filename='images/back1.jpg')}}" />
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4">
-
-        <div class="row feature-dscp">
-          <div class=col-lg-12>
-          <h2>Resonable pricing</h2>
-          <p>
-              We provide professional, experienced and reliable tutors at very reasonable prices. 
-          </p>
-          <br>
-        </div>
-        </div>
-
-        <div class="row feature-dscp">
-          <div class="col-lg-12">
-          <h2>Based On Your Preference</h2>
-          <p>
-               You can get the tutors based on your location and time.
-          </p>
-          </div>
-        </div>
-        
-      </div>
-
-    </div>
-
-</section>
-{% endblock %}
 
 {% block get_started %}
   <section class="get-started bg-light" id="getstarted">

@@ -212,7 +212,16 @@
         width:80%;
         user-select:none;
         box-shadow: 0 0 10px 2px #333;
+        transform:scale(0.8);
+        transition:transform 0.5s;
+        opacity:0.9;
       }
+
+      .col-md-3 img:hover{
+        opacity:1;
+        transform:scale(1);
+      }
+
       @media only screen and (max-width: 768px) {
         #first {
             order: 2;
