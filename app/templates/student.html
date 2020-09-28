@@ -57,13 +57,13 @@
                                         <div class="card-body"> 
                                             <h2>Course Details</h2><hr> 
                                             <div class="card-text">          
-                                                <div class = "table-responsive">
+                                                <div class="table-responsive">
                                                     <table class="table table-hover" id="courses-table">
                                                         <thead>
                                                             <tr class="d-flex">
-                                                                    <th scope='col' class='col-3'>Course Title</th>
-                                                                    <th scope='col' class='col-3'>Monthly Cost</th>
-                                                                    <th scope="col" class="col-6">Teaching Period</th>
+                                                                    <th scope="col" class="col-4">Course Title</th>
+                                                                    <th scope="col" class="col-4">Monthly Cost</th>
+                                                                    <th scope="col" class="col-4">Teaching Period</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -72,45 +72,45 @@
                                                                         {% if tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost <= student_course.Mycourse.cost%}
                                                                             {% if ((tutor.Mycourse.time).hour - (student_course.Mycourse.time).hour) |abs <= 1 and ((tutor.Mycourse.endtime).hour - (student_course.Mycourse.endtime).hour) |abs <= 1%}
                                                                                 <tr class="d-flex">
-                                                                                    <td class="col-3">
+                                                                                    <td class="col-4">
                                                                                         <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
                                                                                             {{ tutor.Course.course_title }}
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
-                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                                    <td class='col-4'>Rs. {{ tutor.Mycourse.cost }}</td>
+                                                                                    <td class="col-4"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
                                                                                 </tr>
                                                                             {% else %}
                                                                                 <tr class="d-flex">
-                                                                                    <td class="col-3">
+                                                                                    <td class="col-4">
                                                                                         <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
                                                                                             {{ tutor.Course.course_title }}
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}</td>
-                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class='col-4'>Rs. {{ tutor.Mycourse.cost }}</td>
+                                                                                    <td class="col-4"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
                                                                                 </tr>
                                                                             {% endif %}
                                                                         {% elif tutor.Course.id == student_course.Course.id and tutor.User.id == distinct_tutor.User.id and tutor.Mycourse.cost > student_course.Mycourse.cost  %}
                                                                             {% if ((tutor.Mycourse.time).hour - (student_course.Mycourse.time).hour) |abs <= 1 and ((tutor.Mycourse.endtime).hour - (student_course.Mycourse.endtime).hour) |abs <= 1 %}
                                                                                 <tr class="d-flex">
-                                                                                    <td class="col-3">
+                                                                                    <td class="col-4">
                                                                                         <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
                                                                                             {{ tutor.Course.course_title }}
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td class='col-3'> Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
-                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
+                                                                                    <td class="col-4"> Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class="col-4"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}</td>
                                                                                 </tr>
                                                                             {% else %}
                                                                                 <tr class="d-flex">
-                                                                                    <td class="col-3">
+                                                                                    <td class="col-4">
                                                                                         <a href="{{url_for('courses_by_id',id=tutor.Course.id)}}">
                                                                                             {{ tutor.Course.course_title }}
                                                                                         </a>
                                                                                     </td>
-                                                                                    <td class='col-3'>Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
-                                                                                    <td class="col-6"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class="col-4">Rs. {{ tutor.Mycourse.cost }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
+                                                                                    <td class="col-4"> {{ tutor.Mycourse.time.strftime("%H:%M") }} - {{ tutor.Mycourse.endtime.strftime("%H:%M") }}<sub class='text-danger' style="font-size:30px;">*</sub></td>
                                                                                 </tr>
                                                                             {% endif %}
                                                                         {% endif %}
@@ -165,64 +165,62 @@
         {% endif %}
     </div>
 </div>
+
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
-      });
-    
+    });
 </script>
 
 {% endblock %}
 
 {% block additional_style %}
     #map {
-    height:700px;
-    width:700px;
-    margin: auto;
-    background-color: grey;
-    margin-top:10px;
-    colour: white;
-    border-radius:50%;
-    
-     }
-    .container{
+        height: 700px;
+        width: 700px;
+        margin: auto;
+        background-color: grey;
+        margin-top: 10px;
+        colour: white;
+        border-radius: 50%;
+    }
+
+    .container {
         padding: 3%;
     }
 
-    .card{
+    .card {
         margin-bottom: 2%;
-        background-color: #049BBA; 
-        
+        background-color: #049BBA;   
     }
 
-    .card-body{
-        color:white;
+    .card-body {
+        color: white;
     }
 
-    .card-text{
-        height: auto ;
-        color:white;
-        
+    .card-text {
+        height: auto;
+        color: white;
     }
-    .col-md-3 img{
 
-        margin-top:4%;
-        margin-bottom:3%;
-        height:80%;
-        width:80%;
-        user-select:none;
+    .col-md-3 img {
+        margin-top: 4%;
+        margin-bottom: 3%;
+        height: 80%;
+        width: 80%;
+        user-select: none;
         box-shadow: 0 0 10px 2px #333;
-        transform:scale(0.8);
-        transition:transform 0.5s;
-        opacity:0.9;
-      }
+        transform: scale(0.8);
+        transition: transform 0.5s;
+        opacity: 0.9;
+    }
 
-      .col-md-3 img:hover{
-        opacity:1;
-        transform:scale(1);
-      }
+    .col-md-3 img:hover {
+        opacity: 1;
+        transform: scale(1);
+    }
 
-      @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 768px) {
         #first {
             order: 2;
         }
@@ -232,10 +230,7 @@
         #third {
             order: 1;
         }
-        
     }
-    
-
 {% endblock %}
 
 

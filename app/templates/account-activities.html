@@ -11,7 +11,7 @@
 
 
 {% block content %}
-  <div class = "modal fade" id="delete-confirmation-dialog">
+  <div class = "modal fade" id="delete-confirmation-dialog" data-backdrop="static" data-keyboard="false">
     <div class = "modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -117,6 +117,7 @@
 
     modalCancelButton.addEventListener('click', ()=>{
       passwordField.value = "";
+      deleteAccountButton.classList.add('disabled');
     });
 
     passwordField.addEventListener('input',(e)=>{

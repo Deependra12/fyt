@@ -164,94 +164,108 @@
             <div class="col-md-1"></div>
             <div class="col-md-10">
             <legend class="border-bottom mb-4">{{ view_user.username }}'s Educational Profile</legend>
-            {% if view_user==user %}
-                <a href="{{ url_for('tutor_educational_profile') }}" class="btn btn-success">Edit Educational Profile</a>
+            {% if view_user == user %}
+                <a href="{{ url_for('tutor_educational_profile') }}" class="btn btn-success" style="margin-bottom: 10px;">Edit Educational Profile</a>
             {% endif %}
+            
             <div class = "table-responsive">
                 <legend class="border-bottom mb-4 sm">Experiences</legend>
-                <table class="table table-hover" id="my-experience-table">
-                    <thead>
-                    <tr class="d-flex">
-                            <th scope='col' class='col-3'>Title</th>
-                            <th scope='col' class='col-3'>Institution</th>
-                            <th scope="col" class="col-3">Experience</th>
-                            <th scope="col" class="col-3">Certificate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for experience in view_user.tutor.experience %}
+                {% if view_user.tutor.experience %}
+                    <table class="table table-hover" id="my-experience-table">
+                        <thead>
+                        <tr class="d-flex">
+                                <th scope='col' class='col-3'>Title</th>
+                                <th scope='col' class='col-3'>Institution</th>
+                                <th scope="col" class="col-3">Experience</th>
+                                <th scope="col" class="col-3">Certificate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for experience in view_user.tutor.experience %}
+                                <tr class="d-flex">
+                                    <td class="col-3">{{ experience.title }}</td>
+                                    <td class='col-3'>{{ experience.institution }}</td>
+                                    <td class="col-3">{{ experience.experience }}&nbsp;years</td>
+                                    <td class='col-3'> 
+                                        <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm" target="_blank"> 
+                                            <i class="fas fa-external-link-alt "></i>
+                                            Open file
+                                        </a>
+                                    </td>
+                                </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                    <p>No experience mentioned yet!</p>
+                {% endif %}
+            </div>
+            
+        
+            <div class = "table-responsive">
+                <legend class="border-bottom mb-4 sm">Qualifications</legend>
+                {% if view_user.tutor.qualification %}
+                    <table class="table table-hover" id="my-qualification-table">
+                        <thead>
+                        <tr class="d-flex">
+                                <th scope="col" class="col-3">Qualification</th>
+                                <th scope='col' class='col-3'>Institution</th>
+                                <th scope='col' class='col-3'>Date</th>
+                                <th scope="col" class="col-3">Certificate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for qualification in view_user.tutor.qualification %}
                             <tr class="d-flex">
-                                <td class="col-3">{{ experience.title }}</td>
-                                <td class='col-3'>{{ experience.institution }}</td>
-                                <td class="col-3">{{ experience.experience }}&nbsp;years</td>
+                                <td class='col-3'> {{ qualification.qualification }} </td>
+                                <td class='col-3'> {{ qualification.institution }} </td>
+                                <td class='col-3'> {{ qualification.qualification_date }} </td>
                                 <td class='col-3'> 
-                                    <a href="{{ url_for('static', filename='docs/experience/' + experience.experience_file)}}" class="btn btn-success btn-sm" target="_blank"> 
+                                    <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm" target="_blank"> 
                                         <i class="fas fa-external-link-alt "></i>
                                         Open file
                                     </a>
                                 </td>
                             </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
-            </div>
-        
-            <div class = "table-responsive">
-                <legend class="border-bottom mb-4 sm">Qualifications</legend>
-                <table class="table table-hover" id="my-qualification-table">
-                    <thead>
-                    <tr class="d-flex">
-                            <th scope="col" class="col-3">Qualification</th>
-                            <th scope='col' class='col-3'>Institution</th>
-                            <th scope='col' class='col-3'>Date</th>
-                            <th scope="col" class="col-3">Certificate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for qualification in view_user.tutor.qualification %}
-                        <tr class="d-flex">
-                            <td class='col-3'> {{ qualification.qualification }} </td>
-                            <td class='col-3'> {{ qualification.institution }} </td>
-                            <td class='col-3'> {{ qualification.qualification_date }} </td>
-                            <td class='col-3'> 
-                                <a href="{{ url_for('static', filename='docs/qualification/' + qualification.qualification_file)}}" class="btn btn-success btn-sm" target="_blank"> 
-                                    <i class="fas fa-external-link-alt "></i>
-                                    Open file
-                                </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                    <p>No qualification mentioned yet!</p>
+                {% endif %}
             </div>
         
             <div class = "table-responsive">
                 <legend class="border-bottom mb-4 sm">Achievements</legend>
-                <table class="table table-hover" id="my-achievement-table">
-                    <thead>
-                    <tr class="d-flex">
-                            <th scope="col" class="col-3">Achievement</th>
-                            <th scope="col" class="col-3">Awarded By</th>
-                            <th scope="col" class="col-3">Awarded Date</th>
-                            <th scope="col" class="col-3">Certificate</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for achievement in view_user.tutor.achievement %}
+                {% if view_user.tutor.achievement %}
+                    <table class="table table-hover" id="my-achievement-table">
+                        <thead>
                         <tr class="d-flex">
-                            <td class="col-3"> {{ achievement.achievement }} </td>
-                            <td class="col-3"> {{ achievement.awarded_by }} </td>
-                            <td class="col-3"> {{ achievement.awarded_date }} </td>
-                            <td class="col-3"> 
-                                <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm" target="_blank"> 
-                                    <i class="fas fa-external-link-alt "></i>
-                                    Open file
-                                </a>
-                            </td>
+                                <th scope="col" class="col-3">Achievement</th>
+                                <th scope="col" class="col-3">Awarded By</th>
+                                <th scope="col" class="col-3">Awarded Date</th>
+                                <th scope="col" class="col-3">Certificate</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                        {% for achievement in view_user.tutor.achievement %}
+                            <tr class="d-flex">
+                                <td class="col-3"> {{ achievement.achievement }} </td>
+                                <td class="col-3"> {{ achievement.awarded_by }} </td>
+                                <td class="col-3"> {{ achievement.awarded_date }} </td>
+                                <td class="col-3"> 
+                                    <a href="{{ url_for('static', filename='docs/achievement/' + achievement.achievement_file)}}" class="btn btn-success btn-sm" target="_blank"> 
+                                        <i class="fas fa-external-link-alt "></i>
+                                        Open file
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    </table>
+                {% else %}
+                    <p>No achievement mentioned yet!</p>
+                {% endif %}
             </div>
             </div>
             <div class="col-md-1"></div>
