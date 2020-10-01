@@ -137,16 +137,13 @@
 
     {% if not admin %}
     <div class="border-top pt-3 ext-box">
-        <div class="row" style="margin-left: 0;">
-        <span class="label-link" >
-            Forgot <a href="/password-reset" >Password?</a>
-        </span>
-            <br>
-        <span class="label " style="margin-right:0;">
-            Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
-        </span>
+        <div>
+            <a href="/password-reset" > Forgot Password?</a>
+            <p style="float:right;">
+                Do not have an account? <a class="ml-1" href="/register">Sign Up</a>
+            </p>
         </div>
-    </div>
+        </div>
     {% endif %}
 </div>
 

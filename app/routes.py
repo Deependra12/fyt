@@ -456,6 +456,22 @@ def delete_student_courses(id):
         return redirect(url_for('student'))
 
 
+@app.route('/student/search-tutors', methods=['POST', 'GET'])
+@login_required
+def search_tutors():
+    username = request.args.get('username', '')
+    tutor_list = User.query.filter_by(role="tutor")
+    if username:
+        tutor_list = User.query.filter_by(username=username).filter_by(role='tutor')
+    user = User.query.filter_by(username=current_user.username).first()
+    if user.username == current_user.username and not is_tutor(user):
+        student = Student.query.filter_by(user_id=user.id).first()
+        return render_template('search-tutors.html', profilepic= fetch_profile_pic(student), 
+        user=user, tutors=tutor_list)
+    elif user.username == current_user.username and is_tutor(user):
+        return redirect(url_for('tutor_followers'))
+
+
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
 @login_required
 def student_followed_tutors():
@@ -678,25 +694,6 @@ def delete_tutor_achievement(id):
         db.session.delete(achievement_to_be_deleted)
         db.session.commit()
         return redirect(url_for('tutor_educational_profile')) 
-
-
-@app.route('/edit/experience/<int:id>')
-@login_required
-def edit_tutor_experience(id):
-    pass
-
-
-@app.route('/edit/qualification/<int:id>')
-@login_required
-def edit_tutor_qualification(id):
-    pass
-
-
-@app.route('/edit/achievement/<int:id>')
-@login_required
-def edit_tutor_achievement(id):
-    pass
-
 
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
 @login_required

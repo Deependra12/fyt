@@ -19,9 +19,9 @@ class RegistrationForm(FlaskForm):
     # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='Password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
-    phone = IntegerField('Phone', validators=[DataRequired()])
+    phone = StringField('Phone', validators=[DataRequired(),Length(max=10,min=7, message="Phone number can't exceed 10 digits")])
     role = SelectField('Role', choices=[('tutor', 'Tutor'), ('student', 'Student')], validators=[DataRequired()])
     submit = SubmitField('Sign Up')
 

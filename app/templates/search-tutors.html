@@ -1,0 +1,117 @@
+{% extends 'student.html' %}
+
+{% block active %}
+    activateMenu('search-tutors')
+{% endblock %}
+
+{% block content %}
+    <div class='row'>
+        <div class="col-md-6">
+            <legend class="border-bottom mb-4 ">
+                Tutors
+            </legend>
+        </div>
+        <div class="col-md-6">
+            <form action='' method="GET" style='float:right;'>
+                <div class='input-group'>
+                    <input class='form-control' type='text' placeholder="Username" name ="username">
+                    <span>
+                        <button type="submit" class= "btn btn-primary" value="" >
+                            <i class="fas fa-search" ></i>
+                        </button>
+                    </span>
+                </div>    
+            </form>
+        </div>
+    </div>
+    <div class='row'>
+        {% for tutor in tutors %}
+            {% if tutor %}
+                <div class="col-md-6 mb-3 ">
+                    <div class="card h-100" >
+                        <div class="row flex-column-reverse flex-sm-row">
+                            <div class="col-md-8" ">
+                                <div class="card-body">
+                                    <h5 class="card-title" >
+                                        <a href="{{ url_for('profile', username=tutor.username) }}">
+                                            {{ tutor.tutor.full_name or 'N/A' }}
+                                        </a>   
+                                    </h5>
+                                    <p class="card-text">
+                                        Phone: {{ tutor.tutor.phone or 'N/A' }}
+                                        <br>
+                                        Email: 
+                                        {{ tutor.email or 'N/A' }}                               
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 img-responsive mx-auto d-block"  >
+                                {% if tutor.tutor.profile_pic %}
+                                    <img src="{{url_for('static',filename='profile_pics/'+tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                {% else %}
+                                    <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                {% endif %}
+                            </div>
+                        </div>   
+                    </div>   
+                </div>
+            {% else %}
+                <p>Tutor not found!</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block additional_style %}
+    .container {
+        padding: 3%;
+    }
+
+    .card {
+        margin-bottom: 6%;
+        background-color: #049BBA; 
+    }
+
+    .card-body {
+        color: white;
+    }
+
+    .card-text {
+        height: 150px;
+        color: white;
+    }
+
+    .container {
+        
+    }
+
+    .card {
+        background-color: #049BBA; 
+        margin-bottom: 3%;    
+    }
+
+    .card-body {
+        color: white;
+    }
+
+    .card-text {
+        color: white;
+    }
+    .col-md-4 img{
+        height:30vh;
+        width:30vh;
+        object-fit: cover;
+        position: relative;
+        right:10px;
+        transform: translateY(-50%);
+        transform:scale(0.8);
+        transition:transform 0.5s;
+        opacity:0.9;
+    }
+
+    .col-md-4 img:hover{
+        opacity:1;
+        transform:scale(1);
+    }
+       
+{% endblock %}
