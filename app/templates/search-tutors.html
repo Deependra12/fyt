@@ -25,51 +25,53 @@
         </div>
     </div>
     <div class='row'>
-        {% for tutor in tutors %}
-            {% if tutor %}
-                <div class="col-md-6 mb-3 ">
-                    <div class="card h-100" >
-                        <div class="row flex-column-reverse flex-sm-row">
-                            <div class="col-md-8" ">
-                                <div class="card-body">
-                                    <h5 class="card-title" >
-                                        <a href="{{ url_for('profile', username=tutor.username) }}">
-                                            {{ tutor.tutor.full_name or 'N/A' }}
-                                        </a> 
+        {% if tutors %}
+            {% for tutor in tutors %}
+                    <div class="col-md-6 mb-3 ">
+                        <div class="card h-100" >
+                            <div class="row flex-column-reverse flex-sm-row">
+                                <div class="col-md-8" ">
+                                    <div class="card-body">
+                                        <h5 class="card-title" >
+                                            <a href="{{ url_for('profile', username=tutor.username) }}">
+                                                {{ tutor.tutor.full_name or 'N/A' }}
+                                            </a> 
+                                            {% if tutor.role=="tutor" and tutor.tutor.account_verification_status %}
+                                                        <i class="fas fa-check-circle"></i>
+                                            {% endif %}  
+                                        </h5>
+                                        <p class="card-text">
+                                            Phone: {{ tutor.tutor.phone or 'N/A' }}
+                                            <br>
+                                            Email: 
+                                            {{ tutor.email or 'N/A' }}                               
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 img-responsive mx-auto d-block" style="margin:auto;text-align:center">
+                                    <a href="{{ url_for('profile', username=tutor.username)}}" data-toggle="tooltip" title="Click here!">
+                                        {% if tutor.tutor.profile_pic %}
+                                            <img src="{{url_for('static',filename='profile_pics/'+tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                        {% else %}
+                                            <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                        {% endif %}
+                                    </a>
+                                    <p class="text-light">
+                                        @{{ tutor.username }}
                                         {% if tutor.role=="tutor" and tutor.tutor.account_verification_status %}
-                                                    <i class="fas fa-check-circle"></i>
-                                        {% endif %}  
-                                    </h5>
-                                    <p class="card-text">
-                                        Phone: {{ tutor.tutor.phone or 'N/A' }}
-                                        <br>
-                                        Email: 
-                                        {{ tutor.email or 'N/A' }}                               
+                                            <i class="fas fa-check-circle"></i>
+                                        {% endif %}
                                     </p>
                                 </div>
-                            </div>
-                            <div class="col-md-4 img-responsive mx-auto d-block" style="margin:auto;text-align:center">
-                                <a href="{{ url_for('profile', username=tutor.username)}}" data-toggle="tooltip" title="Click here!">
-                                    {% if tutor.tutor.profile_pic %}
-                                        <img src="{{url_for('static',filename='profile_pics/'+tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
-                                    {% else %}
-                                        <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
-                                    {% endif %}
-                                </a>
-                                <p class="text-light">
-                                    @{{ tutor.username }}
-                                    {% if tutor.role=="tutor" and tutor.tutor.account_verification_status %}
-                                        <i class="fas fa-check-circle"></i>
-                                    {% endif %}
-                                </p>
-                            </div>
+                            </div>   
                         </div>   
-                    </div>   
-                </div>
-            {% else %}
-                <p>Tutor not found!</p>
-            {% endif %}
-        {% endfor %}
+                    </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <p>Tutor with that not found!</p>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 

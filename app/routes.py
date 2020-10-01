@@ -502,10 +502,10 @@ def delete_student_courses(id):
 def search_tutors():
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
-    username = request.args.get('username', '')
-    tutor_list = User.query.filter_by(role="tutor")
+    username = request.args.get('username', '').lower()
+    tutor_list = User.query.filter_by(role="tutor").all()
     if username:
-        tutor_list = User.query.filter_by(username=username).filter_by(role='tutor')
+        tutor_list = User.query.filter_by(username=username).filter_by(role='tutor').all()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
         student = Student.query.filter_by(user_id=user.id).first()
