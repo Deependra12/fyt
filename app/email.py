@@ -4,18 +4,19 @@ from flask_mail import Message
 from . import app, mail, ser
 
 
-def send_mail(username, role, message, email):
+def send_registration_mail(user):
+    token = user.get_confirmation_token(expires_sec=1800) 
     msg = Message(
-            message,
+            "[Find Your Tutor] Welcome to Find Your Tutor",
             sender=app.config.get('MAIL_SENDER'),
-            recipients=[email]
+            recipients=[user.email]
         )
-    msg.html = render_template('email-templates/registration-mail.html', username=username, role=role,
-                                sending_mail=True, email=app.config.get('MAIL_USERNAME'))
+    msg.html = render_template('email-templates/registration-mail.html', username=user.username, 
+        role=user.role, sending_mail=True, email=app.config.get('MAIL_USERNAME'), user=user, token=token)
     mail.send(msg)
 
 def send_reset_mail(user):
-    token=user.get_reset_token(expires_sec=1800)
+    token = user.get_reset_token(expires_sec=1800)
     msg = Message(
             '[Find Your Tutor] Password Reset Link',
             sender=app.config.get('MAIL_SENDER'),

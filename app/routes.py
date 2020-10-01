@@ -108,6 +108,13 @@ def login():
         if not user or not user.check_password(form.password.data):
             flash('Invalid email or password', 'danger')
             return redirect (url_for('login'))
+        elif not user.confirmed_account:
+            flash(
+                'You\'ve still not confirmed your account.\
+                 Check your email and confirm your account', 
+                'danger'
+            )
+            return redirect (url_for('login'))
         login_user(user)
         flash('Successfully logged in.', 'success')
         return redirect_user(current_user)
@@ -155,11 +162,24 @@ def user_register():
             user.update_student(phone=form.phone.data)
         user.set_location()
         db.session.commit()
-        # message = "[Find Your Tutor] Welcome to Find Your Tutor"
-        # em.send_mail(user.username, user.role, message, user.email)
-        flash('Your account was created. Mail has been sent to your email for confirmation ', 'success')
+        em.send_registration_mail(user)
+        flash('Your account was created. Mail has been sent to your email for confirmation.', 'success')
         return redirect(url_for('login'))        
     return render_template('register.html', form=form)
+
+
+@app.route('/confirm-account/<token>', methods=['GET', 'POST'])
+def confirm_account(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_confirmation_token(token)
+    if user is None:
+        flash('That is invalid token!', 'warning')
+        return redirect(url_for('login'))
+    user.confirmed_account = True
+    db.session.commit()
+    flash('You have now succesfully confirmed your account! You can now login.', 'warning')   
+    return redirect(url_for('login'))
 
 
 @app.route('/password-reset', methods=['GET', 'POST'])

@@ -10,6 +10,10 @@
 <p>Your Username: {{ username }}</p>
 <p>Account Type: {{ role.title() }}</p>
 <p>You can now start contacting tutors.</p>
+To confirm your account,
+<a href="{{ url_for('confirm_account', user=user, token=token, _external=True) }}">
+    click here.
+</a>
 <p>Hope you enjoy our service.</p>
 <p>For your queries, please mail us <a href="mailto:{{ email }}" >here</a>.</p>
 <strong>Regards,<br>Find Your Tutor</strong>

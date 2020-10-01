@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), index=True, unique=True)
     hash_password = db.Column(db.String(120))
     role = db.Column(db.String(7), index=True)
+    confirmed_account = db.Column(db.Boolean, default=False)
     student = db.relationship('Student', backref='base', uselist=False, cascade="all, delete")
     tutor = db.relationship('Tutor', backref='base', uselist=False, cascade="all, delete")
     location = db.relationship('Location', backref='User', uselist=False, cascade="all, delete")
@@ -82,14 +83,29 @@ class User(UserMixin, db.Model):
 
 
     def get_reset_token(self,expires_sec=1800):
-        s=Serializer(app.config['SECRET_KEY'],expires_sec)
+        s = Serializer(app.config['SECRET_KEY'],expires_sec)
         return s.dumps({'user_id':self.id}).decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
-        s=Serializer(app.config['SECRET_KEY'])
+        s = Serializer(app.config['SECRET_KEY'])
         try:
-            user_id=s.loads(token)['user_id']
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return User.query.get(user_id)
+
+    # For confirmation through mail
+
+    def get_confirmation_token(self, expires_sec=1800):
+        s = Serializer(app.config['SECRET_KEY'],expires_sec)
+        return s.dumps({'user_id':self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_confirmation_token(token):
+        s = Serializer(app.config['SECRET_KEY'])
+        try:
+            user_id = s.loads(token)['user_id']
         except:
             return None
         return User.query.get(user_id)
