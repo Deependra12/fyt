@@ -128,10 +128,12 @@ def check_username_availability(username):
     if current_user.is_authenticated:
         return redirect_user(current_user)
     user = User.query.filter_by(username=username).first()
+    if "@" in username:
+        return jsonify({"message": "You cannot include '@' in your username", "availability": False})
     if user:
         return jsonify({"message": "Username not available", "availability": False})
     else:
-        return jsonify({"message": "Username available", "availability": True})
+        return jsonify({"message": "Username available for registration", "availability": True})
 
 
 @app.route('/check/email/<email>')
@@ -139,10 +141,12 @@ def check_email_availability(email):
     if current_user.is_authenticated:
         return redirect_user(current_user)
     user = User.query.filter_by(email=email).first()
+    if not "@" in email:
+        return jsonify({"message": "Email should contain an @", "availability": False})
     if user:
         return jsonify({"message": "Email already registered", "availability": False})
     else:
-        return jsonify({"message": "Email available", "availability": True})
+        return jsonify({"message": "Email available for registration", "availability": True})
 
 
 @app.route('/check/password/current-user/<password>')
