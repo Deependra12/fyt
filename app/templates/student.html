@@ -130,11 +130,11 @@
 
                                     <div class="col-md-3" id="third" style="margin:auto;text-align:center">
                                         <a href="{{ url_for('profile', username=distinct_tutor.User.username)}}" data-toggle="tooltip" title="Click here!">
-                                        {% if distinct_tutor.User.tutor.profile_pic %}
-                                            <img src="{{url_for('static',filename='profile_pics/'+distinct_tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
-                                        {% else %}
-                                            <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
-                                        {% endif %}
+                                            {% if distinct_tutor.User.tutor.profile_pic %}
+                                                <img src="{{url_for('static',filename='profile_pics/'+distinct_tutor.User.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                            {% else %}
+                                                <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
+                                            {% endif %}
                                         </a>
                                         <p class="text-light">
                                             @{{ distinct_tutor.User.username }}

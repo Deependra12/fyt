@@ -71,7 +71,10 @@
                                     <h5 class="card-title" >
                                         <a href="{{ url_for('profile', username=followed_tutor.username) }}">
                                             {{ followed_tutor.tutor.full_name or 'N/A'}}
-                                        </a>   
+                                        </a>
+                                        {% if followed_tutor.role=="tutor" and followed_tutor.tutor.account_verification_status %}
+                                                    <i class="fas fa-check-circle"></i>
+                                        {% endif %}    
                                     </h5>
                                     <p class="card-text">
                                         Phone: {{ followed_tutor.tutor.phone or 'n/a'}}
@@ -81,7 +84,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="col-md-4 img-responsive mx-auto d-block"  >
+                            <div class="col-md-4 img-responsive mx-auto d-block" style="margin:auto;text-align:center">
                                 {% if followed_tutor.tutor.profile_pic %}
                                 <a href="{{ url_for('profile', username=followed_tutor.username)}}" data-toggle="tooltip" title="Click here!">
                                       <img src="{{url_for('static',filename='profile_pics/'+followed_tutor.tutor.profile_pic)}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
@@ -91,6 +94,12 @@
                                     <img src="{{url_for('static',filename='profile_pics/tutor.jpg')}}" class="img-responsive rounded-circle img-fluid mx-auto d-block" id="tutor_profile_pic" >
                                 </a>
                                 {% endif %}
+                                <p class="text-light">
+                                    @{{ followed_tutor.username }}
+                                    {% if followed_tutor.role=="tutor" and followed_tutor.tutor.account_verification_status %}
+                                        <i class="fas fa-check-circle"></i>
+                                    {% endif %}
+                                </p>
                             </div>
                         </div>   
                     </div>   

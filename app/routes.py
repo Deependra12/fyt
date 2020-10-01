@@ -342,7 +342,7 @@ def student():
         return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
-    student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).all()
+    student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(User.id==current_user.id).all()
     matching_tutor = db.session.query(User,Tutor,Mycourse,Course).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).order_by(Mycourse.cost).all()
     distinct_matching_tutor = db.session.query(User,Tutor).select_from(User).join(Tutor).join(Mycourse).join(Course).filter(Course.id.in_(mycourse)).order_by(Tutor.account_verification_status.desc()).distinct()
     if user.username == current_user.username and user.role == 'student':
