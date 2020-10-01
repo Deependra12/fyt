@@ -175,6 +175,7 @@
     </div>
 </div>
 
+
 <script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();   
@@ -258,7 +259,7 @@
         };
         
         var map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 15,
+            zoom: 13,
             center: userLocation,
             gestureHandling: 'none',
             zoomControl: false
@@ -279,24 +280,26 @@
         })
 
         {% for tutor in tutor_list %}
-            var tutorLocation = {
-                lat: parseFloat({{ tutor.location.latitude }}),
-                lng: parseFloat({{ tutor.location.longitude }})
-            };
-            
-            var tutorMarker = new google.maps.Marker({
-                position: tutorLocation,
-                map: map,
-                icon: icons.tutor,
-                title: "{{ tutor.tutor.full_name }}"
-            });
+            {% if tutor.location.latitude and tutor.location.longitude %}
+                var tutorLocation = {
+                    lat: parseFloat({{ tutor.location.latitude }}),
+                    lng: parseFloat({{ tutor.location.longitude }})
+                };
+                
+                var tutorMarker = new google.maps.Marker({
+                    position: tutorLocation,
+                    map: map,
+                    icon: icons.tutor,
+                    title: "{{ tutor.tutor.full_name }}"
+                });
 
-            google.maps.event.addListener(tutorMarker, 'click', ()=> {
-                window.open(
-                    "{{ url_for('profile', username=tutor.username) }}",
-                    '_blank' 
-                );
-            })
+                google.maps.event.addListener(tutorMarker, 'click', ()=> {
+                    window.open(
+                        "{{ url_for('profile', username=tutor.username) }}",
+                        '_blank' 
+                    );
+                })
+            {% endif %}
         {% endfor %}
     }
 {% endblock %}
