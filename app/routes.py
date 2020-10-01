@@ -77,6 +77,8 @@ def home():
 @app.route('/about-us')
 def about_us():
     """ Render the about us page """
+    if current_user.is_authenticated:
+        return redirect_user(current_user)
     return render_template('about.html')
 
 
@@ -123,6 +125,8 @@ def login():
 
 @app.route('/check/username/<username>')
 def check_username_availability(username):
+    if current_user.is_authenticated:
+        return redirect_user(current_user)
     user = User.query.filter_by(username=username).first()
     if user:
         return jsonify({"message": "Username not available", "availability": False})
@@ -132,6 +136,8 @@ def check_username_availability(username):
 
 @app.route('/check/email/<email>')
 def check_email_availability(email):
+    if current_user.is_authenticated:
+        return redirect_user(current_user)
     user = User.query.filter_by(email=email).first()
     if user:
         return jsonify({"message": "Email already registered", "availability": False})
@@ -340,6 +346,8 @@ def unfollow(username):
 @app.route('/profiles/<username>')
 @login_required
 def profile(username):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     user = User.query.filter_by(username=current_user.username).first()
     if is_tutor(user):
@@ -356,10 +364,10 @@ def profile(username):
 @app.route('/student/home')
 @login_required
 def student():
-    google_api = app.config.get('GOOGLE_MAP_API_KEY')
-    tutor_list = User.query.filter_by(role="tutor")
     if current_user.is_authenticated and current_user.role == 'admin':
         return redirect('/admin')
+    google_api = app.config.get('GOOGLE_MAP_API_KEY')
+    tutor_list = User.query.filter_by(role="tutor")
     user = User.query.filter_by(username=current_user.username).first()
     mycourse = db.session.query(Course.id).select_from(User).join(Mycourse).join(Course).filter(User.id==current_user.id).subquery()
     student_courses = db.session.query(User,Student,Mycourse,Course).select_from(User).join(Student).join(Mycourse).join(Course).filter(User.id==current_user.id).all()
@@ -374,6 +382,8 @@ def student():
 @app.route('/student/my-location', methods=['POST','GET'])
 @login_required
 def student_location():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     form = MyLocationForm()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
@@ -397,6 +407,8 @@ def student_location():
 @app.route('/student/personal-info', methods=['POST','GET'])
 @login_required
 def student_personal_info():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     if is_tutor(current_user):
         return redirect(url_for('tutor_personal_info'))
     else:
@@ -430,6 +442,8 @@ def student_personal_info():
 @app.route('/student/account-activities', methods=['POST','GET'])
 @login_required
 def student_account_activities():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     form = AccountInfoForm()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
@@ -451,6 +465,8 @@ def student_account_activities():
 @app.route('/student/my-courses', methods=['POST','GET'])
 @login_required
 def student_courses():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     my_courses = Mycourse.query.filter_by(user_id=current_user.id)
     form = MyCourseForm()
@@ -465,8 +481,9 @@ def student_courses():
     
 @app.route('/student/delete/mycourse/<int:id>', methods=['POST', 'GET'])
 def delete_student_courses(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
-
     if user.username == current_user.username and not is_tutor(user):
         mycourse_to_be_deleted = Mycourse.query.filter_by(id=id).first_or_404()
         db.session.delete(mycourse_to_be_deleted)
@@ -479,6 +496,8 @@ def delete_student_courses(id):
 @app.route('/student/search-tutors', methods=['POST', 'GET'])
 @login_required
 def search_tutors():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     username = request.args.get('username', '')
     tutor_list = User.query.filter_by(role="tutor")
     if username:
@@ -495,6 +514,8 @@ def search_tutors():
 @app.route('/student/my-tutors', methods=['POST', 'GET'])
 @login_required
 def student_followed_tutors():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     followed_tutors=user.followed.all()
     if user.username == current_user.username and not is_tutor(user):
@@ -522,6 +543,8 @@ def tutor():
 @app.route('/tutor/my-location', methods=['POST','GET'])
 @login_required
 def tutor_location():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     form = MyLocationForm()
     google_api = app.config.get('GOOGLE_MAP_API_KEY')
     opencage_api = app.config.get('OPENCAGE_GEOCODE_API_KEY')
@@ -545,6 +568,8 @@ def tutor_location():
 @app.route('/tutor/personal-info', methods=['POST' ,'GET'])
 @login_required
 def tutor_personal_info():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     if is_tutor(current_user):
         user = User.query.filter_by(username=current_user.username).first()
         tutor=Tutor.query.filter_by(user_id=user.id).first()
@@ -574,6 +599,8 @@ def tutor_personal_info():
 @app.route('/tutor/account-activities', methods=['POST','GET'])
 @login_required
 def tutor_account_activities():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     form = AccountInfoForm()
     user = User.query.filter_by(username=current_user.username).first()
     if user.username == current_user.username and not is_tutor(user):
@@ -595,6 +622,8 @@ def tutor_account_activities():
 @app.route('/tutor/my-courses', methods=['POST', 'GET'])
 @login_required
 def tutor_courses():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     my_courses = Mycourse.query.filter_by(user_id=current_user.id)
     form = MyCourseForm()
@@ -609,8 +638,9 @@ def tutor_courses():
 
 @app.route('/tutor/delete/mycourse/<int:id>', methods=['POST', 'GET'])
 def delete_tutor_courses(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
-
     if user.username == current_user.username and not is_tutor(user):
         return redirect(url_for('student'))
     elif user.username == current_user.username and is_tutor(user):
@@ -623,6 +653,8 @@ def delete_tutor_courses(id):
 @app.route('/tutor/my-educational-profile', methods=['POST','GET'])
 @login_required
 def tutor_educational_profile():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     form_experience = MyExperienceForm()
     form_qualification = MyQualificationForm()
     form_achievement = MyAchievementForm()
@@ -674,6 +706,8 @@ def tutor_educational_profile():
 @app.route('/delete/experience/<int:id>')
 @login_required
 def delete_tutor_experience(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
@@ -689,6 +723,8 @@ def delete_tutor_experience(id):
 @app.route('/delete/qualification/<int:id>')
 @login_required
 def delete_tutor_qualification(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
@@ -704,6 +740,8 @@ def delete_tutor_qualification(id):
 @app.route('/delete/achievement/<int:id>')
 @login_required
 def delete_tutor_achievement(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
 
     if user.username == current_user.username and not is_tutor(user):
@@ -718,6 +756,8 @@ def delete_tutor_achievement(id):
 @app.route('/tutor/my-followers', methods=['POST', 'GET'])
 @login_required
 def tutor_followers():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     my_followers = user.followers.all()
     if user.username == current_user.username and not is_tutor(user):
@@ -734,6 +774,8 @@ def tutor_followers():
 @app.route('/courses')
 @login_required
 def courses():
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     educational_level = request.args.get('educational_level', None)
     if educational_level:
         courses = Course.query.filter_by(course_level=educational_level)
@@ -746,6 +788,8 @@ def courses():
 @app.route('/courses/<int:id>')
 @login_required
 def courses_by_id(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     course = Course.query.filter_by(id=id).first_or_404()
     user = User.query.filter_by(username=current_user.username).first()
     return render_template('course-details.html', course=course, profilepic=fetch_profile_pic(getattr(user, user.role)), user=user)
@@ -757,6 +801,8 @@ def courses_by_id(id):
 @app.route('/my-courses/add/<int:id>', methods=['GET','POST'])
 @login_required
 def add_course(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     form = MyCourseForm()
     form.create_cost_choices()
@@ -775,6 +821,8 @@ def add_course(id):
 @app.route('/edit/my-course/<int:id>', methods=['GET','POST'])
 @login_required
 def edit_mycourse(id):
+    if current_user.is_authenticated and current_user.role == 'admin':
+        return redirect('/admin')
     user = User.query.filter_by(username=current_user.username).first()
     form = MyCourseForm()
     form.create_cost_choices()
