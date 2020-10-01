@@ -113,8 +113,8 @@ def login():
         elif not user.confirmed_account:
             flash(
                 'You\'ve still not confirmed your account.\
-                 Check your email and confirm your account', 
-                'danger'
+                 Check your email and confirm your account.', 
+                'warning'
             )
             return redirect (url_for('login'))
         login_user(user)
@@ -172,7 +172,7 @@ def user_register():
             user.update_student(phone=form.phone.data)
         user.set_location()
         db.session.commit()
-        em.send_registration_mail(user)
+        # em.send_registration_mail(user)
         flash('Your account was created. Mail has been sent to your email for confirmation.', 'success')
         return redirect(url_for('login'))        
     return render_template('register.html', form=form)

@@ -12,11 +12,11 @@
 <div class="container-fluid">
     <legend class="border-bottom mb-4">Edit Courses</legend>
     <div class="jumbotron">
-        <form action="" class="form" method="POST" id='add-course-form'>
+        <form action="" class="form my-2" method="POST" id='add-course-form'>
             {{ form.hidden_tag() }}
     
-            <div class="form-row">
-                <div class="form-group mx-sm-3 mb-2">
+            <div class="form">
+                <div class="form-group mx-sm-3 mb-2 col-md-12">
                     {{ form.education_level.label(class='form-control-label') }}
                     {% if form.education_level.errors %}
                         {{ form.education_level(class='form-control-plaintext is-invalid', readonly=True, value=course.Course.course_level or '')}}
@@ -32,7 +32,7 @@
                     {% endif %}
                     
                 </div>
-                <div class="form-group mx-sm-3 mb-2">
+                <div class="form-group mx-sm-3 mb-2 col-md-12">
                     {{ form.course.label(class='form-control-label') }}
                     {% if form.course.errors %}
                         {{ form.course(class='form-control-plaintext is-invalid', readonly=True, value=course.Course.course_level or '')}}
@@ -47,7 +47,7 @@
                         {{ form.course(class='form-control-plaintext', readonly=True, value=course.Course.course_level or '') }}
                     {% endif %}
                 </div>
-                <div class="form-group mx-sm-3 mb-2">
+                <div class="form-group mx-sm-3 mb-2 col-md-3">
                     {{ form.starttime.label(class='form-control-label') }}
                     {% if form.starttime.errors %}
                         {{ form.starttime(class='form-control is-invalid', value=course.time.strftime("%H:%M"), type='time')}}
@@ -62,7 +62,7 @@
                         {{ form.starttime(class='form-control', value=course.time.strftime("%H:%M"), type='time') }}
                     {% endif %}
                 </div>
-                <div class="form-group mx-sm-3 mb-2">
+                <div class="form-group mx-sm-3 mb-2 col-md-3">
                     {{ form.endtime.label(class='form-control-label') }}
                     {% if form.endtime.errors %}
                         {{ form.endtime(class='form-control is-invalid', value=course.endtime.strftime("%H:%M"), type='time')}}
@@ -77,7 +77,7 @@
                         {{ form.endtime(class='form-control', value=course.endtime.strftime("%H:%M"), type='time') }}
                     {% endif %}
                 </div>
-                <div class="form-group mx-sm-3 mb-2">
+                <div class="form-group mx-sm-3 mb-2 col-md-3">
                     {{ form.cost.label(class='form-control-label') }}
                     {% set z = form.cost.process_data(course.cost) %}
                     {% if form.cost.errors %}
@@ -94,8 +94,8 @@
                     {% endif %}
                 </div>
             </div> 
-            <div class="form-row">
-                <div class="form-group mx-sm-3 mb-2">
+            <div class="row col-md-12">
+                <div class="form-group mx-sm-3 mb-2 col-md-1">
                     {{ form.save(class='btn btn-success form-control') }}
                 </div>     
             </div>
