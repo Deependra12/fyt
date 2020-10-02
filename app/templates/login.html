@@ -58,11 +58,8 @@
 
 <div class="container">
 
-    {% if admin %}
-    <form action="{{url_for('admin_login')}}" class="form my-2" method="POST">
-    {% else %}
-    <form action="{{url_for('login')}}" class="form my-2" method="POST">
-    {% endif %}
+   
+    <form action="" class="form my-2" method="POST">
         
         <legend class="border-bottom title mb-4">
             {% if admin %}Admin{% endif %} Login

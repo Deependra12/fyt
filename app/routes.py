@@ -20,6 +20,7 @@ from flask_login import (
 import os
 import secrets
 from PIL import Image
+from werkzeug.urls import url_parse
 
 from . import app, db
 from . import login_manager
@@ -109,17 +110,20 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if not user or not user.check_password(form.password.data):
             flash('Invalid email or password', 'danger')
-            return redirect (url_for('login'))
+            return redirect(url_for('login'))
         elif not user.confirmed_account:
             flash(
                 'You\'ve still not confirmed your account.\
                  Check your email and confirm your account.', 
                 'warning'
             )
-            return redirect (url_for('login'))
+            return redirect(url_for('login'))
         login_user(user)
         flash('Successfully logged in.', 'success')
-        return redirect_user(current_user)
+        next_page = request.args.get('next', '')
+        if not next_page or url_parse(next_page).netloc != '':
+            return redirect_user(current_user)
+        return redirect(next_page)
     return render_template('login.html', form=form)
 
 
