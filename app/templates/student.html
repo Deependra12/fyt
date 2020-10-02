@@ -213,21 +213,21 @@
         color: white;
     }
 
-    .col-md-3 img {
-        margin-top: 4%;
-        margin-bottom: 3%;
-        height: 80%;
-        width: 80%;
-        user-select: none;
-        box-shadow: 0 0 10px 2px #333;
-        transform: scale(0.8);
-        transition: transform 0.5s;
-        opacity: 0.9;
+    .col-md-3 img{
+        height:30vh;
+        width:30vh;
+        object-fit: cover;
+        position: relative;
+        right:10px;
+        transform: translateY(-50%);
+        transform:scale(0.8);
+        transition:transform 0.5s;
+        opacity:0.9;
     }
 
-    .col-md-3 img:hover {
-        opacity: 1;
-        transform: scale(1);
+    .col-md-3 img:hover{
+        opacity:1;
+        transform:scale(1);
     }
 
     @media only screen and (max-width: 768px) {
