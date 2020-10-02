@@ -172,7 +172,7 @@ def user_register():
             user.update_student(phone=form.phone.data)
         user.set_location()
         db.session.commit()
-        # em.send_registration_mail(user)
+        em.send_registration_mail(user)
         flash('Your account was created. Mail has been sent to your email for confirmation.', 'success')
         return redirect(url_for('login'))        
     return render_template('register.html', form=form)

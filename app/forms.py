@@ -5,8 +5,6 @@ from wtforms.validators import DataRequired, Email, EqualTo, ValidationError, Le
 from flask_wtf.file import FileRequired, FileAllowed
 from .models import User
 
-# Activate captcha later on using
-# {{form.recaptcha()}} 
 
 def create_choices_from_list(lists):
     choices = []
@@ -16,7 +14,6 @@ def create_choices_from_list(lists):
 
 
 class RegistrationForm(FlaskForm):
-    # recaptcha = RecaptchaField()
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='Password length should be at least 6')])
@@ -37,7 +34,6 @@ class RegistrationForm(FlaskForm):
 
 
 class LoginForm(FlaskForm):
-    # recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
@@ -50,7 +46,6 @@ class ResetForm(FlaskForm):
 
 
 class ResetLinkForm(FlaskForm):
-    # recaptcha = RecaptchaField()
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Send Reset Email')
 
