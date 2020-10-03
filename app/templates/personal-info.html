@@ -35,6 +35,10 @@
         top: 18px;
         left: 162px;
     }
+
+    .invalid-feedback{
+        display: block;
+    }
 </style>
 
 
@@ -226,11 +230,11 @@
                 {% if form.profile_pic.errors %}
                     {{ form.profile_pic(class="form-control-file is-invalid", accept=".jpg,.jpeg" ) }}
                     <div class="invalid-feedback">
-                    {% for error in form.profile_pic.errors %}
-                        <span>
-                            {{ error }}
-                        </span>
-                    {% endfor %}
+                        {% for error in form.profile_pic.errors %}
+                            <span>
+                                {{ error }}
+                            </span>
+                        {% endfor %}
                     </div>
                 {%else%}
                     {{ form.profile_pic(class="form-control-file", accept=".jpg,.jpeg" ) }}
