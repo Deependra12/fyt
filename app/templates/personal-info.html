@@ -224,7 +224,7 @@
             <div class="form-group col-lg-4">
                 {{ form.profile_pic.label(class='form-control-label' ) }}
                 {% if form.profile_pic.errors %}
-                    {{ form.profile_pic(class="form-control-file is-invalid") }}
+                    {{ form.profile_pic(class="form-control-file is-invalid", accept=".jpg,.jpeg" ) }}
                     <div class="invalid-feedback">
                     {% for error in form.profile_pic.errors %}
                         <span>
@@ -233,7 +233,7 @@
                     {% endfor %}
                     </div>
                 {%else%}
-                    {{ form.profile_pic(class="form-control-file") }}
+                    {{ form.profile_pic(class="form-control-file", accept=".jpg,.jpeg" ) }}
                 {% endif %}
                 <div class="thumbnail-container">
                     <img id="profile-pic-thumbnail" class="feature-img rounded-circle shadow no-select"/>
@@ -316,13 +316,23 @@
 
     fileUpload.onchange = function () {
         var reader = new FileReader();
-    
-        reader.onload = function (e) {
-            profileThumbnailArea.style.display = "block";
-            cancelFileUploadButton.style.display = "inline-block";
-            profileThumbnailArea.src = e.target.result;
-        };
-        reader.readAsDataURL(this.files[0]);
+
+        var fileTypes = ['jpg', 'jpeg']; 
+        var extension = this.files[0].name.split('.').pop().toLowerCase();
+        var isSuccess = fileTypes.indexOf(extension) > -1; 
+
+        if (isSuccess) {
+            reader.onload = function (e) {
+                profileThumbnailArea.style.display = "block";
+                cancelFileUploadButton.style.display = "inline-block";
+                profileThumbnailArea.src = e.target.result;
+            };
+            reader.readAsDataURL(this.files[0]);
+        } else {
+            profileThumbnailArea.style.display = "none";
+            cancelFileUploadButton.style.display = "none";
+            profileThumbnailArea.src = '';
+        }
     };
 </script>
 

@@ -39,7 +39,18 @@ from .forms import (
     MyAchievementForm,
     MyQualificationForm
 )
-from .models import User, Student, Tutor, Location, Course, Experience, Achievement, Qualification, Mycourse
+from .models import (
+    User, 
+    Student, 
+    Tutor, 
+    Location, 
+    Course, 
+    Experience, 
+    Achievement, 
+    Qualification, 
+    Mycourse,
+    AdminAccountActivitiesView
+)
 
 
 def redirect_user(user):
@@ -100,6 +111,25 @@ def send_admin_announcements():
     else:
         abort(401)
 
+
+@app.route('/admin/account-activities', methods=['GET', 'POST'])
+@login_required
+def admin_account_activities():
+    if current_user.is_authenticated and not current_user.role=='admin':
+        return redirect_user(current_user)
+    form = AccountInfoForm()
+    user = User.query.filter_by(username=current_user.username).first()
+    if form.validate_on_submit():
+        if not user.check_password(form.old_password.data):
+            flash("Wrong password!","danger")
+            return redirect(url_for('admin_account_activities'))
+        else:
+            user.set_password(form.new_password.data)
+            db.session.commit()
+            flash("Successfully changed password!", "success")
+            return redirect(url_for('admin_account_activities'))
+    return AdminAccountActivitiesView().render('admin/admin-account-activities.html', form=form)
+    
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -433,16 +463,15 @@ def student_personal_info():
             current_user.update_student(
                 full_name=form.name.data, 
                 state=form.state.data,
-                district = form.district.data,
-                date_of_birth = form.date_of_birth.data,
-                municipality = form.municipality.data,
-                ward_no = form.ward_no.data,
-                phone = form.phone.data ,
-                description = form.self_description.data.strip(),
-                guardian_name = form.guardian_name.data,
-                guardian_address = form.guardian_address.data,
-                guardian_phone = form.guardian_phone.data
-                
+                district=form.district.data,
+                date_of_birth=form.date_of_birth.data,
+                municipality=form.municipality.data,
+                ward_no=form.ward_no.data,
+                phone=form.phone.data ,
+                description=form.self_description.data.strip(),
+                guardian_name=form.guardian_name.data,
+                guardian_address=form.guardian_address.data,
+                guardian_phone=form.guardian_phone.data         
             )
         return render_template("personal-info.html", user=user, user_obj=student, profilepic= fetch_profile_pic(student), form=form)
 

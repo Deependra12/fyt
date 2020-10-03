@@ -72,14 +72,14 @@
                                 <div class="card-body">
                                     <h5 class="card-title" >
                                         <a href="{{ url_for('profile', username=my_follower.username) }}">
-                                            {{ my_follower.student.full_name }}
+                                            {{ my_follower.student.full_name or 'N/A'}}
                                         </a>   
                                     </h5>
                                     <p class="card-text">
-                                        Phone: {{ my_follower.student.phone }}
+                                        Phone: {{ my_follower.student.phone or 'n/a' }}
                                         <br>
                                         Email: 
-                                        {{ my_follower.email }}                               
+                                        {{ my_follower.email or 'n/a' }}
                                     </p>
                                 </div>
                             </div>

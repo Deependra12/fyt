@@ -8,9 +8,11 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_admin.contrib.fileadmin import FileAdmin
 
 from . import db, login_manager
-from . import  app, Admin, ModelView, AdminIndexView
+from . import app, Admin, ModelView, AdminIndexView
 
-followers = db.Table('followers',
+
+followers = db.Table(
+    'followers',
     db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
@@ -223,9 +225,17 @@ class AdminView(AdminIndexView):
 admin = Admin(app, name='FYT Admin', template_mode='bootstrap3', index_view=AdminView())
 
 
+class AdminAccountActivitiesView(AdminView):
+    def __init__(self, *args, **kwargs):
+        self._default_view = True
+        super(AdminAccountActivitiesView, self).__init__(*args, **kwargs)
+        self.admin = admin
+
+
 class CustomView(ModelView):
+    can_export = True
     can_create = False
-    can_edit = False
+    can_edit = True
 
     def is_accessible(self):
         return current_user.is_authenticated and current_user.role == 'admin'
@@ -304,15 +314,15 @@ class CourseView(ModelView):
     form_edit_rules = ('course_title', 'course_level', 'course_description')
 
 
-class LogoutMenuLink(MenuLink):
+class LoggedInMenuLink(MenuLink):
     def is_accessible(self):
-        return current_user.is_authenticated    
+        return current_user.is_authenticated  
 
 
 # For general models, admin.add_view(ModelView(User, db.session)) 
-admin.add_view(UserView(User, db.session))
-admin.add_view(StudentView(Student, db.session))
-admin.add_view(TutorView(Tutor, db.session))
+admin.add_view(UserView(User, db.session, category='Users'))
+admin.add_view(StudentView(Student, db.session, category='Users'))
+admin.add_view(TutorView(Tutor, db.session, category='Users'))
 
 admin.add_view(CannotDeleteView(Location, db.session)) 
 admin.add_view(CourseView(Course, db.session))
@@ -325,4 +335,5 @@ admin.add_view(ShowLinkView(Qualification, db.session))
 path = op.join(op.dirname(__file__), 'static/docs/')
 admin.add_view(FileAdmin(path, '/static/docs/', name='Documents'))
 
-admin.add_link(LogoutMenuLink(name='Logout', category='', url="/logout"))
+admin.add_link(LoggedInMenuLink(name='Account Activities', category='Settings', url="/admin/account-activities"))  
+admin.add_link(LoggedInMenuLink(name='Logout', category='Settings', url="/logout"))

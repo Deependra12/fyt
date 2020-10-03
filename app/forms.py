@@ -40,7 +40,7 @@ class LoginForm(FlaskForm):
 
 
 class ResetForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
+    password = PasswordField('Password', validators=[DataRequired(),Length(min=6, message='Password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Change Password')
 
@@ -64,11 +64,11 @@ class PersonalInfoForm(FlaskForm):
     date_of_birth = StringField('Date of Birth', validators=[DataRequired()])
     phone = StringField('Phone Number', validators=[DataRequired()])
     state = SelectField(label="State", validators=[DataRequired()])
-    district= SelectField(label='District', validators=[DataRequired()])
+    district = SelectField(label='District', validators=[DataRequired()])
     municipality = StringField('Municipality', validators=[DataRequired()])
     ward_no = StringField('Ward Number', validators=[DataRequired()])
     self_description = TextAreaField ("Describe yourself!", validators=[Length(max=250)])
-    profile_pic = FileField('Profile Picture', validators=[FileAllowed(['jpeg','png','jpg'], 'Images Only!')])    
+    profile_pic = FileField('Profile Picture', validators=[FileAllowed(['jpeg','jpg'], 'Images Only!')])    
     submit = SubmitField('Save')
     
     def create_state_choices(self):
@@ -100,7 +100,7 @@ class StudentPersonalInfoForm(PersonalInfoForm):
 
 class AccountInfoForm(FlaskForm):
     old_password = PasswordField('Give Your Old Password', validators=[DataRequired()])
-    new_password = PasswordField('New Password', validators=[DataRequired(),Length(min=6, message='password length should be at least 6')])
+    new_password = PasswordField('New Password', validators=[DataRequired(),Length(min=6, message='Password length should be at least 6')])
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('new_password')])
     submit = SubmitField('Update')
 
